@@ -1,24 +1,39 @@
-import { Button } from 'antd'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+import { tenantRoutes } from './routes'
 
 function App() {
-    return (
-        <div>
-            <h1 className='text-red-400'>hello world</h1>
-            <Button type='primary' className='bg-red-500'>
-                click me!
-            </Button>
-            <Routes>
-                <Route path='/new-page' element={<NewPage />} />
-            </Routes>
-        </div>
-    )
-}
+    const [user, setUser] = useState()
+    const navigate = useNavigate()
+    const getUser = async () => {
+        try {
+            const userInfo = await axios.get(
+                'http://localhost:5000/auth/login/success',
+                { withCredentials: true },
+            )
 
-const NewPage = () => {
+            console.log(userInfo.data)
+
+            setUser(userInfo.data.user)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [navigate])
+
     return (
-        <div>
-            <h1>new page</h1>
+        <div className='h-full'>
+            <Routes>
+                {tenantRoutes.map((item) => {
+                    const Page = item.component
+                    return <Route path={item.path} element={<Page />} />
+                })}
+            </Routes>
         </div>
     )
 }
