@@ -8,9 +8,9 @@ import {
     UserOutlined,
 } from '@ant-design/icons'
 
-import { paths } from '../../routes'
 import OAuthLogin from './OAuthLogin'
 import LogoLoginRegister from '../../assets/images/logo-login-register.jpg'
+import { paths } from '../../utils/pathsRoutes'
 
 function Login() {
     const [loading, setLoading] = useState(false)

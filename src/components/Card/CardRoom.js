@@ -1,11 +1,10 @@
 import { MessageOutlined, PhoneOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { paths } from '../../routes'
 
 const CardRoom = () => {
     return (
         <Link
-            to={paths.roomDetail}
+            to='info-room'
             className='bg-white w-full shadow-lg p-4 rounded-2xl text-current hover:text-current items-center'
         >
             <img

@@ -2,7 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import { tenantRoutes } from './routes'
+import { landlordRoutes, tenantRoutes } from './routes'
 
 function App() {
     const [user, setUser] = useState()
@@ -29,6 +29,10 @@ function App() {
     return (
         <div className='h-full'>
             <Routes>
+                {landlordRoutes.map((item) => {
+                    const Page = item.component
+                    return <Route path={item.path} element={<Page />} />
+                })}
                 {tenantRoutes.map((item) => {
                     const Page = item.component
                     return <Route path={item.path} element={<Page />} />

@@ -1,0 +1,89 @@
+import { Layout, Menu, theme } from 'antd'
+import { useNavigate } from 'react-router-dom'
+
+import { menuItemsLandlord } from '../utils/menuItems'
+import AdminHeader from '../components/Header/AdminHeader'
+
+import Logo from '../assets/images/logo.jpg'
+const { Footer, Sider, Content } = Layout
+
+function LandlordLayout({ children }) {
+    const navigate = useNavigate()
+    const {
+        token: { colorBgContainer, borderRadiusLG },
+    } = theme.useToken()
+
+    const logout = () => {
+        console.log('logout')
+    }
+
+    const handleClickMenu = (e) => {
+        if (e.key === 'logout') {
+            logout()
+        } else {
+            navigate(e.key)
+        }
+    }
+
+    return (
+        <Layout hasSider>
+            <Sider style={siderStyle} width={250} className='flex flex-col'>
+                <div className='flex items-center justify-center h-[150px]'>
+                    <img
+                        src={Logo}
+                        alt='logo-website'
+                        width={100}
+                        className='rounded-lg'
+                    />
+                </div>
+                <Menu
+                    onClick={handleClickMenu}
+                    theme='dark'
+                    defaultSelectedKeys={[window.location.pathname]}
+                    mode='inline'
+                    items={menuItemsLandlord}
+                />
+            </Sider>
+            <Layout className='ms-[250px]'>
+                <AdminHeader />
+                <Content
+                    style={{
+                        margin: '0 16px',
+                    }}
+                >
+                    <div
+                        style={{
+                            padding: 24,
+                            margin: '16px 0',
+                            minHeight: 360,
+                            background: colorBgContainer,
+                            borderRadius: borderRadiusLG,
+                        }}
+                    >
+                        {children}
+                    </div>
+                </Content>
+                <Footer
+                    style={{
+                        textAlign: 'center',
+                    }}
+                >
+                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                </Footer>
+            </Layout>
+        </Layout>
+    )
+}
+
+const siderStyle = {
+    overflow: 'auto',
+    height: '100vh',
+    position: 'fixed',
+    insetInlineStart: 0,
+    top: 0,
+    bottom: 0,
+    scrollbarWidth: 'thin',
+    scrollbarColor: 'unset',
+}
+
+export default LandlordLayout

@@ -3,14 +3,8 @@ import HomeTenant from '../pages/Tenant/HomeTenant'
 import Login from '../pages/Auth/Login'
 import Register from '../pages/Auth/Register'
 import SearchResult from '../pages/Tenant/SearchResult'
-
-export const paths = {
-    homeTenant: '/',
-    searchResult: '/tenant/search-result',
-    login: '/login',
-    register: '/register',
-    roomDetail: '/room-detail',
-}
+import HomeLandlord from '../pages/Landlord/HomeLanlord'
+import { paths } from '../utils/pathsRoutes'
 
 const authRoutes = [
     {
@@ -34,8 +28,17 @@ const tenantRoutes = [
     },
     {
         component: DetailRoom,
-        path: paths.roomDetail,
+        path: '/room-detail',
     },
 ]
 
-export { tenantRoutes, authRoutes }
+const landlordRoutes = [
+    {
+        component: HomeLandlord,
+        path: paths.landlord.homeLandlord,
+    },
+]
+
+const adminRoutes = [{}]
+
+export { tenantRoutes, landlordRoutes, adminRoutes, authRoutes }
