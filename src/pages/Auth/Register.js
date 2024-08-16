@@ -44,7 +44,7 @@ function Register() {
         <div className='flex overflow-hidden'>
             <Button
                 type='link'
-                href={paths.homeTenant}
+                href={paths.tenant.homeTenant}
                 icon={<ArrowLeftOutlined />}
                 className='relative top-5 left-5'
             >

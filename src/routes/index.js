@@ -20,15 +20,15 @@ const authRoutes = [
 const tenantRoutes = [
     {
         component: HomeTenant,
-        path: paths.homeTenant,
+        path: paths.tenant.homeTenant,
     },
     {
         component: SearchResult,
-        path: paths.searchResult,
+        path: paths.tenant.searchResult,
     },
     {
         component: DetailRoom,
-        path: '/room-detail',
+        path: paths.tenant.roomDetail,
     },
 ]
 

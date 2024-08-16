@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons'
 
 import { paths } from './pathsRoutes'
+import { Link } from 'react-router-dom'
 
 function getItem(label, key, icon, children) {
     return {
@@ -18,22 +19,108 @@ function getItem(label, key, icon, children) {
 }
 
 const menuItemsTenant = [
-    getItem('Trang chủ', '1', <HomeOutlined />),
-    getItem('Chat', '2', <WechatOutlined />),
-    getItem('Thông báo', '3', <BellOutlined />),
+    getItem(
+        <Link
+            to={paths.tenant.homeTenant}
+            className='text-current hover:text-current'
+        >
+            Trang chủ
+        </Link>,
+        paths.tenant.homeTenant,
+        <HomeOutlined />,
+    ),
+    getItem(
+        <Link
+            to={paths.tenant.homeTenant}
+            className='text-current hover:text-current'
+        >
+            Chat
+        </Link>,
+        '2',
+        <WechatOutlined />,
+    ),
+    getItem(
+        <Link
+            to={paths.tenant.homeTenant}
+            className='text-current hover:text-current'
+        >
+            Thông báo
+        </Link>,
+        '3',
+        <BellOutlined />,
+    ),
 ]
 
 const menuItemsLandlord = [
-    getItem('Trang chủ', paths.landlord.homeLandlord, <HomeOutlined />),
-    getItem('Chat', '2', <WechatOutlined />),
-    getItem('Thông báo', '3', <BellOutlined />),
+    getItem(
+        <Link
+            to={paths.landlord.homeLandlord}
+            className='text-current hover:text-current'
+        >
+            Trang chủ
+        </Link>,
+        '1',
+        <HomeOutlined />,
+    ),
+    getItem(
+        <Link
+            to={paths.landlord.homeLandlord}
+            className='text-current hover:text-current'
+        >
+            Chat
+        </Link>,
+        '2',
+        <WechatOutlined />,
+    ),
+    getItem(
+        <Link
+            to={paths.landlord.homeLandlord}
+            className='text-current hover:text-current'
+        >
+            Thông báo
+        </Link>,
+        '3',
+        <BellOutlined />,
+    ),
     getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
-        getItem('Quản lý phòng trọ', '4'),
-        getItem('Thông tin người thuê', '5'),
+        getItem(
+            <Link
+                to={paths.landlord.homeLandlord}
+                className='text-current hover:text-current'
+            >
+                Quản lý phòng trọ
+            </Link>,
+            '4',
+        ),
+        getItem(
+            <Link
+                to={paths.landlord.homeLandlord}
+                className='text-current hover:text-current'
+            >
+                Thông tin người thuê
+            </Link>,
+            '5',
+        ),
     ]),
     getItem('Thống kê', 'sub2', <LineChartOutlined />, [
-        getItem('Doanh thu', '6'),
-        getItem('Phòng trọ', '7'),
+        getItem(
+            <Link
+                to={paths.landlord.homeLandlord}
+                className='text-current hover:text-current'
+            >
+                Doanh thu
+            </Link>,
+            '6',
+        ),
+        getItem(
+            <Link
+                to={paths.landlord.homeLandlord}
+                className='text-current hover:text-current'
+            >
+                Phòng trọ
+            </Link>,
+            '7',
+        ),
     ]),
 ]
 

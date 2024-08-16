@@ -1,5 +1,4 @@
 import { Layout, Menu, theme } from 'antd'
-import { useNavigate } from 'react-router-dom'
 
 import { menuItemsLandlord } from '../utils/menuItems'
 import AdminHeader from '../components/Header/AdminHeader'
@@ -8,22 +7,9 @@ import Logo from '../assets/images/logo.jpg'
 const { Footer, Sider, Content } = Layout
 
 function LandlordLayout({ children }) {
-    const navigate = useNavigate()
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
-
-    const logout = () => {
-        console.log('logout')
-    }
-
-    const handleClickMenu = (e) => {
-        if (e.key === 'logout') {
-            logout()
-        } else {
-            navigate(e.key)
-        }
-    }
 
     return (
         <Layout hasSider>
@@ -37,7 +23,6 @@ function LandlordLayout({ children }) {
                     />
                 </div>
                 <Menu
-                    onClick={handleClickMenu}
                     theme='dark'
                     defaultSelectedKeys={[window.location.pathname]}
                     mode='inline'

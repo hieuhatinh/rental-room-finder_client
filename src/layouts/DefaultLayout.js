@@ -1,25 +1,27 @@
 import { Layout, Menu, theme } from 'antd'
-import { useState } from 'react'
 
 import PrimaryHeader from '../components/Header/PrimaryHeader'
 import { menuItemsTenant } from '../utils/menuItems'
+import Logo from '../assets/images/logo.jpg'
+
 const { Footer, Sider, Content } = Layout
 
 function DefaultLayout({ children }) {
-    const [collapsed, setCollapsed] = useState(false)
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
 
     return (
         <Layout hasSider>
-            <Sider
-                style={siderStyle}
-                collapsible
-                collapsed={collapsed}
-                onCollapse={(value) => setCollapsed(value)}
-            >
-                {/* <img src='' /> */}
+            <Sider style={siderStyle}>
+                <div className='flex items-center justify-center h-[150px]'>
+                    <img
+                        src={Logo}
+                        alt='logo-website'
+                        width={100}
+                        className='rounded-lg'
+                    />
+                </div>
                 <Menu
                     theme='dark'
                     defaultSelectedKeys={['1']}
