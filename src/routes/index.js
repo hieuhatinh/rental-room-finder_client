@@ -6,6 +6,7 @@ import SearchResult from '../pages/Tenant/SearchResult'
 import HomeLandlord from '../pages/Landlord/HomeLanlord'
 import { paths } from '../utils/pathsRoutes'
 import RoomManagement from '../pages/Landlord/RoomManagement'
+import AddNewRoom from '../pages/Landlord/AddNewRoom'
 
 const authRoutes = [
     {
@@ -41,6 +42,10 @@ const landlordRoutes = [
     {
         component: RoomManagement,
         path: paths.landlord.roomManagement,
+    },
+    {
+        component: AddNewRoom,
+        path: paths.landlord.addRoom,
     },
 ]
 

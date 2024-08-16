@@ -73,9 +73,7 @@ function RoomManagement() {
                     Thông tin phòng trọ của bạn
                 </span>
                 <Button type='primary' icon={<PlusOutlined />}>
-                    <Link className={paths.landlord.addRoom}>
-                        Thêm phòng trọ
-                    </Link>
+                    <Link to={paths.landlord.addRoom}>Thêm phòng trọ</Link>
                 </Button>
             </div>
             <table className='flex-1 w-full divide-y-2'>
