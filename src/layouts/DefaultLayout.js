@@ -24,7 +24,7 @@ function DefaultLayout({ children }) {
                 </div>
                 <Menu
                     theme='dark'
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[window.location.pathname]}
                     mode='inline'
                     items={menuItemsTenant}
                 />

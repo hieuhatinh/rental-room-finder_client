@@ -59,7 +59,7 @@ const menuItemsLandlord = [
         >
             Trang chủ
         </Link>,
-        '1',
+        paths.landlord.homeLandlord,
         <HomeOutlined />,
     ),
     getItem(
@@ -85,12 +85,12 @@ const menuItemsLandlord = [
     getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
         getItem(
             <Link
-                to={paths.landlord.homeLandlord}
+                to={paths.landlord.roomManagement}
                 className='text-current hover:text-current'
             >
                 Quản lý phòng trọ
             </Link>,
-            '4',
+            paths.landlord.roomManagement,
         ),
         getItem(
             <Link

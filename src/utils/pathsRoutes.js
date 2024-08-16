@@ -8,6 +8,9 @@ export const paths = {
     },
     landlord: {
         homeLandlord: '/landlord/home',
+        roomManagement: '/landlord/room-management',
+        addRoom: '/landlord/add-room',
+        editRoom: '/landlord/edit-room/:id',
     },
 }
 
