@@ -1,10 +1,24 @@
+import { useEffect } from 'react'
 import { UserOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown, Flex, Form, Input, Space } from 'antd'
+import { Avatar, Button, Dropdown, Flex, Form, Input, Space } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { fetchLogout } from '../../store/actions/authAction'
+import { paths } from '../../utils/pathsRoutes'
+import { selectAuth } from '../../store/selector/authSelector'
+import { getInfo } from '../../store/slice/authSlice'
+
 const PrimaryHeader = () => {
+    const dispatch = useDispatch()
+    const authState = useSelector(selectAuth)
+
+    useEffect(() => {
+        dispatch(getInfo())
+    }, [dispatch])
+
     const logout = () => {
-        console.log('logout')
+        dispatch(fetchLogout())
     }
 
     const items = [
@@ -37,37 +51,68 @@ const PrimaryHeader = () => {
                     Tìm trọ theo nhu cầu của bạn
                 </span>
             </div>
-            {/* <Flex gap={20}>
-                <Button className='bg-red-400 min-w-[100px]' type='primary'>
-                    Đăng nhập
-                </Button>
-                <Button className='bg-green-400 min-w-[100px]' type='primary'>
-                    Đăng ký
-                </Button>
-            </Flex> */}
-            <Flex gap={15}>
-                <div className='flex flex-col items-end'>
-                    <span className='block'>Chào mừng quay trở lại,</span>
-                    <span className='block'>Hieu9837</span>
-                </div>
+            {authState.userInfo && authState.token ? (
+                <Flex gap={15}>
+                    <div className='flex flex-col items-end'>
+                        <span className='block'>Chào mừng quay trở lại,</span>
+                        <span className='block'>
+                            {authState.userInfo.full_name ||
+                                authState.userInfo.username}
+                        </span>
+                    </div>
 
-                <Space direction='vertical'>
-                    <Space wrap>
-                        <Dropdown
-                            menu={{
-                                items,
-                            }}
-                            placement='bottomRight'
-                        >
-                            <Avatar
-                                icon={<UserOutlined />}
-                                size={48}
-                                className='cursor-pointer'
-                            />
-                        </Dropdown>
+                    <Space direction='vertical'>
+                        <Space wrap>
+                            <Dropdown
+                                menu={{
+                                    items,
+                                }}
+                                placement='bottomRight'
+                                arrow
+                            >
+                                {authState.userInfo.avatar ? (
+                                    <img
+                                        src={authState.userInfo.avatar}
+                                        alt={`avatar-${
+                                            authState.userInfo.username ||
+                                            authState.userInfo.full_name
+                                        }`}
+                                        className='rounded-full w-[40px] hover:cursor-pointer'
+                                    />
+                                ) : (
+                                    <Avatar
+                                        icon={<UserOutlined />}
+                                        size={48}
+                                        className='cursor-pointer'
+                                    />
+                                )}
+                            </Dropdown>
+                        </Space>
                     </Space>
-                </Space>
-            </Flex>
+                </Flex>
+            ) : (
+                <Flex gap={20}>
+                    <Button className='bg-red-400 min-w-[100px]' type='primary'>
+                        <Link
+                            to={paths.login}
+                            className='text-current hover:text-current'
+                        >
+                            Đăng nhập
+                        </Link>
+                    </Button>
+                    <Button
+                        className='bg-green-400 min-w-[100px]'
+                        type='primary'
+                    >
+                        <Link
+                            to={paths.register}
+                            className='text-current hover:text-current'
+                        >
+                            Đăng ký
+                        </Link>
+                    </Button>
+                </Flex>
+            )}
         </div>
     )
 }

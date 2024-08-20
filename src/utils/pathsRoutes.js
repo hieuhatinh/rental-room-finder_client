@@ -12,6 +12,8 @@ export const paths = {
         addRoom: '/landlord/add-room',
         editRoom: '/landlord/edit-room/:id',
     },
+    accessDenied: '/access-denied',
+    googleSuccess: '/auth/login/google/success',
 }
 
 export const generatePath = (path, obj) => {

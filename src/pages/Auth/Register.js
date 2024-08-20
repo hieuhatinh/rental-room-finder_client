@@ -1,43 +1,47 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Modal } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     ArrowLeftOutlined,
+    EyeInvisibleOutlined,
+    EyeTwoTone,
     LockOutlined,
     UserOutlined,
 } from '@ant-design/icons'
+import { useDispatch, useSelector } from 'react-redux'
 
 import OAuthLogin from './OAuthLogin'
 import LogoLoginRegister from '../../assets/images/logo-login-register.jpg'
 import { paths } from '../../utils/pathsRoutes'
+import { fetchRegisterWithUsername } from '../../store/actions/authAction'
+import { selectAuth } from '../../store/selector/authSelector'
 
 function Register() {
-    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+    const authState = useSelector(selectAuth)
+
     const navigate = useNavigate()
 
-    const onFinish = async (values) => {
-        try {
-            setLoading(true)
-            const user = await axios.post(
-                'http://localhost:5000/auth/login/tenant',
-                {
-                    username: values.username,
-                    password: values.password,
-                },
-                { withCredentials: true },
-            )
-            setLoading(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-            if (user.data) {
-                navigate('/')
-            }
-        } catch (error) {
-            setLoading(false)
-        }
+    const onFinish = (values) => {
+        dispatch(fetchRegisterWithUsername({ ...values }))
     }
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo)
+
+    useEffect(() => {
+        if (authState.isSuccess) {
+            navigate(paths.login)
+        } else if (authState.isError) {
+            showModal()
+        }
+    }, [authState, navigate])
+
+    const showModal = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleClose = () => {
+        setIsModalOpen(false)
     }
 
     return (
@@ -56,7 +60,7 @@ function Register() {
                         Đăng ký
                     </h1>
                     <Form
-                        name='login'
+                        name='Register'
                         onFinish={onFinish}
                         className='w-[400px]'
                     >
@@ -83,16 +87,23 @@ function Register() {
                                 },
                             ]}
                         >
-                            <Input
+                            <Input.Password
                                 prefix={<LockOutlined />}
-                                type='password'
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
                             />
                         </Form.Item>
 
                         <Form.Item>
                             <Button
                                 block
+                                loading={authState.isLoading}
                                 type='primary'
                                 htmlType='submit'
                                 className='mb-2 font-semibold bg-indigo-600 hover:bg-indigo-500'
@@ -116,6 +127,20 @@ function Register() {
             <div className='flex-1 h-screen w-screen'>
                 <img src={LogoLoginRegister} alt='logo-login-register' />
             </div>
+            {authState.isError && (
+                <Modal
+                    title='Lỗi'
+                    open={isModalOpen}
+                    footer={
+                        <Button type='primary' onClick={handleClose}>
+                            Ok
+                        </Button>
+                    }
+                    onCancel={handleClose}
+                >
+                    <p>{authState?.message}</p>
+                </Modal>
+            )}
         </div>
     )
 }

@@ -7,6 +7,7 @@ import HomeLandlord from '../pages/Landlord/HomeLanlord'
 import { paths } from '../utils/pathsRoutes'
 import RoomManagement from '../pages/Landlord/RoomManagement'
 import AddNewRoom from '../pages/Landlord/AddNewRoom'
+import GoogleSuccessLoading from '../pages/Loading/GoogleSuccessLoading'
 
 const authRoutes = [
     {
@@ -17,9 +18,13 @@ const authRoutes = [
         component: Register,
         path: paths.register,
     },
+    {
+        component: GoogleSuccessLoading,
+        path: paths.googleSuccess,
+    },
 ]
 
-const tenantRoutes = [
+const tenantPublicRoutes = [
     {
         component: HomeTenant,
         path: paths.tenant.homeTenant,
@@ -51,4 +56,4 @@ const landlordRoutes = [
 
 const adminRoutes = [{}]
 
-export { tenantRoutes, landlordRoutes, adminRoutes, authRoutes }
+export { tenantPublicRoutes, landlordRoutes, adminRoutes, authRoutes }
