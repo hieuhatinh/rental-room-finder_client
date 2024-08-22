@@ -1,24 +1,57 @@
-import { Button } from 'antd'
+import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 
-function App() {
-    return (
-        <div>
-            <h1 className='text-red-400'>hello world</h1>
-            <Button type='primary' className='bg-red-500'>
-                click me!
-            </Button>
-            <Routes>
-                <Route path='/new-page' element={<NewPage />} />
-            </Routes>
-        </div>
-    )
-}
+import { authRoutes, landlordRoutes, tenantPublicRoutes } from './routes'
+import AccessDeniedpage from './pages/AccessDeniedPage'
+import { selectAuth } from './store/selector/authSelector'
+import ProtectAuthRoute from './pages/Protected/ProtectAuthRoute'
 
-const NewPage = () => {
+function App() {
+    const authState = useSelector(selectAuth)
+
     return (
-        <div>
-            <h1>new page</h1>
+        <div className='h-full'>
+            <Routes>
+                <Route element={<ProtectAuthRoute />}>
+                    {authRoutes.map((item) => {
+                        const Page = item.component
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={<Page />}
+                            />
+                        )
+                    })}
+                </Route>
+
+                {landlordRoutes.map((item) => {
+                    const Page = item.component
+                    return (
+                        <Route
+                            key={item.path}
+                            path={item.path}
+                            element={
+                                authState.userInfo?.role === 'landlord' ? (
+                                    <Page />
+                                ) : (
+                                    <AccessDeniedpage />
+                                )
+                            }
+                        />
+                    )
+                })}
+                {tenantPublicRoutes.map((item) => {
+                    const Page = item.component
+                    return (
+                        <Route
+                            key={item.path}
+                            path={item.path}
+                            element={<Page />}
+                        />
+                    )
+                })}
+            </Routes>
         </div>
     )
 }
