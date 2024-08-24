@@ -3,6 +3,7 @@ import { Layout, Menu, theme } from 'antd'
 import PrimaryHeader from '../components/Header/PrimaryHeader'
 import { menuItemsTenant } from '../utils/menuItems'
 import Logo from '../assets/images/logo.jpg'
+import ChatbotUI from '../Chatbot'
 
 const { Footer, Sider, Content } = Layout
 
@@ -56,6 +57,7 @@ function DefaultLayout({ children }) {
                         {children}
                     </div>
                 </Content>
+
                 <Footer
                     style={{
                         textAlign: 'center',
@@ -64,6 +66,9 @@ function DefaultLayout({ children }) {
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED
                 </Footer>
             </Layout>
+
+            {/* Chatbot */}
+            <ChatbotUI />
         </Layout>
     )
 }
