@@ -1,6 +1,6 @@
-import { Button, Form, Input, Modal } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
     ArrowLeftOutlined,
     EyeInvisibleOutlined,
@@ -15,6 +15,7 @@ import LogoLoginRegister from '../../assets/images/logo-login-register.jpg'
 import { paths } from '../../utils/pathsRoutes'
 import { fetchRegisterWithUsername } from '../../store/actions/authAction'
 import { selectAuth } from '../../store/selector/authSelector'
+import { reStateError } from '../../store/slice/authSlice'
 
 function Register() {
     const dispatch = useDispatch()
@@ -22,27 +23,30 @@ function Register() {
 
     const navigate = useNavigate()
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [messageApi, contextHolder] = message.useMessage()
 
     const onFinish = (values) => {
         dispatch(fetchRegisterWithUsername({ ...values }))
     }
 
+    // reState
+    useEffect(() => {
+        dispatch(reStateError())
+    }, [authState.isError])
+
+    // handle register
     useEffect(() => {
         if (authState.isSuccess) {
             navigate(paths.login)
         } else if (authState.isError) {
-            showModal()
+            messageApi
+                .open({
+                    type: 'error',
+                    content: authState.message,
+                })
+                .then(dispatch(reStateError()))
         }
-    }, [authState, navigate])
-
-    const showModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const handleClose = () => {
-        setIsModalOpen(false)
-    }
+    }, [authState, navigate, messageApi, dispatch])
 
     return (
         <div className='flex overflow-hidden'>
@@ -66,6 +70,7 @@ function Register() {
                     >
                         <Form.Item
                             name='username'
+                            hasFeedback
                             rules={[
                                 {
                                     required: true,
@@ -80,6 +85,7 @@ function Register() {
                         </Form.Item>
                         <Form.Item
                             name='password'
+                            hasFeedback
                             rules={[
                                 {
                                     required: true,
@@ -90,6 +96,43 @@ function Register() {
                             <Input.Password
                                 prefix={<LockOutlined />}
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name='re-password'
+                            dependencies={['password']}
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please Re-Password!',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (
+                                            !value ||
+                                            getFieldValue('password') === value
+                                        ) {
+                                            return Promise.resolve()
+                                        }
+                                        return Promise.reject(
+                                            new Error('Mật khẩu không khớp'),
+                                        )
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input.Password
+                                prefix={<LockOutlined />}
+                                placeholder='Re-Password'
                                 iconRender={(visible) =>
                                     visible ? (
                                         <EyeTwoTone />
@@ -127,20 +170,7 @@ function Register() {
             <div className='flex-1 h-screen w-screen'>
                 <img src={LogoLoginRegister} alt='logo-login-register' />
             </div>
-            {authState.isError && (
-                <Modal
-                    title='Lỗi'
-                    open={isModalOpen}
-                    footer={
-                        <Button type='primary' onClick={handleClose}>
-                            Ok
-                        </Button>
-                    }
-                    onCancel={handleClose}
-                >
-                    <p>{authState?.message}</p>
-                </Modal>
-            )}
+            {contextHolder}
         </div>
     )
 }

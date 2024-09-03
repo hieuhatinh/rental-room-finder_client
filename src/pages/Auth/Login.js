@@ -1,6 +1,6 @@
-import { Button, Checkbox, Flex, Form, Input, Modal } from 'antd'
+import { Button, Checkbox, Flex, Form, Input, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
     ArrowLeftOutlined,
     EyeInvisibleOutlined,
@@ -16,6 +16,7 @@ import { paths } from '../../utils/pathsRoutes'
 import { selectAuth } from '../../store/selector/authSelector'
 import { fetchLoginWithUsername } from '../../store/actions/authAction'
 import { getTokenFromCookies } from '../../utils/store/token'
+import { reStateError } from '../../store/slice/authSlice'
 
 function Login() {
     const dispatch = useDispatch()
@@ -24,8 +25,16 @@ function Login() {
 
     const navigate = useNavigate()
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [messageApi, contextHolder] = message.useMessage()
 
+    // reState
+    useEffect(() => {
+        if (authState.isError) {
+            dispatch(reStateError())
+        }
+    }, [dispatch, authState.isError])
+
+    // handle login
     const onFinish = (values) => {
         dispatch(fetchLoginWithUsername({ ...values }))
     }
@@ -34,17 +43,14 @@ function Login() {
         if (!!token && authState.isLoggedIn) {
             navigate(paths.tenant.homeTenant)
         } else if (authState.isError) {
-            showModal()
+            messageApi
+                .open({
+                    type: 'error',
+                    content: authState.message,
+                })
+                .then(() => dispatch(reStateError()))
         }
-    }, [authState, navigate, token])
-
-    const showModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const handleClose = () => {
-        setIsModalOpen(false)
-    }
+    }, [authState, navigate, token, messageApi, dispatch])
 
     return (
         <div className='flex overflow-hidden'>
@@ -143,20 +149,7 @@ function Login() {
             <div className='flex-1 h-screen w-screen'>
                 <img src={LogoLoginRegister} alt='logo-login-register' />
             </div>
-            {authState.isError && (
-                <Modal
-                    title='Lỗi'
-                    open={isModalOpen}
-                    footer={
-                        <Button type='primary' onClick={handleClose}>
-                            Ok
-                        </Button>
-                    }
-                    onCancel={handleClose}
-                >
-                    <p>{authState?.message}</p>
-                </Modal>
-            )}
+            {contextHolder}
         </div>
     )
 }

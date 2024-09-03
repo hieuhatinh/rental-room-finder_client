@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 import DefaultLayout from '../../layouts/DefaultLayout'
 import CardRoom from '../../components/Card/CardRoom'
@@ -8,8 +8,8 @@ import LoadingPage from '../Loading'
 import { fetchLoginSuccess } from '../../store/actions/authAction'
 
 function HomeTenant() {
-    const dispatch = useDispatch()
     const authState = useSelector(selectAuth)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (

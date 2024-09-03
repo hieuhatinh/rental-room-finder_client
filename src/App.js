@@ -28,6 +28,7 @@ function App() {
         <SocketProvider>
             <div className='h-full'>
                 <Routes>
+                    {/* Route login + register */}
                     <Route element={<ProtectAuthRoute />}>
                         {authRoutes.map((item) => {
                             const Page = item.component
@@ -41,24 +42,25 @@ function App() {
                         })}
                     </Route>
 
+                    {/* Route landlord */}
                     {landlordRoutes.map((item) => {
                         const Page = item.component
+                        const isAuthorized =
+                            !!authState.token &&
+                            authState?.userInfo?.role === 'landlord'
+
                         return (
                             <Route
                                 key={item.path}
                                 path={item.path}
                                 element={
-                                    !!authState.token &&
-                                    authState?.userInfo?.role === 'landlord' ? (
-                                        <Page />
-                                    ) : (
-                                        <AccessDenied />
-                                    )
+                                    isAuthorized ? <Page /> : <AccessDenied />
                                 }
                             />
                         )
                     })}
 
+                    {/* Route tenant */}
                     {tenantPublicRoutes.map((item) => {
                         const Page = item.component
                         return (
@@ -70,6 +72,7 @@ function App() {
                         )
                     })}
 
+                    {/* Route landlord + tenant */}
                     {sharedPrivateRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =

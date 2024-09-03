@@ -1,10 +1,15 @@
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Dropdown, Flex, Space } from 'antd'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { fetchLogout } from '../../store/actions/authAction'
+
 const AdminHeader = () => {
+    const dispatch = useDispatch()
+
     const logout = () => {
-        console.log('logout')
+        dispatch(fetchLogout())
     }
 
     const items = [
