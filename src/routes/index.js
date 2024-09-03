@@ -8,6 +8,8 @@ import { paths } from '../utils/pathsRoutes'
 import RoomManagement from '../pages/Landlord/RoomManagement'
 import AddNewRoom from '../pages/Landlord/AddNewRoom'
 import GoogleSuccessLoading from '../pages/Loading/GoogleSuccessLoading'
+import ChatApp from '../pages/Chat'
+import MessagePage from '../pages/Chat/MessagePage'
 
 const authRoutes = [
     {
@@ -54,6 +56,25 @@ const landlordRoutes = [
     },
 ]
 
+const sharedPrivateRoutes = [
+    {
+        component: ChatApp,
+        path: paths.shared.chatApp,
+        elements: [
+            {
+                component: MessagePage,
+                path: paths.shared.chatAppIdUser,
+            },
+        ],
+    },
+]
+
 const adminRoutes = [{}]
 
-export { tenantPublicRoutes, landlordRoutes, adminRoutes, authRoutes }
+export {
+    tenantPublicRoutes,
+    landlordRoutes,
+    adminRoutes,
+    authRoutes,
+    sharedPrivateRoutes,
+}

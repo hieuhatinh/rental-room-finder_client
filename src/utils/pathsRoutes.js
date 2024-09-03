@@ -1,10 +1,13 @@
 export const paths = {
     login: '/login',
     register: '/register',
+    accessDenied: '/access-denied',
+    googleSuccess: '/auth/login/google/success',
     tenant: {
         homeTenant: '/',
         searchResult: '/tenant/search-result',
         roomDetail: '/room-detail/:id',
+        tenantInfomation: '/tenant/infomation',
     },
     landlord: {
         homeLandlord: '/landlord/home',
@@ -12,14 +15,8 @@ export const paths = {
         addRoom: '/landlord/add-room',
         editRoom: '/landlord/edit-room/:id',
     },
-    accessDenied: '/access-denied',
-    googleSuccess: '/auth/login/google/success',
-}
-
-export const generatePath = (path, obj) => {
-    const entries = Object.entries(obj)
-    for (let [key, value] in entries) {
-        path = path.replace(`:${key}`, value)
-    }
-    return path
+    shared: {
+        chatApp: '/chat-app',
+        chatAppIdUser: ':id_user',
+    },
 }

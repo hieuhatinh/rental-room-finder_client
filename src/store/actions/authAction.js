@@ -66,6 +66,7 @@ const fetchLoginSuccess = createAsyncThunk(
         try {
             let userInfo = await authApiLoginSuccess()
             let saveInfoUser = {
+                id_user: userInfo.user.id_user,
                 full_name: userInfo.user.full_name,
                 role: userInfo.user.role,
                 avatar: userInfo.user.avatar,

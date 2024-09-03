@@ -1,10 +1,10 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import DefaultLayout from '../../layouts/DefaultLayout'
 import CardRoom from '../../components/Card/CardRoom'
 import { selectAuth } from '../../store/selector/authSelector'
 import LoadingPage from '../Loading'
-import { useEffect } from 'react'
 import { fetchLoginSuccess } from '../../store/actions/authAction'
 
 function HomeTenant() {
