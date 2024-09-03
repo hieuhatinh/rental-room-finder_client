@@ -15,10 +15,12 @@ import LogoLoginRegister from '../../assets/images/logo-login-register.jpg'
 import { paths } from '../../utils/pathsRoutes'
 import { selectAuth } from '../../store/selector/authSelector'
 import { fetchLoginWithUsername } from '../../store/actions/authAction'
+import { getTokenFromCookies } from '../../utils/store/token'
 
 function Login() {
     const dispatch = useDispatch()
     const authState = useSelector(selectAuth)
+    const token = getTokenFromCookies()
 
     const navigate = useNavigate()
 
@@ -29,12 +31,12 @@ function Login() {
     }
 
     useEffect(() => {
-        if (authState.isSuccess && authState.token) {
+        if (!!token && authState.isLoggedIn) {
             navigate(paths.tenant.homeTenant)
         } else if (authState.isError) {
             showModal()
         }
-    }, [authState, navigate])
+    }, [authState, navigate, token])
 
     const showModal = () => {
         setIsModalOpen(true)

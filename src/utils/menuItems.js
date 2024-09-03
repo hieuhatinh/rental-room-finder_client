@@ -5,9 +5,9 @@ import {
     LineChartOutlined,
     WechatOutlined,
 } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 import { paths } from './pathsRoutes'
-import { Link } from 'react-router-dom'
 
 function getItem(label, key, icon, children) {
     return {
@@ -31,12 +31,12 @@ const menuItemsTenant = [
     ),
     getItem(
         <Link
-            to={paths.tenant.homeTenant}
+            to={paths.shared.chatApp}
             className='text-current hover:text-current'
         >
             Chat
         </Link>,
-        '2',
+        paths.shared.chatApp,
         <WechatOutlined />,
     ),
     getItem(

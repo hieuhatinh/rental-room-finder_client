@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import { paths } from '../../utils/pathsRoutes'
 import NoAccessImage from '../../assets/images/no-entry.png'
 
-const AccessDeniedpage = () => {
+const AccessDenied = () => {
     return (
         <div className='h-screen w-screen flex flex-col items-center justify-center'>
             <img
@@ -19,4 +19,4 @@ const AccessDeniedpage = () => {
     )
 }
 
-export default AccessDeniedpage
+export default AccessDenied

@@ -1,17 +1,28 @@
 import { useEffect } from 'react'
 import { UserOutlined } from '@ant-design/icons'
-import { Avatar, Button, Dropdown, Flex, Form, Input, Space } from 'antd'
+import {
+    Avatar,
+    Button,
+    Dropdown,
+    Flex,
+    Form,
+    Input,
+    Space,
+    Tooltip,
+} from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { fetchLogout } from '../../store/actions/authAction'
 import { paths } from '../../utils/pathsRoutes'
 import { selectAuth } from '../../store/selector/authSelector'
 import { getInfo } from '../../store/slice/authSlice'
+import StatusIndicator from '../StatusIndicator'
 
 const PrimaryHeader = () => {
     const dispatch = useDispatch()
     const authState = useSelector(selectAuth)
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(getInfo())
@@ -19,12 +30,17 @@ const PrimaryHeader = () => {
 
     const logout = () => {
         dispatch(fetchLogout())
+        navigate(paths.tenant.homeTenant)
     }
 
     const items = [
         {
             key: '1',
-            label: <Link to='/infomation'>Thông tin cá nhân</Link>,
+            label: (
+                <Link to={paths.tenant.tenantInfomation}>
+                    Thông tin cá nhân
+                </Link>
+            ),
         },
         {
             key: '2',
@@ -51,7 +67,7 @@ const PrimaryHeader = () => {
                     Tìm trọ theo nhu cầu của bạn
                 </span>
             </div>
-            {authState.userInfo && authState.token ? (
+            {authState?.userInfo && authState?.token ? (
                 <Flex gap={15}>
                     <div className='flex flex-col items-end'>
                         <span className='block'>Chào mừng quay trở lại,</span>
@@ -63,30 +79,34 @@ const PrimaryHeader = () => {
 
                     <Space direction='vertical'>
                         <Space wrap>
-                            <Dropdown
-                                menu={{
-                                    items,
-                                }}
-                                placement='bottomRight'
-                                arrow
-                            >
-                                {authState.userInfo.avatar ? (
-                                    <img
-                                        src={authState.userInfo.avatar}
-                                        alt={`avatar-${
-                                            authState.userInfo.username ||
-                                            authState.userInfo.full_name
-                                        }`}
-                                        className='rounded-full w-[40px] hover:cursor-pointer'
-                                    />
-                                ) : (
-                                    <Avatar
-                                        icon={<UserOutlined />}
-                                        size={48}
-                                        className='cursor-pointer'
-                                    />
-                                )}
-                            </Dropdown>
+                            <StatusIndicator isOnline={authState.isOnline}>
+                                <Dropdown
+                                    menu={{
+                                        items,
+                                    }}
+                                    placement='bottomRight'
+                                    arrow
+                                    trigger={['click']}
+                                >
+                                    <Tooltip
+                                        title='Account'
+                                        placement='bottomRight'
+                                        color='#f9fafb'
+                                        overlayInnerStyle={{ color: 'black' }}
+                                    >
+                                        <Avatar
+                                            src={authState?.userInfo.avatar}
+                                            icon={
+                                                !authState.userInfo.avatar && (
+                                                    <UserOutlined />
+                                                )
+                                            }
+                                            size={48}
+                                            className='cursor-pointer'
+                                        />
+                                    </Tooltip>
+                                </Dropdown>
+                            </StatusIndicator>
                         </Space>
                     </Space>
                 </Flex>

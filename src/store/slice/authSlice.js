@@ -17,6 +17,8 @@ const initialState = {
     userInfo: null,
     token: null,
     isLoggedIn: false,
+    isOnline: false,
+    onlineUsers: [],
 }
 
 export const authSlice = createSlice({
@@ -27,6 +29,10 @@ export const authSlice = createSlice({
             state.userInfo = getUserInfoFromLocalStorage()
             state.token = getTokenFromCookies()
             state.isLoggedIn = true
+        },
+        setIsOnline: (state, action) => {
+            state.isOnline = action.payload?.isOnline
+            state.onlineUsers = action.payload.onlineUsers
         },
     },
     extraReducers: (builder) => {
@@ -125,6 +131,8 @@ export const authSlice = createSlice({
                 state.userInfo = null
                 state.token = null
                 state.isLoggedIn = false
+                state.isOnline = false
+                state.idUser = null
             })
             .addCase(fetchLogout.rejected, (state, action) => {
                 state.isLoading = false
@@ -134,6 +142,6 @@ export const authSlice = createSlice({
     },
 })
 
-export const { getInfo } = authSlice.actions
+export const { getInfo, setIsOnline } = authSlice.actions
 
 export default authSlice.reducer
