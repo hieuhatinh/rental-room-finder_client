@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 import {
+    adminRoutes,
     authRoutes,
     landlordRoutes,
     sharedPrivateRoutes,
@@ -12,17 +13,21 @@ import ProtectAuthRoute from './pages/Protected/ProtectAuthRoute'
 import LoginRequired from './pages/Warning/LoginRequired'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAuth } from './store/selector/authSelector'
-import { useEffect } from 'react'
-import { getInfo } from './store/slice/authSlice'
 import SocketProvider from './services/SocketProvider'
+import { useEffect } from 'react'
+import { getTokenFromCookies } from './utils/store/token'
+import { getInfo } from './store/slice/authSlice'
 
 function App() {
     const authState = useSelector(selectAuth)
     const dispatch = useDispatch()
+    const token = getTokenFromCookies()
 
     useEffect(() => {
-        dispatch(getInfo())
-    }, [dispatch])
+        if (token) {
+            dispatch(getInfo())
+        }
+    }, [token, dispatch])
 
     return (
         <SocketProvider>
@@ -46,8 +51,7 @@ function App() {
                     {landlordRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
-                            !!authState.token &&
-                            authState?.userInfo?.role === 'landlord'
+                            !!token && authState?.userInfo?.role === 'landlord'
 
                         return (
                             <Route
@@ -76,7 +80,7 @@ function App() {
                     {sharedPrivateRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
-                            !!authState?.token &&
+                            !!token &&
                             (authState?.userInfo?.role === 'tenant' ||
                                 authState?.userInfo?.role === 'landlord')
 
@@ -99,6 +103,22 @@ function App() {
                                     )
                                 })}
                             </Route>
+                        )
+                    })}
+
+                    {adminRoutes.map((item) => {
+                        const Page = item.component
+                        const isAuthorized =
+                            !!token && authState?.userInfo?.role === 'admin'
+
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={
+                                    isAuthorized ? <Page /> : <AccessDenied />
+                                }
+                            />
                         )
                     })}
                 </Routes>

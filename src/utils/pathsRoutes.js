@@ -3,6 +3,7 @@ export const paths = {
     register: '/register',
     accessDenied: '/access-denied',
     googleSuccess: '/auth/login/google/success',
+    loadingAuthorize: '/loading-authorize',
     tenant: {
         homeTenant: '/',
         searchResult: '/tenant/search-result',
@@ -18,5 +19,8 @@ export const paths = {
     shared: {
         chatApp: '/chat-app',
         chatAppIdUser: ':id_user',
+    },
+    admin: {
+        homeAdmin: '/admin/home',
     },
 }

@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react'
 import { Avatar, Dropdown, Layout, Menu, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { menuItemsTenant } from '../utils/menuItems'
+import { menuItemsLandlord, menuItemsTenant } from '../utils/menuItems'
 import Logo from '../assets/images/logo.jpg'
 import { selectAuth } from '../store/selector/authSelector'
 import { paths } from '../utils/pathsRoutes'
@@ -25,11 +26,26 @@ function ChatAppLayout({ children }) {
     const dispatch = useDispatch()
     const authState = useSelector(selectAuth)
     const navigate = useNavigate()
+    const [menu, setMenu] = useState()
 
     const logout = () => {
         dispatch(fetchLogout())
         navigate(paths.tenant.homeTenant)
     }
+
+    useEffect(() => {
+        switch (authState?.userInfo.role) {
+            case 'landlord':
+                setMenu(menuItemsLandlord)
+                break
+            case 'tenant':
+                setMenu(menuItemsTenant)
+                break
+            default:
+                setMenu(menuItemsTenant)
+                break
+        }
+    }, [authState?.userInfo.role])
 
     return (
         <Layout hasSider>
@@ -46,7 +62,7 @@ function ChatAppLayout({ children }) {
                     theme='dark'
                     defaultSelectedKeys={[window.location.pathname]}
                     mode='inline'
-                    items={menuItemsTenant}
+                    items={menu}
                 />
                 <div className='fixed bottom-5 translate-x-[50%] flex flex-col justify-center items-center flex-1'>
                     <StatusIndicator isOnline={authState.isOnline}>

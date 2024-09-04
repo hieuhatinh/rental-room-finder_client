@@ -40,9 +40,7 @@ function Login() {
     }
 
     useEffect(() => {
-        if (!!token && authState.isLoggedIn) {
-            navigate(paths.tenant.homeTenant)
-        } else if (authState.isError) {
+        if (authState.isError) {
             messageApi
                 .open({
                     type: 'error',

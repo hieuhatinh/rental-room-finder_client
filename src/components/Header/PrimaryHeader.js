@@ -67,7 +67,7 @@ const PrimaryHeader = () => {
                     Tìm trọ theo nhu cầu của bạn
                 </span>
             </div>
-            {authState?.userInfo && authState?.token ? (
+            {authState?.userInfo?.role === 'tenant' && authState?.token ? (
                 <Flex gap={15}>
                     <div className='flex flex-col items-end'>
                         <span className='block'>Chào mừng quay trở lại,</span>
