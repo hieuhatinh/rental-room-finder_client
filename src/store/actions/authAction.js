@@ -64,17 +64,22 @@ const fetchLoginSuccess = createAsyncThunk(
     'auth/fetchLoginSuccess',
     async (_, { rejectWithValue }) => {
         try {
-            let userInfo = await authApiLoginSuccess()
-            let saveInfoUser = {
+            const userInfo = await authApiLoginSuccess()
+
+            const saveInfoUser = {
                 id_user: userInfo.user.id_user,
                 full_name: userInfo.user.full_name,
                 role: userInfo.user.role,
                 avatar: userInfo.user.avatar,
                 username: userInfo.user.username,
+                email: userInfo.user.email,
             }
             saveUserInfoToLocalStorage(saveInfoUser)
 
-            return userInfo
+            return {
+                user: saveInfoUser,
+                message: userInfo.message,
+            }
         } catch (error) {
             return rejectWithValue(error.message)
         }

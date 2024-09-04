@@ -34,6 +34,10 @@ export const authSlice = createSlice({
             state.isOnline = action.payload?.isOnline
             state.onlineUsers = action.payload.onlineUsers
         },
+        reStateError: (state, action) => {
+            state.isError = false
+            state.message = null
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -142,6 +146,6 @@ export const authSlice = createSlice({
     },
 })
 
-export const { getInfo, setIsOnline } = authSlice.actions
+export const { getInfo, setIsOnline, reStateError } = authSlice.actions
 
 export default authSlice.reducer

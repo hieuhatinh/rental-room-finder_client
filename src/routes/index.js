@@ -10,6 +10,7 @@ import AddNewRoom from '../pages/Landlord/AddNewRoom'
 import GoogleSuccessLoading from '../pages/Loading/GoogleSuccessLoading'
 import ChatApp from '../pages/Chat'
 import MessagePage from '../pages/Chat/MessagePage'
+import HomeAdmin from '../pages/Admin/HomeAdmin'
 
 const authRoutes = [
     {
@@ -69,7 +70,12 @@ const sharedPrivateRoutes = [
     },
 ]
 
-const adminRoutes = [{}]
+const adminRoutes = [
+    {
+        component: HomeAdmin,
+        path: paths.admin.homeAdmin,
+    },
+]
 
 export {
     tenantPublicRoutes,
