@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { UserOutlined } from '@ant-design/icons'
 import {
     Avatar,
@@ -16,17 +15,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { fetchLogout } from '../../store/actions/authAction'
 import { paths } from '../../utils/pathsRoutes'
 import { selectAuth } from '../../store/selector/authSelector'
-import { getInfo } from '../../store/slice/authSlice'
 import StatusIndicator from '../StatusIndicator'
 
 const PrimaryHeader = () => {
     const dispatch = useDispatch()
     const authState = useSelector(selectAuth)
     const navigate = useNavigate()
-
-    useEffect(() => {
-        dispatch(getInfo())
-    }, [dispatch])
 
     const logout = () => {
         dispatch(fetchLogout())

@@ -14,7 +14,7 @@ const SocketProvider = ({ children }) => {
     const [socketConnection, setSocketConnection] = useState(null)
 
     useEffect(() => {
-        if (authState?.token && authState?.isLoggedIn) {
+        if (authState?.token) {
             console.log('connect')
             const socketConnection = io(process.env.REACT_APP_BACKEND_URL, {
                 auth: {
@@ -31,7 +31,7 @@ const SocketProvider = ({ children }) => {
                 socketConnection.disconnect()
             }
         }
-    }, [dispatch, authState.token, authState.isLoggedIn])
+    }, [dispatch, authState.token])
 
     return (
         <SocketContext.Provider value={socketConnection}>

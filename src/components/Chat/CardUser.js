@@ -48,13 +48,13 @@ const CardUser = ({ data }) => {
                             {data.lastMsg?.text}
                         </p>
                     )}
-                    {data.lastMsg?.filesUpload.at(-1).type === 'image' && (
+                    {data.lastMsg?.filesUpload.at(-1)?.type === 'image' && (
                         <div className='flex items-center gap-2'>
                             <FileImageOutlined className='text-sm text-gray-500' />
                             <span className='text-sm text-gray-500'>Image</span>
                         </div>
                     )}
-                    {data.lastMsg?.filesUpload.at(-1).type === 'video' && (
+                    {data.lastMsg?.filesUpload.at(-1)?.type === 'video' && (
                         <div className='flex items-center gap-2'>
                             <VideoCameraFilled className='text-sm text-gray-500' />
                             <span className='text-sm text-gray-500'>Video</span>
