@@ -11,6 +11,7 @@ import GoogleSuccessLoading from '../pages/Loading/GoogleSuccessLoading'
 import ChatApp from '../pages/Chat'
 import MessagePage from '../pages/Chat/MessagePage'
 import HomeAdmin from '../pages/Admin/HomeAdmin'
+import Information from '../pages/Tenant/Information'
 
 const authRoutes = [
     {
@@ -39,6 +40,13 @@ const tenantPublicRoutes = [
     {
         component: DetailRoom,
         path: paths.tenant.roomDetail,
+    },
+]
+
+const tenantPrivateRoute = [
+    {
+        component: Information,
+        path: paths.tenant.tenantInfomation,
     },
 ]
 
@@ -83,4 +91,5 @@ export {
     adminRoutes,
     authRoutes,
     sharedPrivateRoutes,
+    tenantPrivateRoute,
 }

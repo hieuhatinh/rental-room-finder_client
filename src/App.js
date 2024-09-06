@@ -6,28 +6,20 @@ import {
     authRoutes,
     landlordRoutes,
     sharedPrivateRoutes,
+    tenantPrivateRoute,
     tenantPublicRoutes,
 } from './routes'
 import AccessDenied from './pages/Warning/AccessDenied'
 import ProtectAuthRoute from './pages/Protected/ProtectAuthRoute'
 import LoginRequired from './pages/Warning/LoginRequired'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectAuth } from './store/selector/authSelector'
 import SocketProvider from './services/SocketProvider'
-import { useEffect } from 'react'
 import { getTokenFromCookies } from './utils/store/token'
-import { getInfo } from './store/slice/authSlice'
 
 function App() {
     const authState = useSelector(selectAuth)
-    const dispatch = useDispatch()
     const token = getTokenFromCookies()
-
-    useEffect(() => {
-        if (token) {
-            dispatch(getInfo())
-        }
-    }, [token, dispatch])
 
     return (
         <SocketProvider>
@@ -72,6 +64,22 @@ function App() {
                                 key={item.path}
                                 path={item.path}
                                 element={<Page />}
+                            />
+                        )
+                    })}
+
+                    {tenantPrivateRoute.map((item) => {
+                        const Page = item.component
+                        const isAuthorized =
+                            !!token && authState?.userInfo?.role === 'tenant'
+
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={
+                                    isAuthorized ? <Page /> : <LoginRequired />
+                                }
                             />
                         )
                     })}

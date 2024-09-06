@@ -23,7 +23,7 @@ const ProtectAuthRoute = () => {
     }, [token, dispatch, navigate])
 
     useEffect(() => {
-        if (userInfo) {
+        if (token) {
             switch (userInfo?.role) {
                 case 'tenant':
                     navigate(paths.tenant.homeTenant)
@@ -39,7 +39,7 @@ const ProtectAuthRoute = () => {
                     break
             }
         }
-    }, [userInfo, navigate])
+    }, [userInfo?.role, navigate, token])
 
     if (authState.isLoading) {
         return <LoadingPage />

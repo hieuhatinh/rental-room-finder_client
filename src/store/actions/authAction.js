@@ -5,6 +5,7 @@ import {
     authApiLoginWithUsername,
     authApiLogout,
     authApiRegisterWithUsername,
+    authApiUpdateInfomation,
 } from '../../api/authApi'
 import {
     removeTokenFromCookies,
@@ -101,10 +102,38 @@ const fetchLogout = createAsyncThunk(
     },
 )
 
+const fetchUpdateInfomation = createAsyncThunk(
+    'auth/updateInformation',
+    async ({ avatar, full_name }, { dispatch, rejectWithValue }) => {
+        try {
+            let result = await authApiUpdateInfomation({
+                avatar,
+                full_name,
+            })
+
+            const newInfoUser = {
+                id_user: result.newInfoUser.id_user,
+                full_name: result.newInfoUser.full_name,
+                role: result.newInfoUser.role,
+                avatar: result.newInfoUser.avatar,
+                username: result.newInfoUser.username,
+                email: result.newInfoUser.email,
+            }
+
+            await saveUserInfoToLocalStorage(newInfoUser)
+
+            return result
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    },
+)
+
 export {
     fetchLoginSuccessWithGoogle,
     fetchLoginWithUsername,
     fetchRegisterWithUsername,
     fetchLoginSuccess,
     fetchLogout,
+    fetchUpdateInfomation,
 }

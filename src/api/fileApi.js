@@ -6,7 +6,7 @@ const uploadFileApi = async (files) => {
     const uploadPromises = files.map((file) => {
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('upload_preset', 'chat-app-file') // Thay đổi thành upload_preset của bạn
+        formData.append('upload_preset', 'chat-app-file')
 
         // Trả về promise của yêu cầu axios
         return axios.post(url_upload, formData, {

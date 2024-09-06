@@ -5,6 +5,7 @@ import {
     fetchLoginWithUsername,
     fetchLogout,
     fetchRegisterWithUsername,
+    fetchUpdateInfomation,
 } from '../actions/authAction'
 import { getUserInfoFromLocalStorage } from '../../utils/store/localStorage'
 import { getTokenFromCookies } from '../../utils/store/token'
@@ -14,9 +15,8 @@ const initialState = {
     isSuccess: false,
     isError: false,
     message: null,
-    userInfo: null,
-    token: null,
-    isLoggedIn: false,
+    userInfo: getUserInfoFromLocalStorage() || null,
+    token: getTokenFromCookies() || null,
     isOnline: false,
     onlineUsers: [],
 }
@@ -25,17 +25,16 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        getInfo: (state, action) => {
-            state.userInfo = getUserInfoFromLocalStorage()
-            state.token = getTokenFromCookies()
-            state.isLoggedIn = true
-        },
         setIsOnline: (state, action) => {
             state.isOnline = action.payload?.isOnline
             state.onlineUsers = action.payload.onlineUsers
         },
         reStateError: (state, action) => {
             state.isError = false
+            state.message = null
+        },
+        reStateSuccess: (state, action) => {
+            state.isSuccess = false
             state.message = null
         },
     },
@@ -92,7 +91,8 @@ export const authSlice = createSlice({
                 state.isError = false
                 state.isSuccess = true
                 state.message = action.payload.message
-                state.userInfo = action.payload.user
+                state.userInfo = getUserInfoFromLocalStorage()
+                state.token = getTokenFromCookies()
             })
             .addCase(fetchLoginSuccess.rejected, (state, action) => {
                 state.isLoading = false
@@ -134,7 +134,6 @@ export const authSlice = createSlice({
                 state.isSuccess = true
                 state.userInfo = null
                 state.token = null
-                state.isLoggedIn = false
                 state.isOnline = false
                 state.idUser = null
             })
@@ -143,9 +142,31 @@ export const authSlice = createSlice({
                 state.isSuccess = false
                 state.isError = true
             })
+
+        builder
+            .addCase(fetchUpdateInfomation.pending, (state, action) => {
+                state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
+                state.message = null
+            })
+            .addCase(fetchUpdateInfomation.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.isSuccess = true
+                state.message = action.payload.message
+                state.userInfo = getUserInfoFromLocalStorage()
+                state.token = getTokenFromCookies()
+            })
+            .addCase(fetchUpdateInfomation.rejected, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = false
+                state.isError = true
+                state.message = action.payload
+            })
     },
 })
 
-export const { getInfo, setIsOnline, reStateError } = authSlice.actions
+export const { setIsOnline, reStateError, reStateSuccess } = authSlice.actions
 
 export default authSlice.reducer
