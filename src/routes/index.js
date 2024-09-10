@@ -12,6 +12,9 @@ import ChatApp from '../pages/Chat'
 import MessagePage from '../pages/Chat/MessagePage'
 import HomeAdmin from '../pages/Admin/HomeAdmin'
 import Information from '../pages/Tenant/Information'
+import ManageLandlords from '../pages/Admin/ManageLandlords'
+import EditProfileLandlord from '../pages/Admin/EditProfileLandlord'
+import AddLandlord from '../pages/Admin/AddLandlord'
 
 const authRoutes = [
     {
@@ -82,6 +85,18 @@ const adminRoutes = [
     {
         component: HomeAdmin,
         path: paths.admin.homeAdmin,
+    },
+    {
+        component: ManageLandlords,
+        path: paths.admin.manageLandlords,
+    },
+    {
+        component: EditProfileLandlord,
+        path: `${paths.admin.editProfileLandlord + paths.admin.idLandlord}`,
+    },
+    {
+        component: AddLandlord,
+        path: paths.admin.addLandlord,
     },
 ]
 

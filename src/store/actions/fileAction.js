@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { deleteFileApi, uploadFileApi } from '../../api/fileApi'
+import { deleteFileApi, uploadFilesApi } from '../../api/fileApi'
 
 const fetchUploadFile = createAsyncThunk(
     'file/fetchUploadFile',
     async ({ files }, { rejectWithValue }) => {
         try {
-            let response = await uploadFileApi(files)
+            let response = await uploadFilesApi(files)
 
             return response
         } catch (error) {

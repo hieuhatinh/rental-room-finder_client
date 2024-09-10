@@ -1,7 +1,7 @@
 import axios from 'axios'
 import axiosClient from './axiosClient'
 
-const uploadFileApi = async (files) => {
+const uploadFilesApi = async (files) => {
     const url_upload = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/auto/upload`
     const uploadPromises = files.map((file) => {
         const formData = new FormData()
@@ -45,4 +45,22 @@ const deleteFileApi = async (public_id) => {
     }
 }
 
-export { uploadFileApi, deleteFileApi }
+const apiUploadSingleFile = async (file) => {
+    if (file) {
+        const url_upload = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/auto/upload`
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', 'profile-avatar')
+
+        const response = await axios.post(url_upload, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        let url = response.data.url
+
+        return url
+    }
+}
+
+export { uploadFilesApi, deleteFileApi, apiUploadSingleFile }
