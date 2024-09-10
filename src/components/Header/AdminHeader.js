@@ -31,7 +31,6 @@ const AdminHeader = () => {
 
     return (
         <div className='bg-white shadow-md flex items-center justify-around h-[100px]'>
-            <div />
             <div className='items-center justify-center'>
                 <h1 className='uppercase font-semibold text-indigo-600 text-2xl italic font-serif'>
                     RENTAL ROOM FINDER
@@ -41,13 +40,23 @@ const AdminHeader = () => {
                 </span>
             </div>
             <Flex gap={15}>
-                <div className='flex flex-col items-end'>
-                    <span className='block'>Chào mừng quay trở lại,</span>
-                    <span className='block'>
-                        {authState?.userInfo?.full_name ||
-                            authState?.userInfo?.username}
-                    </span>
-                </div>
+                {authState?.userInfo?.role === 'landlord' && (
+                    <div className='flex flex-col items-end'>
+                        <span className='block'>Chào mừng quay trở lại,</span>
+                        <span className='block'>
+                            {authState?.userInfo?.full_name ||
+                                authState?.userInfo?.username}
+                        </span>
+                    </div>
+                )}
+
+                {authState?.userInfo?.role === 'admin' && (
+                    <div className='flex items-center'>
+                        <span className='block uppercase font-bold'>
+                            {authState?.userInfo?.username}
+                        </span>
+                    </div>
+                )}
 
                 <Space direction='vertical'>
                     <Space wrap>

@@ -1,9 +1,9 @@
-import axios from 'axios'
 import axiosClient from './axiosClient'
+import { apiUploadSingleFile } from './fileApi'
 
 const authApiLoginWithUsername = async ({ username, password }) => {
     try {
-        const userInfo = await axiosClient.post('/auth/login/tenant', {
+        const userInfo = await axiosClient.post('/auth/login', {
             username,
             password,
         })
@@ -63,20 +63,7 @@ const authApiLogout = async () => {
 
 const authApiUpdateInfomation = async ({ avatar, full_name }) => {
     try {
-        let url = null
-        if (avatar) {
-            const url_upload = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/auto/upload`
-            const formData = new FormData()
-            formData.append('file', avatar)
-            formData.append('upload_preset', 'profile-avatar')
-
-            const response = await axios.post(url_upload, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            url = response.data.url
-        }
+        const url = await apiUploadSingleFile(avatar)
 
         const newUser = await axiosClient.put('/auth/update-info', {
             avatar: url,

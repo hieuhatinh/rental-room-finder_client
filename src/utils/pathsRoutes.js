@@ -22,5 +22,9 @@ export const paths = {
     },
     admin: {
         homeAdmin: '/admin/home',
+        manageLandlords: '/admin/manage/landlords',
+        editProfileLandlord: '/admin/manage/edit-profile-lanlord',
+        idLandlord: '/:id_landlord',
+        addLandlord: '/admin/manage/add-landlord',
     },
 }

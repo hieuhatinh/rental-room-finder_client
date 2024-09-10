@@ -128,12 +128,12 @@ const menuItemsLandlord = [
 const menuItemsAdmin = [
     getItem(
         <Link
-            to={paths.landlord.homeLandlord}
+            to={paths.admin.homeAdmin}
             className='text-current hover:text-current'
         >
             Trang chủ
         </Link>,
-        paths.landlord.homeLandlord,
+        paths.admin.homeAdmin,
         <HomeOutlined />,
     ),
     getItem(
@@ -159,12 +159,12 @@ const menuItemsAdmin = [
     getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
         getItem(
             <Link
-                to={paths.landlord.roomManagement}
+                to={paths.admin.manageLandlords}
                 className='text-current hover:text-current'
             >
                 Quản lý thông tin chủ phòng
             </Link>,
-            paths.landlord.roomManagement,
+            paths.admin.manageLandlords,
         ),
         getItem(
             <Link
