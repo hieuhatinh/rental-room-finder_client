@@ -8,6 +8,7 @@ import { fetchLoginSuccess } from '../../store/actions/authAction'
 import { getUserInfoFromLocalStorage } from '../../utils/store/localStorage'
 import { selectAuth } from '../../store/selector/authSelector'
 import LoadingPage from '../Loading'
+import roles from '../../utils/roles'
 
 const ProtectAuthRoute = () => {
     const userInfo = getUserInfoFromLocalStorage()
@@ -25,13 +26,13 @@ const ProtectAuthRoute = () => {
     useEffect(() => {
         if (token) {
             switch (userInfo?.role) {
-                case 'tenant':
+                case roles.tenant:
                     navigate(paths.tenant.homeTenant)
                     break
-                case 'landlord':
+                case roles.landlord:
                     navigate(paths.landlord.homeLandlord)
                     break
-                case 'admin':
+                case roles.admin:
                     navigate(paths.admin.homeAdmin)
                     break
                 default:

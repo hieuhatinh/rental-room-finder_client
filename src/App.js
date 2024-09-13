@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux'
 import { selectAuth } from './store/selector/authSelector'
 import SocketProvider from './services/SocketProvider'
 import { getTokenFromCookies } from './utils/store/token'
+import roles from './utils/roles'
 
 function App() {
     const authState = useSelector(selectAuth)
@@ -43,7 +44,8 @@ function App() {
                     {landlordRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
-                            !!token && authState?.userInfo?.role === 'landlord'
+                            !!token &&
+                            authState?.userInfo?.role === roles.landlord
 
                         return (
                             <Route
@@ -71,7 +73,8 @@ function App() {
                     {tenantPrivateRoute.map((item) => {
                         const Page = item.component
                         const isAuthorized =
-                            !!token && authState?.userInfo?.role === 'tenant'
+                            !!token &&
+                            authState?.userInfo?.role === roles.tenant
 
                         return (
                             <Route
@@ -89,8 +92,8 @@ function App() {
                         const Page = item.component
                         const isAuthorized =
                             !!token &&
-                            (authState?.userInfo?.role === 'tenant' ||
-                                authState?.userInfo?.role === 'landlord')
+                            (authState?.userInfo?.role === roles.tenant ||
+                                authState?.userInfo?.role === roles.landlord)
 
                         return (
                             <Route
@@ -117,7 +120,7 @@ function App() {
                     {adminRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
-                            !!token && authState?.userInfo?.role === 'admin'
+                            !!token && authState?.userInfo?.role === roles.admin
 
                         return (
                             <Route
