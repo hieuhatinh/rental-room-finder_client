@@ -10,6 +10,7 @@ import { selectAuth } from '../store/selector/authSelector'
 import { paths } from '../utils/pathsRoutes'
 import { fetchLogout } from '../store/actions/authAction'
 import StatusIndicator from '../components/StatusIndicator'
+import roles from '../utils/roles'
 
 const { Sider, Content } = Layout
 
@@ -35,10 +36,10 @@ function ChatAppLayout({ children }) {
 
     useEffect(() => {
         switch (authState?.userInfo.role) {
-            case 'landlord':
+            case roles.landlord:
                 setMenu(menuItemsLandlord)
                 break
-            case 'tenant':
+            case roles.tenant:
                 setMenu(menuItemsTenant)
                 break
             default:

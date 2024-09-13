@@ -1,7 +1,7 @@
 import { Layout, Menu, theme } from 'antd'
 
 import { menuItemsLandlord } from '../utils/menuItems'
-import AdminHeader from '../components/Header/AdminHeader'
+import PrimaryHeader from '../components/Header/PrimaryHeader'
 
 import Logo from '../assets/images/logo.jpg'
 const { Footer, Sider, Content } = Layout
@@ -30,7 +30,7 @@ function LandlordLayout({ children }) {
                 />
             </Sider>
             <Layout className='ms-[250px]'>
-                <AdminHeader />
+                <PrimaryHeader />
                 <Content
                     style={{
                         margin: '0 16px',
