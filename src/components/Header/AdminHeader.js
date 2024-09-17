@@ -31,6 +31,7 @@ const AdminHeader = () => {
 
     return (
         <div className='bg-white shadow-md flex items-center justify-around h-[100px]'>
+            <div />
             <div className='items-center justify-center'>
                 <h1 className='uppercase font-semibold text-indigo-600 text-2xl italic font-serif'>
                     RENTAL ROOM FINDER

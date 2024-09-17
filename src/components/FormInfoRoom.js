@@ -4,13 +4,16 @@ import {
     Image,
     Input,
     InputNumber,
+    Modal,
     Select,
     Tag,
     Upload,
 } from 'antd'
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
+import { useEffect, useRef, useState } from 'react'
 
-import { PlusOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import { getBase64 } from '../utils/readFile/image'
+import MapComponent from './Maps'
 
 const options = [
     {
@@ -47,18 +50,11 @@ const tagRender = (props) => {
     )
 }
 
-const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = (error) => reject(error)
-    })
-
 const FormInfoRoom = () => {
     const [fileList, setFileList] = useState([])
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
+    const [isShowMaps, setIsShowMaps] = useState(false)
 
     // image upload
     const handlePreview = async (file) => {
@@ -86,6 +82,14 @@ const FormInfoRoom = () => {
     // handle submit form
     const hanldeAddNewRoom = (values) => {
         console.log(values)
+    }
+
+    const showMaps = () => {
+        setIsShowMaps(true)
+    }
+
+    const handleClose = () => {
+        setIsShowMaps(false)
     }
 
     return (
@@ -122,7 +126,11 @@ const FormInfoRoom = () => {
                             },
                         ]}
                     >
-                        <Input placeholder='Nhập địa chỉ phòng trọ' />
+                        <Input
+                            placeholder='Nhập địa chỉ phòng trọ'
+                            readOnly
+                            onClick={showMaps}
+                        />
                     </Form.Item>
 
                     {/* số người trong phòng*/}
@@ -136,7 +144,7 @@ const FormInfoRoom = () => {
                             },
                         ]}
                     >
-                        <InputNumber defaultValue={null} />
+                        <InputNumber />
                     </Form.Item>
 
                     {/* Giá phòng */}
@@ -305,6 +313,16 @@ const FormInfoRoom = () => {
                     }}
                     src={previewImage}
                 />
+            )}
+
+            {isShowMaps && (
+                <div className='fixed top-0 left-0 h-full w-full flex items-center justify-center bg-opacity-55 bg-black z-20'>
+                    <CloseOutlined
+                        className='absolute top-10 right-10 text-2xl font-bold text-white cursor-pointer'
+                        onClick={handleClose}
+                    />
+                    <MapComponent />
+                </div>
             )}
         </>
     )
