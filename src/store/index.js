@@ -4,12 +4,16 @@ import authReducer from './slice/authSlice'
 import fileReducer from './slice/fileSlice'
 import mapsReducer from './slice/mapsSlice'
 import manageLandlordsReducer from './slice/admin/manageLandlords'
+import manageRoomsReducer from './slice/landlord/manageRooms'
+import amentitiesReducer from './slice/amentitiesSlice'
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         file: fileReducer,
         maps: mapsReducer,
+        amentities: amentitiesReducer,
         adminManageLandlords: manageLandlordsReducer,
+        landlordManageRooms: manageRoomsReducer,
     },
 })

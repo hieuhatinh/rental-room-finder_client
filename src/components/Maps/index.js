@@ -1,7 +1,7 @@
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { Button, Input, Spin } from 'antd'
+import { Input, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -11,7 +11,7 @@ import {
     fetchGetAddressFromSearchText,
 } from '../../store/actions/mapsAction'
 import { selectMaps } from '../../store/selector/mapsSelector'
-import { LoadingOutlined } from '@ant-design/icons'
+import { CloseCircleFilled, LoadingOutlined } from '@ant-design/icons'
 import { selectPosition } from '../../store/slice/mapsSlice'
 
 const icon = L.icon({
@@ -46,8 +46,8 @@ const MapComponent = () => {
     const [showListAddress, setShowListAddress] = useState(false)
     const inputRef = useRef(null)
     const [latLng, setLatLng] = useState({
-        lat: 21.0283334,
-        lng: 105.854041,
+        lat: mapsState?.selectionAddress?.lat ?? 21.0283334,
+        lng: mapsState?.selectionAddress?.lon ?? 105.854041,
     })
 
     const handleChangeSearch = (e) => {
@@ -56,6 +56,10 @@ const MapComponent = () => {
 
     const handleSearchAddress = () => {
         dispatch(fetchGetAddressFromSearchText({ searchText }))
+    }
+
+    const handleClearSearchText = () => {
+        setSearchText('')
     }
 
     // chọn địa điểm khi search text hiển thị kết quả
@@ -75,6 +79,10 @@ const MapComponent = () => {
             dispatch(fetchGetAddressFromCoordinates({ ...latLng }))
         }
     }, [latLng])
+
+    useEffect(() => {
+        setSearchText(mapsState?.selectionAddress?.display_name)
+    }, [mapsState?.selectionAddress])
 
     // show list address khi focus vào ô input
     const handleShowListAddress = () => {
@@ -107,14 +115,19 @@ const MapComponent = () => {
                 onFocus={handleShowListAddress}
             >
                 <div className='flex items-start justify-start m-2 gap-2 h-[40px]'>
-                    <Input
+                    <Input.Search
                         placeholder='enter address'
                         value={searchText}
                         onChange={handleChangeSearch}
+                        onSearch={handleSearchAddress}
+                        enterButton='Search'
+                        suffix={
+                            <CloseCircleFilled
+                                className='text-gray-400 text-base'
+                                onClick={handleClearSearchText}
+                            />
+                        }
                     />
-                    <Button onClick={handleSearchAddress} type='primary'>
-                        Search
-                    </Button>
                 </div>
 
                 <div className='absolute top-[40px] left-0 w-full rounded-md bg-white max-h-[200px] z-30 overflow-auto'>

@@ -4,40 +4,49 @@ import {
     Image,
     Input,
     InputNumber,
-    Modal,
+    message,
     Select,
     Tag,
     Upload,
 } from 'antd'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { getBase64 } from '../utils/readFile/image'
 import MapComponent from './Maps'
+import { selectMaps } from '../store/selector/mapsSelector'
+import { fetchLandlordAddRoom } from '../store/actions/landlord/manageRoomsAction'
+import { fetchGetAmentities } from '../store/actions/amentitiesAction'
+import { selectAmentities } from '../store/selector/amentitiesSelector'
+import { selectLandlordRoomState } from '../store/selector/roomSelector'
+import { reStateMessage } from '../store/slice/landlord/manageRooms'
 
-const options = [
-    {
-        value: 'gold',
-    },
-    {
-        value: 'lime',
-    },
-    {
-        value: 'green',
-    },
-    {
-        value: 'cyan',
-    },
+const colorsOfTag = [
+    'gold',
+    'lime',
+    'green',
+    'cyan',
+    '#c4b5fd',
+    '#fca5a5',
+    '#fdba74',
+    '#fcd34d',
+    '#38bdf8',
+    '#f472b6',
 ]
+
 const tagRender = (props) => {
     const { label, value, closable, onClose } = props
     const onPreventMouseDown = (event) => {
         event.preventDefault()
         event.stopPropagation()
     }
+
+    let indexColor = value % colorsOfTag.length
+
     return (
         <Tag
-            color={value}
+            color={colorsOfTag[indexColor]}
             onMouseDown={onPreventMouseDown}
             closable={closable}
             onClose={onClose}
@@ -51,10 +60,22 @@ const tagRender = (props) => {
 }
 
 const FormInfoRoom = () => {
+    const dispatch = useDispatch()
+    const mapsState = useSelector(selectMaps)
+    const amentitiesState = useSelector(selectAmentities)
+    const manageRoomState = useSelector(selectLandlordRoomState)
+    const [form] = Form.useForm()
+    const [messageApi, contextHolder] = message.useMessage()
+
     const [fileList, setFileList] = useState([])
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
     const [isShowMaps, setIsShowMaps] = useState(false)
+
+    // get amentities
+    useEffect(() => {
+        dispatch(fetchGetAmentities())
+    }, [])
 
     // image upload
     const handlePreview = async (file) => {
@@ -79,11 +100,7 @@ const FormInfoRoom = () => {
         return value?.replace(/\$\s?|(,*)/g, '')
     }
 
-    // handle submit form
-    const hanldeAddNewRoom = (values) => {
-        console.log(values)
-    }
-
+    // maps
     const showMaps = () => {
         setIsShowMaps(true)
     }
@@ -91,6 +108,53 @@ const FormInfoRoom = () => {
     const handleClose = () => {
         setIsShowMaps(false)
     }
+
+    // cập nhật address khi address trong map thay đổi
+    useEffect(() => {
+        if (mapsState?.selectionAddress?.display_name) {
+            form.setFieldsValue({
+                address: mapsState?.selectionAddress?.display_name,
+            })
+        }
+    }, [mapsState?.selectionAddress, form])
+
+    // handle submit form
+    const hanldeAddNewRoom = (values) => {
+        dispatch(
+            fetchLandlordAddRoom({
+                ...values,
+                images: values.images.map((item) => item.originFileObj),
+                addressInfo: mapsState?.selectionAddress,
+            }),
+        )
+    }
+
+    // show message hiển thị thông báo
+    useEffect(() => {
+        if (manageRoomState.isSuccess || manageRoomState.isError) {
+            messageApi.open({
+                type: manageRoomState.isSuccess
+                    ? 'success'
+                    : manageRoomState.isError
+                    ? 'error'
+                    : 'info',
+                content: manageRoomState.message,
+            })
+            setTimeout(() => {
+                dispatch(reStateMessage())
+            }, 1000)
+        }
+        if (manageRoomState.isSuccess) {
+            form.resetFields()
+        }
+    }, [
+        manageRoomState.isSuccess,
+        manageRoomState.isError,
+        manageRoomState.message,
+        messageApi,
+        dispatch,
+        form,
+    ])
 
     return (
         <>
@@ -100,6 +164,7 @@ const FormInfoRoom = () => {
                     layout='vertical'
                     className='max-w-[600px] flex-1'
                     onFinish={hanldeAddNewRoom}
+                    form={form}
                 >
                     {/* tiêu đề bài viết */}
                     <Form.Item
@@ -149,7 +214,7 @@ const FormInfoRoom = () => {
 
                     {/* Giá phòng */}
                     <Form.Item
-                        label='Giá phòng'
+                        label='Giá phòng (triệu VNĐ/phòng)'
                         name='price'
                         rules={[
                             {
@@ -169,7 +234,7 @@ const FormInfoRoom = () => {
 
                     {/* Giá điện */}
                     <Form.Item
-                        label='Giá điện'
+                        label='Giá điện (nghìn VNĐ/Kwh)'
                         name='electricity_price'
                         rules={[
                             {
@@ -189,7 +254,7 @@ const FormInfoRoom = () => {
 
                     {/* Giá nước */}
                     <Form.Item
-                        label='Giá nước/người'
+                        label='Giá nước (nghìn VNĐ/người)'
                         name='water_price'
                         rules={[
                             {
@@ -236,7 +301,7 @@ const FormInfoRoom = () => {
                         <Select
                             mode='multiple'
                             tagRender={tagRender}
-                            options={options}
+                            options={amentitiesState?.amentities}
                         />
                     </Form.Item>
                     <Form.Item label='Mô tả phòng trọ' name='description'>
@@ -269,6 +334,7 @@ const FormInfoRoom = () => {
                             beforeUpload={(file) => {
                                 return false
                             }}
+                            multiple
                         >
                             <button
                                 style={{
@@ -294,6 +360,7 @@ const FormInfoRoom = () => {
                             type='primary'
                             htmlType='submit'
                             className='w-full h-10'
+                            loading={manageRoomState.isLoading}
                         >
                             Submit
                         </Button>
@@ -324,6 +391,8 @@ const FormInfoRoom = () => {
                     <MapComponent />
                 </div>
             )}
+
+            {contextHolder}
         </>
     )
 }
