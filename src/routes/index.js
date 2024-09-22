@@ -12,9 +12,11 @@ import ChatApp from '../pages/Chat'
 import MessagePage from '../pages/Chat/MessagePage'
 import HomeAdmin from '../pages/Admin/HomeAdmin'
 import Information from '../pages/Tenant/Information'
-import ManageLandlords from '../pages/Admin/ManageLandlords'
-import EditProfileLandlord from '../pages/Admin/EditProfileLandlord'
-import AddLandlord from '../pages/Admin/AddLandlord'
+import RoomApprovalsRequest from '../pages/Admin/MangeRooms/RoomApprovalsRequest'
+import DetailApprovalResquest from '../pages/Admin/MangeRooms/DetailApprovalRequest'
+import ManageLandlords from '../pages/Admin/ManageLandlords/ManageLandlords'
+import EditProfileLandlord from '../pages/Admin/ManageLandlords/EditProfileLandlord'
+import AddLandlord from '../pages/Admin/ManageLandlords/AddLandlord'
 
 const authRoutes = [
     {
@@ -97,6 +99,18 @@ const adminRoutes = [
     {
         component: AddLandlord,
         path: paths.admin.addLandlord,
+    },
+    {
+        component: RoomApprovalsRequest,
+        path: paths.admin.roomApprovalsRequest,
+    },
+    {
+        component: DetailApprovalResquest,
+        path: `${
+            paths.admin.detailApprovalRequest +
+            paths.admin.idLandlord +
+            paths.admin.idRoom
+        }`,
     },
 ]
 

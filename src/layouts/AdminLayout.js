@@ -1,15 +1,51 @@
-import { Layout, Menu, theme } from 'antd'
+import { Layout, Menu, notification, theme } from 'antd'
+import React, { useCallback } from 'react'
+import { useContext, useEffect } from 'react'
 
-import { menuItemsAdmin } from '../utils/menuItems'
+import { createMenuItemsAdmin } from '../utils/menuItems'
 import AdminHeader from '../components/Header/AdminHeader'
+import { SocketContext } from '../services/SocketProvider'
 
 import Logo from '../assets/images/logo.jpg'
+
 const { Footer, Sider, Content } = Layout
 
 function AdminLayout({ children }) {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
+
+    const socketConnection = useContext(SocketContext)
+    const [numberUnacceptedRooms, setNumberUnacceptRooms] = React.useState()
+
+    const [api, contextHolder] = notification.useNotification()
+    const openNotification = useCallback(
+        ({ placement, message, description }) => {
+            api.info({
+                message,
+                description,
+                placement,
+            })
+        },
+        [api],
+    )
+
+    useEffect(() => {
+        if (socketConnection) {
+            socketConnection.on('new-room-created', (data) => {
+                openNotification({
+                    placement: 'topRight',
+                    message: 'Yêu cầu tạo phòng',
+                    description: `Bạn có yêu cầu tạo phòng từ landlord ${data.userInfo.full_name}`,
+                })
+            })
+
+            socketConnection.emit('get-number-request')
+            socketConnection.on('number-request', (numberUnacceptedRooms) => {
+                setNumberUnacceptRooms(numberUnacceptedRooms)
+            })
+        }
+    }, [socketConnection, openNotification])
 
     return (
         <Layout hasSider>
@@ -26,7 +62,9 @@ function AdminLayout({ children }) {
                     theme='dark'
                     defaultSelectedKeys={[window.location.pathname]}
                     mode='inline'
-                    items={menuItemsAdmin}
+                    items={createMenuItemsAdmin({
+                        numberRequest: numberUnacceptedRooms,
+                    })}
                 />
             </Sider>
             <Layout className='ms-[280px]'>
@@ -56,6 +94,7 @@ function AdminLayout({ children }) {
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED
                 </Footer>
             </Layout>
+            {contextHolder}
         </Layout>
     )
 }

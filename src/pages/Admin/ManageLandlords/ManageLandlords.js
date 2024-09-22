@@ -16,18 +16,17 @@ import {
 } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import AdminLayout from '../../layouts/AdminLayout'
-import { paths } from '../../utils/pathsRoutes'
-import DetailInfo from '../../components/Admin/DetailInfo'
+import AdminLayout from '../../../layouts/AdminLayout'
+import { paths } from '../../../utils/pathsRoutes'
 import {
     fetchDeleteLandlord,
     fetchGetLandlords,
-} from '../../store/actions/admin/manageLandlords'
-import { selectManageLandlord } from '../../store/selector/adminSelector'
+} from '../../../store/actions/admin/manageLandlordsAction'
+import { selectManageLandlord } from '../../../store/selector/adminSelector'
+import { LIMIT } from '../../../constants'
+import DetailInfo from '../../../components/Admin/ManageLandlords/DetailInfo'
 
 const { confirm } = Modal
-
-const LIMIT = 10
 
 const ManageLandlords = () => {
     const dispatch = useDispatch()
@@ -43,7 +42,7 @@ const ManageLandlords = () => {
     // tạo url
     useEffect(() => {
         navigate(
-            `${paths.admin.manageLandlords}/?page=${
+            `${paths.admin.manageLandlords}?page=${
                 searchParams.get('page') ?? 1
             }&limit=${searchParams.get('limit') ?? LIMIT}`,
         )
@@ -161,7 +160,9 @@ const ManageLandlords = () => {
                     {dataLandlords?.items?.map((item, index) => (
                         <tr key={item.id_landlord}>
                             <td className='text-left py-3'>{index + 1}</td>
-                            <td className='text-left py-3'>{item.full_name}</td>
+                            <td className='text-left py-3'>
+                                {item?.full_name}
+                            </td>
                             <td className='text-left py-3'>
                                 {item.gender === 'male'
                                     ? 'Nam'
@@ -174,7 +175,7 @@ const ManageLandlords = () => {
                                 {item?.address_name}
                             </td>
                             <td className='text-left py-3'>
-                                {item.phone_number}
+                                {item?.phone_number}
                             </td>
                             <td className='text-left py-3'>
                                 <Space size='middle'>
@@ -186,7 +187,7 @@ const ManageLandlords = () => {
                                             className='text-xl text-green-400 cursor-pointer mr-2'
                                             onClick={() =>
                                                 handleClickEdit(
-                                                    item.id_landlord,
+                                                    item?.id_landlord,
                                                 )
                                             }
                                         />
@@ -196,7 +197,7 @@ const ManageLandlords = () => {
                                             className='text-xl text-red-600 cursor-pointer'
                                             onClick={() =>
                                                 showModelDelete(
-                                                    item.id_landlord,
+                                                    item?.id_landlord,
                                                 )
                                             }
                                         />
@@ -208,7 +209,7 @@ const ManageLandlords = () => {
                                         <ProfileOutlined
                                             className='text-xl text-orange-500 cursor-pointer'
                                             onClick={() =>
-                                                showModal(item.id_landlord)
+                                                showModal(item?.id_landlord)
                                             }
                                         />
                                     </Tooltip>
@@ -220,7 +221,7 @@ const ManageLandlords = () => {
             </table>
 
             <Pagination
-                defaultCurrent={dataLandlords.page}
+                defaultCurrent={searchParams.get('page')}
                 total={dataLandlords.totalItems}
                 className='flex items-center justify-center mt-10'
                 onChange={handlePageChange}

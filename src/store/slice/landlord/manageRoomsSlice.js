@@ -7,6 +7,7 @@ const initialState = {
     isSuccess: false,
     isError: false,
     message: null,
+    idNewRoom: null,
 }
 
 export const manageRoomsSlice = createSlice({
@@ -33,6 +34,7 @@ export const manageRoomsSlice = createSlice({
                 state.isError = false
                 state.isSuccess = true
                 state.message = action.payload.message
+                state.idNewRoom = action.payload.idNewRoom
             })
             .addCase(fetchLandlordAddRoom.rejected, (state, action) => {
                 state.isLoading = false

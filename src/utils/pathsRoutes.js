@@ -26,5 +26,8 @@ export const paths = {
         editProfileLandlord: '/admin/manage/edit-profile-lanlord',
         idLandlord: '/:id_landlord',
         addLandlord: '/admin/manage/add-landlord',
+        roomApprovalsRequest: '/admin/room-approvals',
+        detailApprovalRequest: '/admin/detail-approval-request',
+        idRoom: '/:id_room',
     },
 }

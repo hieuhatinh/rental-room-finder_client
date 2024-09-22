@@ -6,7 +6,7 @@ import {
     fetchGetInfoLandlord,
     fetchGetLandlords,
     fetchUpdateInfoLandlord,
-} from '../../actions/admin/manageLandlords'
+} from '../../actions/admin/manageLandlordsAction'
 
 const initialState = {
     isLoading: false,
@@ -18,7 +18,7 @@ const initialState = {
 }
 
 export const manageLandlordsSlice = createSlice({
-    name: 'adminManageLandlordsSlice',
+    name: 'adminManageLandlords',
     initialState,
     reducers: {},
     extraReducers: (builder) => {

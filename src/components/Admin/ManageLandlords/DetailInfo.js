@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { Avatar } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchGetInfoLandlord } from '../../store/actions/admin/manageLandlords'
-import { selectManageLandlord } from '../../store/selector/adminSelector'
+import { fetchGetInfoLandlord } from '../../../store/actions/admin/manageLandlordsAction'
+import { selectManageLandlord } from '../../../store/selector/adminSelector'
 
 const DetailInfo = ({ idLandlord }) => {
     const dispatch = useDispatch()
@@ -43,7 +43,9 @@ const DetailInfo = ({ idLandlord }) => {
 
                 <div>
                     <span className='font-medium mr-2'>Số điện thoại:</span>
-                    <span>{manageLandlordState.landlordInfo.phone_number}</span>
+                    <span>
+                        {manageLandlordState.landlordInfo?.phone_number}
+                    </span>
                 </div>
             </div>
         </div>

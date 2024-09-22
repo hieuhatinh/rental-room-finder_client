@@ -10,7 +10,7 @@ import {
     Upload,
 } from 'antd'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getBase64 } from '../utils/readFile/image'
@@ -19,8 +19,10 @@ import { selectMaps } from '../store/selector/mapsSelector'
 import { fetchLandlordAddRoom } from '../store/actions/landlord/manageRoomsAction'
 import { fetchGetAmentities } from '../store/actions/amentitiesAction'
 import { selectAmentities } from '../store/selector/amentitiesSelector'
-import { selectLandlordRoomState } from '../store/selector/roomSelector'
-import { reStateMessage } from '../store/slice/landlord/manageRooms'
+import { selectLandlordRoomState } from '../store/selector/landlordSelector'
+import { reStateMessage } from '../store/slice/landlord/manageRoomsSlice'
+import { SocketContext } from '../services/SocketProvider'
+import { selectAuth } from '../store/selector/authSelector'
 
 const colorsOfTag = [
     'gold',
@@ -64,6 +66,7 @@ const FormInfoRoom = () => {
     const mapsState = useSelector(selectMaps)
     const amentitiesState = useSelector(selectAmentities)
     const manageRoomState = useSelector(selectLandlordRoomState)
+    const authState = useSelector(selectAuth)
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -71,6 +74,8 @@ const FormInfoRoom = () => {
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
     const [isShowMaps, setIsShowMaps] = useState(false)
+
+    const socketConnection = useContext(SocketContext)
 
     // get amentities
     useEffect(() => {
@@ -131,29 +136,49 @@ const FormInfoRoom = () => {
 
     // show message hiển thị thông báo
     useEffect(() => {
-        if (manageRoomState.isSuccess || manageRoomState.isError) {
+        let timoutId
+        if (
+            socketConnection &&
+            manageRoomState.isSuccess &&
+            manageRoomState.idNewRoom &&
+            authState?.userInfo.role === 'landlord'
+        ) {
             messageApi.open({
-                type: manageRoomState.isSuccess
-                    ? 'success'
-                    : manageRoomState.isError
-                    ? 'error'
-                    : 'info',
+                type: 'success',
                 content: manageRoomState.message,
             })
-            setTimeout(() => {
+
+            socketConnection.emit('new-room-created', {
+                userInfo: authState?.userInfo,
+                idNewRoom: manageRoomState.idNewRoom,
+            })
+
+            form.resetFields()
+
+            timoutId = setTimeout(() => {
+                dispatch(reStateMessage())
+            }, 1000)
+        } else if (manageRoomState.isError) {
+            messageApi.open({
+                type: 'error',
+                content: manageRoomState.message,
+            })
+            timoutId = setTimeout(() => {
                 dispatch(reStateMessage())
             }, 1000)
         }
-        if (manageRoomState.isSuccess) {
-            form.resetFields()
-        }
+
+        return () => clearTimeout(timoutId)
     }, [
         manageRoomState.isSuccess,
+        manageRoomState.idNewRoom,
+        authState?.userInfo,
+        messageApi,
         manageRoomState.isError,
         manageRoomState.message,
-        messageApi,
         dispatch,
         form,
+        socketConnection,
     ])
 
     return (
