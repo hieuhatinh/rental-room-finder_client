@@ -5,8 +5,6 @@ import Register from '../pages/Auth/Register'
 import SearchResult from '../pages/Tenant/SearchResult'
 import HomeLandlord from '../pages/Landlord/HomeLanlord'
 import { paths } from '../utils/pathsRoutes'
-import RoomManagement from '../pages/Landlord/RoomManagement'
-import AddNewRoom from '../pages/Landlord/AddNewRoom'
 import GoogleSuccessLoading from '../pages/Loading/GoogleSuccessLoading'
 import ChatApp from '../pages/Chat'
 import MessagePage from '../pages/Chat/MessagePage'
@@ -17,6 +15,9 @@ import DetailApprovalResquest from '../pages/Admin/MangeRooms/DetailApprovalRequ
 import ManageLandlords from '../pages/Admin/ManageLandlords/ManageLandlords'
 import EditProfileLandlord from '../pages/Admin/ManageLandlords/EditProfileLandlord'
 import AddLandlord from '../pages/Admin/ManageLandlords/AddLandlord'
+import RoomManagement from '../pages/Landlord/ManageRooms/RoomManagement'
+import AddNewRoom from '../pages/Landlord/ManageRooms/AddNewRoom'
+import DetailRoomLandlord from '../pages/Landlord/ManageRooms/DetailRoomLandlord'
 
 const authRoutes = [
     {
@@ -67,6 +68,10 @@ const landlordRoutes = [
     {
         component: AddNewRoom,
         path: paths.landlord.addRoom,
+    },
+    {
+        component: DetailRoomLandlord,
+        path: `${paths.landlord.roomDetail + paths.landlord.idRoom}`,
     },
 ]
 

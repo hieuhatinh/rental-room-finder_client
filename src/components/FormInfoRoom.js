@@ -23,19 +23,7 @@ import { selectLandlordRoomState } from '../store/selector/landlordSelector'
 import { reStateMessage } from '../store/slice/landlord/manageRoomsSlice'
 import { SocketContext } from '../services/SocketProvider'
 import { selectAuth } from '../store/selector/authSelector'
-
-const colorsOfTag = [
-    'gold',
-    'lime',
-    'green',
-    'cyan',
-    '#c4b5fd',
-    '#fca5a5',
-    '#fdba74',
-    '#fcd34d',
-    '#38bdf8',
-    '#f472b6',
-]
+import { colorsOfTag } from '../constants'
 
 const tagRender = (props) => {
     const { label, value, closable, onClose } = props

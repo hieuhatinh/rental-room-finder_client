@@ -15,6 +15,8 @@ export const paths = {
         roomManagement: '/landlord/room-management',
         addRoom: '/landlord/add-room',
         editRoom: '/landlord/edit-room/:id',
+        idRoom: '/:id_room',
+        roomDetail: '/landlord/detail-room',
     },
     shared: {
         chatApp: '/chat-app',

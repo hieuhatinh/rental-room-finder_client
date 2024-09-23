@@ -28,8 +28,10 @@ const DetailApprovalResquest = () => {
     const socketConnection = useContext(SocketContext)
 
     useEffect(() => {
-        setLandlordInfo(adminRoomsState?.detailUnacceptRooms?.landlordInfo)
-        setRoomInfo(adminRoomsState?.detailUnacceptRooms?.roomInfo)
+        if (adminRoomsState?.detailUnacceptRooms) {
+            setLandlordInfo(adminRoomsState?.detailUnacceptRooms?.landlordInfo)
+            setRoomInfo(adminRoomsState?.detailUnacceptRooms?.roomInfo)
+        }
     }, [adminRoomsState?.detailUnacceptRooms])
 
     useEffect(() => {
