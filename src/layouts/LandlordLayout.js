@@ -1,15 +1,42 @@
-import { Layout, Menu, theme } from 'antd'
+import { Layout, Menu, notification, theme } from 'antd'
 
 import { menuItemsLandlord } from '../utils/menuItems'
 import PrimaryHeader from '../components/Header/PrimaryHeader'
 
 import Logo from '../assets/images/logo.jpg'
+import { useCallback, useContext, useEffect } from 'react'
+import { SocketContext } from '../services/SocketProvider'
 const { Footer, Sider, Content } = Layout
 
 function LandlordLayout({ children }) {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
+
+    const socketConnection = useContext(SocketContext)
+    const [api, contextHolder] = notification.useNotification()
+    const openNotification = useCallback(
+        ({ placement, message, description }) => {
+            api.success({
+                message,
+                description,
+                placement,
+            })
+        },
+        [api],
+    )
+
+    useEffect(() => {
+        if (socketConnection) {
+            socketConnection.on('accept-request', () => {
+                openNotification({
+                    placement: 'topRight',
+                    message: 'Yêu cầu tạo phòng đã được chấp nhận',
+                    description: `yêu cầu tạo phòng của bạn đã được chấp nhận`,
+                })
+            })
+        }
+    }, [socketConnection, openNotification])
 
     return (
         <Layout hasSider>
@@ -56,6 +83,8 @@ function LandlordLayout({ children }) {
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED
                 </Footer>
             </Layout>
+
+            {contextHolder}
         </Layout>
     )
 }

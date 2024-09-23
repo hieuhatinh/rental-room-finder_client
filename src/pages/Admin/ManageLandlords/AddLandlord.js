@@ -21,12 +21,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import AdminLayout from '../../layouts/AdminLayout'
-import { phoneNumberRegex } from '../../utils/validators'
-import { getBase64 } from '../../utils/readFile/image'
-import { paths } from '../../utils/pathsRoutes'
-import { fetchAddNewLandlord } from '../../store/actions/admin/manageLandlords'
-import { selectManageLandlord } from '../../store/selector/adminSelector'
+import AdminLayout from '../../../layouts/AdminLayout'
+import { phoneNumberRegex } from '../../../utils/validators'
+import { getBase64 } from '../../../utils/readFile/image'
+import { paths } from '../../../utils/pathsRoutes'
+import { fetchAddNewLandlord } from '../../../store/actions/admin/manageLandlordsAction'
+import { selectManageLandlord } from '../../../store/selector/adminSelector'
 
 const AddLandlord = () => {
     const navigate = useNavigate()

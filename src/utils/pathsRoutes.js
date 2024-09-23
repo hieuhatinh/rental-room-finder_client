@@ -15,6 +15,8 @@ export const paths = {
         roomManagement: '/landlord/room-management',
         addRoom: '/landlord/add-room',
         editRoom: '/landlord/edit-room/:id',
+        idRoom: '/:id_room',
+        roomDetail: '/landlord/detail-room',
     },
     shared: {
         chatApp: '/chat-app',
@@ -26,5 +28,8 @@ export const paths = {
         editProfileLandlord: '/admin/manage/edit-profile-lanlord',
         idLandlord: '/:id_landlord',
         addLandlord: '/admin/manage/add-landlord',
+        roomApprovalsRequest: '/admin/room-approvals',
+        detailApprovalRequest: '/admin/detail-approval-request',
+        idRoom: '/:id_room',
     },
 }

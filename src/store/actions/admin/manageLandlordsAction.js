@@ -5,7 +5,7 @@ import {
     apiGetInfoLandlord,
     apiGetLandlords,
     apiUpdateInfoLandlord,
-} from '../../../api/admin/manageLandlords'
+} from '../../../api/admin/manageLandlordsApi'
 
 const fetchAddNewLandlord = createAsyncThunk(
     'adminManageLandlords/fetchAddNewLandlord',

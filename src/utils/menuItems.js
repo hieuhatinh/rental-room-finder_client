@@ -6,6 +6,7 @@ import {
     LineChartOutlined,
     WechatOutlined,
 } from '@ant-design/icons'
+import { Badge } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { paths } from './pathsRoutes'
@@ -125,77 +126,84 @@ const menuItemsLandlord = [
     ]),
 ]
 
-const menuItemsAdmin = [
-    getItem(
-        <Link
-            to={paths.admin.homeAdmin}
-            className='text-current hover:text-current'
-        >
-            Trang chủ
-        </Link>,
-        paths.admin.homeAdmin,
-        <HomeOutlined />,
-    ),
-    getItem(
-        <Link
-            to={paths.landlord.homeLandlord}
-            className='text-current hover:text-current'
-        >
-            Thông báo
-        </Link>,
-        '2',
-        <BellOutlined />,
-    ),
-    getItem(
-        <Link
-            to={paths.landlord.homeLandlord}
-            className='text-current hover:text-current'
-        >
-            Yêu cầu phê duyệt
-        </Link>,
-        '3',
-        <AuditOutlined />,
-    ),
-    getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
+const createMenuItemsAdmin = ({ numberRequest }) => {
+    return [
         getItem(
             <Link
-                to={paths.admin.manageLandlords}
+                to={paths.admin.homeAdmin}
                 className='text-current hover:text-current'
             >
-                Quản lý thông tin chủ phòng
+                Trang chủ
             </Link>,
-            paths.admin.manageLandlords,
+            paths.admin.homeAdmin,
+            <HomeOutlined />,
         ),
         getItem(
             <Link
                 to={paths.landlord.homeLandlord}
                 className='text-current hover:text-current'
             >
-                Thông tin phòng
+                Thông báo
             </Link>,
-            '5',
-        ),
-    ]),
-    getItem('Thống kê', 'sub2', <LineChartOutlined />, [
-        getItem(
-            <Link
-                to={paths.landlord.homeLandlord}
-                className='text-current hover:text-current'
-            >
-                Doanh thu
-            </Link>,
-            '6',
+            '2',
+            <BellOutlined />,
         ),
         getItem(
             <Link
-                to={paths.landlord.homeLandlord}
-                className='text-current hover:text-current'
+                to={paths.admin.roomApprovalsRequest}
+                className='text-current hover:text-current '
             >
-                Phòng trọ
+                Yêu cầu phê duyệt
+                <Badge
+                    count={numberRequest}
+                    size='small'
+                    className='text-[#FFFFFFA6] relative -top-2 -right-2'
+                />
             </Link>,
-            '7',
+            paths.admin.roomApprovalsRequest,
+            <AuditOutlined />,
         ),
-    ]),
-]
+        getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
+            getItem(
+                <Link
+                    to={paths.admin.manageLandlords}
+                    className='text-current hover:text-current'
+                >
+                    Quản lý thông tin chủ phòng
+                </Link>,
+                paths.admin.manageLandlords,
+            ),
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Thông tin phòng
+                </Link>,
+                '5',
+            ),
+        ]),
+        getItem('Thống kê', 'sub2', <LineChartOutlined />, [
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Doanh thu
+                </Link>,
+                '6',
+            ),
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Phòng trọ
+                </Link>,
+                '7',
+            ),
+        ]),
+    ]
+}
 
-export { menuItemsTenant, menuItemsLandlord, menuItemsAdmin }
+export { menuItemsTenant, menuItemsLandlord, createMenuItemsAdmin }

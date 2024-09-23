@@ -1,3 +1,5 @@
 const selectManageLandlord = (state) => state.adminManageLandlords
 
-export { selectManageLandlord }
+const adminSelectRoomsManage = (state) => state.adminManageRooms
+
+export { selectManageLandlord, adminSelectRoomsManage }

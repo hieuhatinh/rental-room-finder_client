@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Avatar, Button, DatePicker, Form, Input, message } from 'antd'
 import moment from 'moment'
 
-import AdminLayout from '../../layouts/AdminLayout'
-import { phoneNumberRegex } from '../../utils/validators'
-import { selectManageLandlord } from '../../store/selector/adminSelector'
+import AdminLayout from '../../../layouts/AdminLayout'
+import { phoneNumberRegex } from '../../../utils/validators'
+import { selectManageLandlord } from '../../../store/selector/adminSelector'
 import {
     fetchGetInfoLandlord,
     fetchUpdateInfoLandlord,
-} from '../../store/actions/admin/manageLandlords'
+} from '../../../store/actions/admin/manageLandlordsAction'
 
 const EditProfileLandlord = () => {
     const dispatch = useDispatch()

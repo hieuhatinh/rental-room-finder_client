@@ -14,7 +14,7 @@ const apiAddNewLandlord = async ({
         const url = await apiUploadSingleFile(profile_img)
 
         const newLandlord = await axiosClient.post(
-            '/admin/manage/add-landlord',
+            '/admin/manage/landlords/add-landlord',
             {
                 username,
                 password,
@@ -35,7 +35,7 @@ const apiAddNewLandlord = async ({
 const apiGetLandlords = async ({ page = 1, limit = 10 }) => {
     try {
         const result = await axiosClient.get(
-            `/admin/manage/get-landlords/${page}/${limit}`,
+            `/admin/manage/landlords/get-landlords?page=${page}&limit=${limit}`,
         )
 
         return result.data
@@ -47,7 +47,7 @@ const apiGetLandlords = async ({ page = 1, limit = 10 }) => {
 const apiGetInfoLandlord = async ({ idLandlord }) => {
     try {
         const result = await axiosClient.get(
-            `/admin/manage/get-landlord-by-id/${idLandlord}`,
+            `/admin/manage/landlords/get-landlord-by-id/${idLandlord}`,
         )
 
         return result.data
@@ -65,7 +65,7 @@ const apiUpdateInfoLandlord = async ({
 }) => {
     try {
         const result = await axiosClient.put(
-            `/admin/manage/update-info-landlord/${idLandlord}`,
+            `/admin/manage/landlords/update-info-landlord/${idLandlord}`,
             {
                 full_name,
                 address_name,
@@ -83,7 +83,7 @@ const apiUpdateInfoLandlord = async ({
 const apiDeleteLandlord = async ({ idLandlord }) => {
     try {
         const result = await axiosClient.delete(
-            `/admin/manage/delete-landlord/${idLandlord}`,
+            `/admin/manage/landlords/delete-landlord/${idLandlord}`,
         )
 
         return result.data
