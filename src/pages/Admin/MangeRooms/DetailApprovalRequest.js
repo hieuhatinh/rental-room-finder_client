@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
-import { Avatar, Button, Carousel, message, Result, Tag } from 'antd'
+import { Avatar, Button, Carousel, message, Result, Spin, Tag } from 'antd'
 
 import AdminLayout from '../../../layouts/AdminLayout'
 import {
@@ -13,15 +13,13 @@ import { formattedDate, convertToVnd } from '../../../utils/convertValue'
 import { paths } from '../../../utils/pathsRoutes'
 import { reState } from '../../../store/slice/admin/manageRoomsSlice'
 import { SocketContext } from '../../../services/SocketProvider'
-import { selectAuth } from '../../../store/selector/authSelector'
-import roles from '../../../utils/roles'
 
 const DetailApprovalResquest = () => {
     const dispatch = useDispatch()
     const adminRoomsState = useSelector(adminSelectRoomsManage)
-    const authState = useSelector(selectAuth)
     const { id_landlord, id_room } = useParams()
     const [messageApi, contextHolder] = message.useMessage()
+    const navigate = useNavigate()
 
     const [landlordInfo, setLandlordInfo] = useState()
     const [roomInfo, setRoomInfo] = useState()
@@ -42,52 +40,37 @@ const DetailApprovalResquest = () => {
     // chấp nhận yêu cầu
     const handleAcceptRequest = () => {
         dispatch(fetchAcceptRequest({ id_landlord, id_room }))
+            .then(() => {
+                messageApi.open({
+                    type: 'success',
+                    content: adminRoomsState.message,
+                })
+
+                socketConnection.emit('accept-request')
+
+                setTimeout(() => {
+                    dispatch(reState())
+                    navigate(paths.admin.roomApprovalsRequest)
+                }, 1000)
+            })
+            .catch((error) => {
+                messageApi.open({
+                    type: 'error',
+                    content: adminRoomsState.message,
+                })
+                setTimeout(() => {
+                    dispatch(reState())
+                }, 1000)
+            })
     }
-
-    // hiển thị thông báo
-    useEffect(() => {
-        let timoutId
-        if (
-            socketConnection &&
-            adminRoomsState?.isSuccess &&
-            adminRoomsState.infoAcceptRoom?.is_accept &&
-            authState?.userInfo?.role === roles.admin
-        ) {
-            messageApi.open({
-                type: 'success',
-                content: adminRoomsState.message,
-            })
-
-            socketConnection.emit('accept-request')
-
-            timoutId = setTimeout(() => {
-                dispatch(reState())
-            }, 1000)
-        } else if (adminRoomsState.isError) {
-            messageApi.open({
-                type: 'error',
-                content: adminRoomsState.message,
-            })
-            timoutId = setTimeout(() => {
-                dispatch(reState())
-            }, 1000)
-        }
-
-        return () => clearTimeout(timoutId)
-    }, [
-        adminRoomsState.isSuccess,
-        adminRoomsState.isError,
-        adminRoomsState.message,
-        adminRoomsState.infoAcceptRoom,
-        authState?.userInfo.role,
-        socketConnection,
-        messageApi,
-        dispatch,
-    ])
 
     return (
         <AdminLayout>
-            {!!landlordInfo && !!roomInfo ? (
+            {adminRoomsState?.isLoading ? (
+                <div className='flex items-center justify-center'>
+                    <Spin />
+                </div>
+            ) : !!landlordInfo && !!roomInfo ? (
                 <>
                     <div className='flex items-center justify-between'>
                         <h1 className='text-xl font-semibold'>

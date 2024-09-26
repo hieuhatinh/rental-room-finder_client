@@ -7,6 +7,7 @@ import manageLandlordsReducer from './slice/admin/manageLandlordsSlice'
 import landlordManageRoomsReducer from './slice/landlord/manageRoomsSlice'
 import amentitiesReducer from './slice/amentitiesSlice'
 import adminManageRoomsReducer from './slice/admin/manageRoomsSlice'
+import roomsTenantReducer from './slice/tenant/roomsSlice'
 
 export const store = configureStore({
     reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
         landlordManageRooms: landlordManageRoomsReducer,
         adminManageLandlords: manageLandlordsReducer,
         adminManageRooms: adminManageRoomsReducer,
+        roomsTenant: roomsTenantReducer,
     },
 })

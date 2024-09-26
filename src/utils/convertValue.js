@@ -11,4 +11,8 @@ const convertToVnd = (number) => {
     return formatter.format(number)
 }
 
-export { formattedDate, convertToVnd }
+const convertToKilometers = (meters) => {
+    return (meters / 1000).toFixed(3)
+}
+
+export { formattedDate, convertToVnd, convertToKilometers }

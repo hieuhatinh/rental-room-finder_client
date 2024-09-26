@@ -18,6 +18,7 @@ const fetchAddNewLandlord = createAsyncThunk(
             profile_img,
             birth_date,
             phone_number,
+            address,
         },
         { rejectWithValue },
     ) => {
@@ -30,6 +31,7 @@ const fetchAddNewLandlord = createAsyncThunk(
                 profile_img,
                 birth_date,
                 phone_number,
+                address,
             })
 
             return newLandlord

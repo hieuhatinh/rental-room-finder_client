@@ -121,54 +121,33 @@ const FormInfoRoom = () => {
                 addressInfo: mapsState?.selectionAddress,
             }),
         )
+            .then((result) => {
+                messageApi.open({
+                    type: 'success',
+                    content: result.payload.message,
+                })
+
+                socketConnection.emit('new-room-created', {
+                    userInfo: authState?.userInfo,
+                    idNewRoom: result.payload.idNewRoom,
+                })
+
+                form.resetFields()
+
+                setTimeout(() => {
+                    dispatch(reStateMessage())
+                }, 1000)
+            })
+            .catch((error) => {
+                messageApi.open({
+                    type: 'error',
+                    content: error.payload.message,
+                })
+                setTimeout(() => {
+                    dispatch(reStateMessage())
+                }, 1000)
+            })
     }
-
-    // show message hiển thị thông báo
-    useEffect(() => {
-        let timoutId
-        if (
-            socketConnection &&
-            manageRoomState.isSuccess &&
-            manageRoomState.idNewRoom &&
-            authState?.userInfo.role === roles.landlord
-        ) {
-            messageApi.open({
-                type: 'success',
-                content: manageRoomState.message,
-            })
-
-            socketConnection.emit('new-room-created', {
-                userInfo: authState?.userInfo,
-                idNewRoom: manageRoomState.idNewRoom,
-            })
-
-            form.resetFields()
-
-            timoutId = setTimeout(() => {
-                dispatch(reStateMessage())
-            }, 1000)
-        } else if (manageRoomState.isError) {
-            messageApi.open({
-                type: 'error',
-                content: manageRoomState.message,
-            })
-            timoutId = setTimeout(() => {
-                dispatch(reStateMessage())
-            }, 1000)
-        }
-
-        return () => clearTimeout(timoutId)
-    }, [
-        manageRoomState.isSuccess,
-        manageRoomState.idNewRoom,
-        authState?.userInfo,
-        messageApi,
-        manageRoomState.isError,
-        manageRoomState.message,
-        dispatch,
-        form,
-        socketConnection,
-    ])
 
     return (
         <>
@@ -223,7 +202,7 @@ const FormInfoRoom = () => {
                             },
                         ]}
                     >
-                        <InputNumber />
+                        <InputNumber min={1} />
                     </Form.Item>
 
                     {/* Giá phòng */}
