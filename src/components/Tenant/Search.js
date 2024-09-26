@@ -1,7 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons'
 import { Flex, Form, Input } from 'antd'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import MapComponent from '../Maps'
@@ -9,8 +9,10 @@ import { selectMaps } from '../../store/selector/mapsSelector'
 import { selectRoomsTenant } from '../../store/selector/tenantSelector'
 import { paths } from '../../utils/pathsRoutes'
 import { LIMIT } from '../../constants'
+import { fetchSearchRooms } from '../../store/actions/tenant/roomsAction'
 
 const Search = () => {
+    const dispatch = useDispatch()
     const mapsState = useSelector(selectMaps)
     const roomsTenantState = useSelector(selectRoomsTenant)
     const [form] = Form.useForm()
@@ -38,14 +40,21 @@ const Search = () => {
 
     // handle search rooms
     const handleSearch = () => {
-        // dispatch(
-        //     fetchSearchRooms({ locationInfo: mapsState?.selectionAddress }),
-        // ).then((response) => navigate(`${paths.tenant.searchResult}`))
-        navigate(
-            `${paths.tenant.searchResult}?address_name=${mapsState?.selectionAddress?.display_name}
+        dispatch(
+            fetchSearchRooms({
+                display_name: mapsState?.selectionAddress?.display_name,
+                lat: mapsState?.selectionAddress?.lat,
+                lon: mapsState?.selectionAddress?.lon,
+                page: 1,
+                limit: LIMIT,
+            }),
+        ).then((response) =>
+            navigate(
+                `${paths.tenant.searchResult}?address_name=${mapsState?.selectionAddress?.display_name}
                 &lat=${mapsState?.selectionAddress?.lat}
                 &lon=${mapsState?.selectionAddress?.lon}
                 &page=1&limit=${LIMIT}`,
+            ),
         )
     }
 

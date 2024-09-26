@@ -41,13 +41,13 @@ const SearchResult = () => {
                 limit,
             }),
         )
-    }, [searchParams, dispatch, displayName, lat, lon, page, limit])
+    }, [displayName, lat, lon, page, limit, dispatch])
 
     const handlePageChange = (newPage, newLimit) => {
         navigate(
             `${paths.tenant.searchResult}?address_name=${displayName}
-                &lat=${lat}&lon=${lon}
-                &page=${newPage}&limit=${newLimit}`,
+                    &lat=${lat}&lon=${lon}
+                    &page=${newPage}&limit=${newLimit}`,
         )
     }
 
@@ -84,7 +84,10 @@ const SearchResult = () => {
                                 }
                                 total={
                                     roomsTenantState?.searchRoomsResult
-                                        ?.totalPages
+                                        ?.totalItems
+                                }
+                                defaultPageSize={
+                                    roomsTenantState?.searchRoomsResult?.limit
                                 }
                                 showSizeChanger={false}
                                 onChange={handlePageChange}
