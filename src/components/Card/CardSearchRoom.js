@@ -1,7 +1,7 @@
 import { MessageOutlined, PhoneOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { Rate, Tag, Tooltip } from 'antd'
-import { generatePath, Link, useNavigate } from 'react-router-dom'
+import { generatePath, useNavigate } from 'react-router-dom'
 
 import { convertToKilometers, convertToVnd } from '../../utils/convertValue'
 import { paths } from '../../utils/pathsRoutes'
@@ -21,6 +21,13 @@ const CardSearchRoom = ({ room }) => {
 
     const handleNavigate = () => {
         navigate(pathToDetailRoom)
+    }
+
+    const handleClickChat = (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+
+        navigate(pathToChat)
     }
 
     return (
@@ -72,13 +79,19 @@ const CardSearchRoom = ({ room }) => {
                                 <PhoneOutlined />
                                 <span>{room?.phone_number}</span>
                             </div>
-                            <Link
-                                to={pathToChat}
-                                className='flex items-center gap-2'
+                            <div
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.title = pathToChat)
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.title = '')
+                                }
+                                onClick={handleClickChat}
+                                className='flex gap-1 text-sky-500'
                             >
                                 <MessageOutlined />
                                 <span>Chat với chủ</span>
-                            </Link>
+                            </div>
                             <Rate allowHalf defaultValue={2.5} disabled />
                         </div>
                     </div>
