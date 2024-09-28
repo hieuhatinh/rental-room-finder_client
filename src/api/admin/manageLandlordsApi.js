@@ -9,6 +9,7 @@ const apiAddNewLandlord = async ({
     profile_img,
     birth_date,
     phone_number,
+    address,
 }) => {
     try {
         const url = await apiUploadSingleFile(profile_img)
@@ -23,6 +24,7 @@ const apiAddNewLandlord = async ({
                 profile_img: url,
                 birth_date,
                 phone_number,
+                address,
             },
         )
 

@@ -58,7 +58,7 @@ const MessagePage = () => {
 
                     <div className='flex flex-col items-start ml-4'>
                         <h3 className='font-semibold text-lg'>
-                            {dataUser?.username || dataUser?.full_name}
+                            {dataUser?.full_name || dataUser?.username}
                         </h3>
                         {isReceiverOnline ? (
                             <span className='text-sm text-blue-400'>
