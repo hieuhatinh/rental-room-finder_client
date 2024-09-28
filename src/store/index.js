@@ -8,6 +8,7 @@ import landlordManageRoomsReducer from './slice/landlord/manageRoomsSlice'
 import amentitiesReducer from './slice/amentitiesSlice'
 import adminManageRoomsReducer from './slice/admin/manageRoomsSlice'
 import roomsTenantReducer from './slice/tenant/roomsSlice'
+import filterSearchReducer from './slice/tenant/filterSearchSlice'
 
 export const store = configureStore({
     reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
         adminManageLandlords: manageLandlordsReducer,
         adminManageRooms: adminManageRoomsReducer,
         roomsTenant: roomsTenantReducer,
+        filterSearch: filterSearchReducer,
     },
 })

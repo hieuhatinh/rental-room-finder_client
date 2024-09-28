@@ -1,3 +1,5 @@
 const selectRoomsTenant = (state) => state.roomsTenant
 
-export { selectRoomsTenant }
+const selectFilterSearch = (state) => state.filterSearch
+
+export { selectRoomsTenant, selectFilterSearch }

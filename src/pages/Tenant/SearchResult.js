@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react'
-import { Pagination, Spin } from 'antd'
+import { Button, Modal, Pagination, Spin } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { FilterFilled, LoadingOutlined } from '@ant-design/icons'
 
 import CardSearchRoom from '../../components/Card/CardSearchRoom'
 import DefaultLayout from '../../layouts/DefaultLayout'
-import { selectRoomsTenant } from '../../store/selector/tenantSelector'
+import {
+    selectFilterSearch,
+    selectRoomsTenant,
+} from '../../store/selector/tenantSelector'
 import { fetchSearchRooms } from '../../store/actions/tenant/roomsAction'
 import { paths } from '../../utils/pathsRoutes'
-import { LoadingOutlined } from '@ant-design/icons'
+import Filter from '../../components/Tenant/Filter'
+import { fetchGetAmentities } from '../../store/actions/amentitiesAction'
+import { selectAmentities } from '../../store/selector/amentitiesSelector'
 
 const SearchResult = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const amentitiesState = useSelector(selectAmentities)
     const roomsTenantState = useSelector(selectRoomsTenant)
+    const filterSearchState = useSelector(selectFilterSearch)
     const [searchParams] = useSearchParams()
     const [displayName, setDisplayName] = useState(
         searchParams.get('address_name'),
@@ -22,7 +30,9 @@ const SearchResult = () => {
     const [lon, setLon] = useState(searchParams.get('lon'))
     const [page, setPage] = useState(searchParams.get('page'))
     const [limit, setLimit] = useState(searchParams.get('limit'))
+    const [open, setOpen] = useState(false) // open model filter
 
+    // get query on url
     useEffect(() => {
         setDisplayName(searchParams.get('address_name'))
         setLat(searchParams.get('lat'))
@@ -31,6 +41,7 @@ const SearchResult = () => {
         setLimit(searchParams.get('limit'))
     }, [searchParams])
 
+    // search rooms
     useEffect(() => {
         dispatch(
             fetchSearchRooms({
@@ -51,6 +62,30 @@ const SearchResult = () => {
         )
     }
 
+    // handle filter
+    const showModelFilter = () => {
+        setOpen(true)
+        dispatch(fetchGetAmentities())
+    }
+
+    const handleCancel = () => setOpen(false)
+
+    const handleFilter = () => {
+        dispatch(
+            fetchSearchRooms({
+                display_name: displayName,
+                lat,
+                lon,
+                page,
+                limit,
+                amentities: filterSearchState?.amentities,
+                roomPrice: filterSearchState?.roomPrice,
+                waterPrice: filterSearchState?.waterPrice,
+                electricityPrice: filterSearchState?.electricityPrice,
+            }),
+        ).then(() => handleCancel())
+    }
+
     return (
         <DefaultLayout>
             {roomsTenantState?.isLoading ? (
@@ -59,13 +94,29 @@ const SearchResult = () => {
                 </div>
             ) : (
                 <>
-                    <h1 className='font-medium text-lg'>
-                        Kết quả tìm kiếm nhà trọ quanh khu vực {displayName}
-                    </h1>
-                    <span className='text-sm italic text-gray-400'>
-                        ({roomsTenantState?.searchRoomsResult?.totalItems} kết
-                        quả tìm kiếm)
-                    </span>
+                    <div className='flex items-start gap-10'>
+                        <div>
+                            <h1 className='font-medium text-lg'>
+                                Kết quả tìm kiếm nhà trọ quanh khu vực{' '}
+                                {displayName}
+                            </h1>
+                            <span className='text-sm italic text-gray-400'>
+                                (
+                                {
+                                    roomsTenantState?.searchRoomsResult
+                                        ?.totalItems
+                                }{' '}
+                                kết quả tìm kiếm)
+                            </span>
+                        </div>
+                        <Button
+                            type='primary'
+                            icon={<FilterFilled />}
+                            onClick={showModelFilter}
+                        >
+                            Lọc kết quả tìm kiếm
+                        </Button>
+                    </div>
                     {roomsTenantState?.searchRoomsResult?.items?.length > 0 ? (
                         <>
                             {roomsTenantState?.searchRoomsResult?.items?.map(
@@ -103,6 +154,25 @@ const SearchResult = () => {
                     )}
                 </>
             )}
+
+            <Modal
+                title={<p>Lọc kết quả tìm kiếm</p>}
+                loading={amentitiesState?.isLoading}
+                open={open}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key='cancel' onClick={handleCancel}>
+                        Cancel
+                    </Button>,
+                    <Button key='filter' type='primary' onClick={handleFilter}>
+                        Lọc
+                    </Button>,
+                ]}
+            >
+                {amentitiesState?.amentities && (
+                    <Filter amentities={amentitiesState?.amentities} />
+                )}
+            </Modal>
         </DefaultLayout>
     )
 }

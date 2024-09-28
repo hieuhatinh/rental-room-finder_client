@@ -17,7 +17,7 @@ import {
     LockOutlined,
     UserOutlined,
 } from '@ant-design/icons'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -60,25 +60,22 @@ const AddLandlord = () => {
                 birth_date: values.birth_date.format('YYYY-MM-DD'),
             }),
         )
-        form.resetFields()
-        setProfileImg()
-        form.setFieldsValue({ profile_img: null })
-    }
-
-    // hiển thị thông báo nếu thành công
-    useEffect(() => {
-        if (manageLandlordState.isSuccess || manageLandlordState.isError) {
-            messageApi.open({
-                type: manageLandlordState.isSuccess ? 'success' : 'error',
-                content: manageLandlordState.message,
+            .then(() => {
+                form.resetFields()
+                setProfileImg()
+                form.setFieldsValue({ profile_img: null })
+                messageApi.open({
+                    type: 'success',
+                    content: manageLandlordState.message,
+                })
             })
-        }
-    }, [
-        manageLandlordState.isSuccess,
-        manageLandlordState.isError,
-        messageApi,
-        manageLandlordState.message,
-    ])
+            .catch((error) =>
+                messageApi.open({
+                    type: 'error',
+                    content: manageLandlordState.message,
+                }),
+            )
+    }
 
     // xác nhận hủy thêm mới
     const showModal = () => {
@@ -210,7 +207,7 @@ const AddLandlord = () => {
                                     {
                                         pattern: phoneNumberRegex,
                                         message:
-                                            'Số điện thoại phải có 10 chữ số',
+                                            'Số điện thoại phải có 10 chữ số và là số Việt Nam',
                                     },
                                 ]}
                             >
@@ -239,6 +236,7 @@ const AddLandlord = () => {
                             </span>
                             <Form.Item
                                 name='username'
+                                hasFeedback
                                 rules={[
                                     {
                                         required: true,
@@ -253,6 +251,7 @@ const AddLandlord = () => {
                             </Form.Item>
                             <Form.Item
                                 name='password'
+                                hasFeedback
                                 rules={[
                                     {
                                         required: true,

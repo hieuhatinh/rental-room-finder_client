@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 const formattedDate = (date) => moment(date).format('DD-MM-YYYY HH:mm:ss')
+const formattedBirthDate = (date) => moment(date).format('DD-MM-YYYY')
 
 const convertToVnd = (number) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -15,4 +16,4 @@ const convertToKilometers = (meters) => {
     return (meters / 1000).toFixed(3)
 }
 
-export { formattedDate, convertToVnd, convertToKilometers }
+export { formattedDate, formattedBirthDate, convertToVnd, convertToKilometers }

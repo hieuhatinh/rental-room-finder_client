@@ -130,54 +130,61 @@ const ManageLandlords = () => {
                     </Link>
                 </Button>
             </div>
-            <table className='flex-1 w-full divide-y-2'>
+            <table className='w-full divide-y-2'>
                 <thead>
-                    <tr>
-                        <th className='font-medium flex-1 text-left py-2'>
+                    <tr className='grid grid-cols-12'>
+                        <th className='font-medium col-span-1 text-center py-2'>
                             No.
                         </th>
-                        <th className='font-medium flex-1 text-left py-2'>
+                        <th className='font-medium col-span-2 text-center py-2'>
                             Họ tên
                         </th>
-                        <th className='font-medium flex-1 text-left py-2'>
-                            Tuổi
-                        </th>
-                        <th className='font-medium flex-1 text-left py-2'>
+                        <th className='font-medium col-span-1 text-center py-2'>
                             Giới tính
                         </th>
-                        <th className='font-medium flex-1 text-left py-2'>
+                        <th className='font-medium col-span-1 text-center py-2'>
+                            Tuổi
+                        </th>
+                        <th className='font-medium col-span-3 text-center py-2'>
                             Địa chỉ
                         </th>
-                        <th className='font-medium flex-1 text-left py-2'>
+                        <th className='font-medium col-span-2 text-center py-2'>
                             Thông tin liên hệ
                         </th>
-                        <th className='font-medium flex-1 text-left py-2'>
+                        <th className='font-medium col-span-2 text-center py-2'>
                             Hành động
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     {dataLandlords?.items?.map((item, index) => (
-                        <tr key={item.id_landlord}>
-                            <td className='text-left py-3'>{index + 1}</td>
-                            <td className='text-left py-3'>
+                        <tr
+                            key={item.id_landlord}
+                            className='grid grid-cols-12'
+                        >
+                            <td className='col-span-1 text-center py-3'>
+                                {index + 1}
+                            </td>
+                            <td className='col-span-2 text-center py-3'>
                                 {item?.full_name}
                             </td>
-                            <td className='text-left py-3'>
+                            <td className='col-span-1 text-center py-3'>
                                 {item.gender === 'male'
                                     ? 'Nam'
                                     : item.gender === 'female'
                                     ? 'Nữ'
                                     : 'Khác'}
                             </td>
-                            <td className='text-left py-3'>{item?.age}</td>
-                            <td className='text-left py-3'>
+                            <td className='col-span-1 text-center py-3'>
+                                {item?.age}
+                            </td>
+                            <td className='col-span-3 text-left py-3'>
                                 {item?.address_name}
                             </td>
-                            <td className='text-left py-3'>
+                            <td className='col-span-2 text-center py-3'>
                                 {item?.phone_number}
                             </td>
-                            <td className='text-left py-3'>
+                            <td className='col-span-2 text-center py-3'>
                                 <Space size='middle'>
                                     <Tooltip
                                         placement='bottom'

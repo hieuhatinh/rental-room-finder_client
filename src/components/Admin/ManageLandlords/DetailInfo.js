@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchGetInfoLandlord } from '../../../store/actions/admin/manageLandlordsAction'
 import { selectManageLandlord } from '../../../store/selector/adminSelector'
+import { formattedBirthDate } from '../../../utils/convertValue'
 
 const DetailInfo = ({ idLandlord }) => {
     const dispatch = useDispatch()
@@ -36,9 +37,19 @@ const DetailInfo = ({ idLandlord }) => {
                     </span>
                 </div>
 
-                <div>
-                    <span className='font-medium mr-2'>Tuổi:</span>
-                    <span>{manageLandlordState.landlordInfo?.age}</span>
+                <div className='flex items-center gap-10'>
+                    <div>
+                        <span className='font-medium mr-2'>Ngày sinh:</span>
+                        <span>
+                            {formattedBirthDate(
+                                manageLandlordState.landlordInfo?.birth_date,
+                            )}
+                        </span>
+                    </div>
+                    <div>
+                        <span className='font-medium mr-2'>Tuổi:</span>
+                        <span>{manageLandlordState.landlordInfo?.age}</span>
+                    </div>
                 </div>
 
                 <div>

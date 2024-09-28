@@ -20,7 +20,20 @@ const fetchGetSomeRooms = createAsyncThunk(
 
 const fetchSearchRooms = createAsyncThunk(
     'roomsTenant/fetchSearchRooms',
-    async ({ display_name, lat, lon, page, limit }, { rejectWithValue }) => {
+    async (
+        {
+            display_name,
+            lat,
+            lon,
+            page,
+            limit,
+            amentities,
+            roomPrice,
+            waterPrice,
+            electricityPrice,
+        },
+        { rejectWithValue },
+    ) => {
         try {
             const result = await apiSearchRooms({
                 display_name,
@@ -28,6 +41,10 @@ const fetchSearchRooms = createAsyncThunk(
                 lon,
                 page,
                 limit,
+                amentities,
+                roomPrice,
+                waterPrice,
+                electricityPrice,
             })
 
             return result

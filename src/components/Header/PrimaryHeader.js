@@ -104,7 +104,9 @@ const PrimaryHeader = () => {
                                             }}
                                         >
                                             <Avatar
-                                                src={authState?.userInfo.avatar}
+                                                src={
+                                                    authState?.userInfo?.avatar
+                                                }
                                                 icon={
                                                     !authState.userInfo
                                                         .avatar && (

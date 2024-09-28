@@ -38,7 +38,7 @@ function AdminLayout({ children }) {
                     message: 'Yêu cầu tạo phòng',
                     description: `Bạn có yêu cầu tạo phòng từ landlord ${data.userInfo.full_name}`,
                 })
-                socketConnection.emit('get-number-request')
+                setNumberUnacceptRooms(data.numberUnacceptedRooms)
             })
             socketConnection.emit('get-number-request')
             socketConnection.on('number-request', (numberUnacceptedRooms) => {

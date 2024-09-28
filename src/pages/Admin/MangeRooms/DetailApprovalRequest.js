@@ -40,7 +40,7 @@ const DetailApprovalResquest = () => {
     // chấp nhận yêu cầu
     const handleAcceptRequest = () => {
         dispatch(fetchAcceptRequest({ id_landlord, id_room }))
-            .then(() => {
+            .then((result) => {
                 messageApi.open({
                     type: 'success',
                     content: adminRoomsState.message,
@@ -143,14 +143,14 @@ const DetailApprovalResquest = () => {
                                         className='w-[300px] flex justify-center items-center object-contain'
                                         arrowSize={24}
                                         fontSize={30}
-                                        adaptiveHeight
+                                        // adaptiveHeight
                                     >
                                         {roomInfo?.images?.map((url) => (
                                             <img
                                                 key={url}
                                                 src={url}
                                                 alt={url}
-                                                className='h-full w-full'
+                                                className='h-[400px] w-full'
                                             />
                                         ))}
                                     </Carousel>

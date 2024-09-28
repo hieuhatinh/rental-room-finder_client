@@ -133,6 +133,7 @@ const FormInfoRoom = () => {
                 })
 
                 form.resetFields()
+                dispatch(reStateMessage())
 
                 setTimeout(() => {
                     dispatch(reStateMessage())

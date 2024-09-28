@@ -19,26 +19,23 @@ const CardSearchRoom = ({ room }) => {
         }),
     )
 
-    const handleClickChat = (e) => {
-        e.stopPropagation()
-        e.preventDefault()
-
-        navigate(pathToChat)
+    const handleNavigate = () => {
+        navigate(pathToDetailRoom)
     }
 
     return (
         <Tooltip title='Bấm vào để xem chi tiết'>
-            <Link
-                to={pathToDetailRoom}
-                className='relative border my-2 flex gap-5 rounded-md shadow-lg p-3 text-current hover:text-current'
+            <div
+                className='relative grid grid-cols-12 my-3 border gap-5 rounded-md shadow-lg p-3 cursor-pointer text-current hover:text-current'
+                onClick={handleNavigate}
             >
                 <img
                     src={room?.image_url}
                     alt={room?.image_url}
-                    className='h-[200px] w-[200px] object-cover'
+                    className='h-full w-[250px] col-span-3 object-cover'
                 />
 
-                <div className='mt-3'>
+                <div className='mt-3 col-span-9'>
                     <p className='font-medium mb-3 line-clamp-2'>
                         {room?.title}
                     </p>
@@ -70,24 +67,18 @@ const CardSearchRoom = ({ room }) => {
                         <span className='font-semibold'>
                             Thông tin của chủ nhà
                         </span>
-                        <div className='flex gap-4 mt-2'>
+                        <div className='flex gap-7 mt-2'>
                             <div className='flex gap-2'>
                                 <PhoneOutlined />
                                 <span>{room?.phone_number}</span>
                             </div>
-                            <div
-                                onMouseEnter={(e) =>
-                                    (e.currentTarget.title = pathToChat)
-                                }
-                                onMouseLeave={(e) =>
-                                    (e.currentTarget.title = '')
-                                }
-                                onClick={handleClickChat}
-                                className='flex gap-1 text-sky-500'
+                            <Link
+                                to={pathToChat}
+                                className='flex items-center gap-2'
                             >
                                 <MessageOutlined />
                                 <span>Chat với chủ</span>
-                            </div>
+                            </Link>
                             <Rate allowHalf defaultValue={2.5} disabled />
                         </div>
                     </div>
@@ -100,7 +91,7 @@ const CardSearchRoom = ({ room }) => {
                     Cách địa điểm tìm kiếm {convertToKilometers(room?.distance)}{' '}
                     km
                 </Tag>
-            </Link>
+            </div>
         </Tooltip>
     )
 }
