@@ -58,7 +58,7 @@ const AvatarChatbotComp = (props) => {
 
 const chatbotConfig = {
     initialMessages: [
-        createChatBotMessage(`Chào bạn, bạn muốn tìm phòng trọ như thế nào?`),
+        createChatBotMessage(`Chào bạn, bạn muốn tìm phòng trọ ở đâu?`),
     ],
     botName: 'Roomie Bot',
     customComponents: {

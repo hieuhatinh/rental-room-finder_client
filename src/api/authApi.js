@@ -1,8 +1,9 @@
 import axiosClient from './axiosClient'
+import { apiUploadSingleFile } from './fileApi'
 
 const authApiLoginWithUsername = async ({ username, password }) => {
     try {
-        const userInfo = await axiosClient.post('/auth/login/tenant', {
+        const userInfo = await axiosClient.post('/auth/login', {
             username,
             password,
         })
@@ -60,10 +61,26 @@ const authApiLogout = async () => {
     }
 }
 
+const authApiUpdateInfomation = async ({ avatar, full_name }) => {
+    try {
+        const url = await apiUploadSingleFile(avatar)
+
+        const newUser = await axiosClient.put('/auth/update-info', {
+            avatar: url,
+            full_name,
+        })
+
+        return newUser.data
+    } catch (error) {
+        throw new Error(error.response.data.message)
+    }
+}
+
 export {
     authApiLoginWithUsername,
     authApiRegisterWithUsername,
     authApiLoginSuccess,
     authApiLoginSuccessGoogle,
     authApiLogout,
+    authApiUpdateInfomation,
 }

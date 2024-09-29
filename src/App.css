@@ -1,0 +1,35 @@
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    @apply bg-white;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full;
+}
+
+.slick-arrow.slick-prev::after,
+.slick-arrow.slick-next::after {
+    @apply font-bold;
+    @apply text-xl;
+    @apply absolute;
+    @apply top-2;
+}
+
+.slick-arrow.slick-prev::after {
+    @apply left-3;
+}
+.slick-arrow.slick-next::after {
+    @apply left-1;
+}
+
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+    @apply bg-black;
+    @apply p-2;
+    @apply rounded-full;
+    @apply h-7;
+    @apply w-7;
+}

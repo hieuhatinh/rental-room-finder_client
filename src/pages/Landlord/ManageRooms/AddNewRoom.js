@@ -1,5 +1,5 @@
-import LandlordLayout from '../../layouts/LandlordLayout'
-import FormInfoRoom from '../../components/FormInfoRoom'
+import LandlordLayout from '../../../layouts/LandlordLayout'
+import FormInfoRoom from '../../../components/FormInfoRoom'
 
 function AddNewRoom() {
     return (

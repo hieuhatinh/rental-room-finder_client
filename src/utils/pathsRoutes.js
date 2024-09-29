@@ -1,25 +1,35 @@
 export const paths = {
     login: '/login',
     register: '/register',
+    accessDenied: '/access-denied',
+    googleSuccess: '/auth/login/google/success',
+    loadingAuthorize: '/loading-authorize',
     tenant: {
         homeTenant: '/',
         searchResult: '/tenant/search-result',
         roomDetail: '/room-detail/:id',
+        tenantInfomation: '/tenant/infomation',
     },
     landlord: {
         homeLandlord: '/landlord/home',
         roomManagement: '/landlord/room-management',
         addRoom: '/landlord/add-room',
         editRoom: '/landlord/edit-room/:id',
+        idRoom: '/:id_room',
+        roomDetail: '/landlord/detail-room',
     },
-    accessDenied: '/access-denied',
-    googleSuccess: '/auth/login/google/success',
-}
-
-export const generatePath = (path, obj) => {
-    const entries = Object.entries(obj)
-    for (let [key, value] in entries) {
-        path = path.replace(`:${key}`, value)
-    }
-    return path
+    shared: {
+        chatApp: '/chat-app',
+        chatAppIdUser: ':id_user',
+    },
+    admin: {
+        homeAdmin: '/admin/home',
+        manageLandlords: '/admin/manage/landlords',
+        editProfileLandlord: '/admin/manage/edit-profile-lanlord',
+        idLandlord: '/:id_landlord',
+        addLandlord: '/admin/manage/add-landlord',
+        roomApprovalsRequest: '/admin/room-approvals',
+        detailApprovalRequest: '/admin/detail-approval-request',
+        idRoom: '/:id_room',
+    },
 }

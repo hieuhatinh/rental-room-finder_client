@@ -1,45 +1,35 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Spin } from 'antd'
 
 import DefaultLayout from '../../layouts/DefaultLayout'
 import CardRoom from '../../components/Card/CardRoom'
-import { selectAuth } from '../../store/selector/authSelector'
-import LoadingPage from '../Loading'
-import { useEffect } from 'react'
-import { fetchLoginSuccess } from '../../store/actions/authAction'
+import { fetchGetSomeRooms } from '../../store/actions/tenant/roomsAction'
+import { selectRoomsTenant } from '../../store/selector/tenantSelector'
+import { LoadingOutlined } from '@ant-design/icons'
 
 function HomeTenant() {
     const dispatch = useDispatch()
-    const authState = useSelector(selectAuth)
+    const roomsTenantState = useSelector(selectRoomsTenant)
 
     useEffect(() => {
-        if (
-            authState.isSuccess &&
-            !authState?.userInfo &&
-            authState.token &&
-            authState.isLoggedIn
-        ) {
-            dispatch(fetchLoginSuccess())
-        }
-    }, [
-        authState.isSuccess,
-        authState.userInfo,
-        authState.token,
-        authState.isLoggedIn,
-        dispatch,
-    ])
+        dispatch(fetchGetSomeRooms())
+    }, [])
 
-    return authState.isLoading ? (
-        <LoadingPage />
-    ) : (
+    return (
         <DefaultLayout>
-            <h1 className='text-lg font-semibold'>Phòng trọ đề xuất</h1>
-            <div className='grid grid-cols-4 gap-10 p-5 rounded-xl mt-2 bg-gradient-to-r from-teal-400 to-blue-500'>
-                <CardRoom />
-                <CardRoom />
-                <CardRoom />
-                <CardRoom />
-                <CardRoom />
-            </div>
+            {/* <h1 className='text-lg font-semibold'>Phòng trọ đề xuất</h1> */}
+            {roomsTenantState?.isLoading ? (
+                <div className='flex items-center justify-center'>
+                    <Spin indicator={<LoadingOutlined size={40} spin />} />
+                </div>
+            ) : (
+                <div className='grid grid-cols-4 gap-10 p-5 rounded-xl mt-2 bg-gradient-to-r from-teal-400 to-blue-500'>
+                    {roomsTenantState?.someRooms?.map((room) => (
+                        <CardRoom key={room.id_room} room={room} />
+                    ))}
+                </div>
+            )}
         </DefaultLayout>
     )
 }

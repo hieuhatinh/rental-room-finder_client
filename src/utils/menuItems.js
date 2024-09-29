@@ -1,13 +1,15 @@
 import {
     ApartmentOutlined,
+    AuditOutlined,
     BellOutlined,
     HomeOutlined,
     LineChartOutlined,
     WechatOutlined,
 } from '@ant-design/icons'
+import { Badge } from 'antd'
+import { Link } from 'react-router-dom'
 
 import { paths } from './pathsRoutes'
-import { Link } from 'react-router-dom'
 
 function getItem(label, key, icon, children) {
     return {
@@ -31,12 +33,12 @@ const menuItemsTenant = [
     ),
     getItem(
         <Link
-            to={paths.tenant.homeTenant}
+            to={paths.shared.chatApp}
             className='text-current hover:text-current'
         >
             Chat
         </Link>,
-        '2',
+        paths.shared.chatApp,
         <WechatOutlined />,
     ),
     getItem(
@@ -64,12 +66,12 @@ const menuItemsLandlord = [
     ),
     getItem(
         <Link
-            to={paths.landlord.homeLandlord}
+            to={paths.shared.chatApp}
             className='text-current hover:text-current'
         >
             Chat
         </Link>,
-        '2',
+        paths.shared.chatApp,
         <WechatOutlined />,
     ),
     getItem(
@@ -124,4 +126,84 @@ const menuItemsLandlord = [
     ]),
 ]
 
-export { menuItemsTenant, menuItemsLandlord }
+const createMenuItemsAdmin = ({ numberRequest }) => {
+    return [
+        getItem(
+            <Link
+                to={paths.admin.homeAdmin}
+                className='text-current hover:text-current'
+            >
+                Trang chủ
+            </Link>,
+            paths.admin.homeAdmin,
+            <HomeOutlined />,
+        ),
+        getItem(
+            <Link
+                to={paths.landlord.homeLandlord}
+                className='text-current hover:text-current'
+            >
+                Thông báo
+            </Link>,
+            '2',
+            <BellOutlined />,
+        ),
+        getItem(
+            <Link
+                to={paths.admin.roomApprovalsRequest}
+                className='text-current hover:text-current '
+            >
+                Yêu cầu phê duyệt
+                <Badge
+                    count={numberRequest}
+                    size='small'
+                    className='text-[#FFFFFFA6] relative -top-2 -right-2'
+                />
+            </Link>,
+            paths.admin.roomApprovalsRequest,
+            <AuditOutlined />,
+        ),
+        getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
+            getItem(
+                <Link
+                    to={paths.admin.manageLandlords}
+                    className='text-current hover:text-current'
+                >
+                    Quản lý thông tin chủ phòng
+                </Link>,
+                paths.admin.manageLandlords,
+            ),
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Thông tin phòng
+                </Link>,
+                '5',
+            ),
+        ]),
+        getItem('Thống kê', 'sub2', <LineChartOutlined />, [
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Doanh thu
+                </Link>,
+                '6',
+            ),
+            getItem(
+                <Link
+                    to={paths.landlord.homeLandlord}
+                    className='text-current hover:text-current'
+                >
+                    Phòng trọ
+                </Link>,
+                '7',
+            ),
+        ]),
+    ]
+}
+
+export { menuItemsTenant, menuItemsLandlord, createMenuItemsAdmin }
