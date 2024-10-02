@@ -42,12 +42,8 @@ function DefaultLayout({ children }) {
                     </div>
                 </Content>
 
-                <Footer
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                <Footer className='text-center font-semibold italic text-base'>
+                    Đồ án 2024 - Nguyễn Trung Hiếu - 0214366 - 66CS1 - HUCE
                 </Footer>
             </Layout>
 
