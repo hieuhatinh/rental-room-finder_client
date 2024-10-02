@@ -25,11 +25,20 @@ const CardRoom = ({ room }) => {
             to={generatePath(paths.tenant.roomDetail, { id: room?.id_room })}
             className='bg-white w-full shadow-lg p-4 rounded-2xl text-current hover:text-current items-center'
         >
-            <img
-                src={room?.image_url}
-                alt={room?.image_url}
-                className='h-[200px] w-full object-cover'
-            />
+            {room?.image_type === 'video' ? (
+                <video className='h-[200px] w-full object-cover'>
+                    <source src={room?.image_url} type='video/mp4' />
+                </video>
+            ) : room?.image_type === 'image' ? (
+                <img
+                    src={room?.image_url}
+                    alt={room?.image_url}
+                    className='h-[200px] w-full object-cover'
+                />
+            ) : (
+                <></>
+            )}
+
             <div className='mt-3'>
                 <p className='font-medium mb-3 line-clamp-2'>{room?.title}</p>
 

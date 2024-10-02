@@ -50,14 +50,29 @@ const DetailRoom = () => {
                             className='h-[450px] w-[450px]'
                         >
                             {roomsTenantState?.roomDetail?.imagesRoom.map(
-                                (image) => (
-                                    <img
-                                        key={image.id_image}
-                                        src={image.image_url}
-                                        alt={image.image_name}
-                                        className='h-[450px] w-[450px] object-cover'
-                                    />
-                                ),
+                                (item) => {
+                                    return item.image_type === 'image' ? (
+                                        <img
+                                            key={item.id_image}
+                                            src={item.image_url}
+                                            alt={item.image_name}
+                                            className='h-[400px] w-full'
+                                        />
+                                    ) : item.image_type === 'video' ? (
+                                        <video
+                                            key={item.id_image}
+                                            className='h-[400px] w-full object-cover'
+                                            controls
+                                        >
+                                            <source
+                                                src={item.image_url}
+                                                type='video/mp4'
+                                            />
+                                        </video>
+                                    ) : (
+                                        <></>
+                                    )
+                                },
                             )}
                         </Carousel>
 

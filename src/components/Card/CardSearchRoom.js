@@ -36,11 +36,19 @@ const CardSearchRoom = ({ room }) => {
                 className='relative grid grid-cols-12 my-3 border gap-5 rounded-md shadow-lg p-3 cursor-pointer text-current hover:text-current'
                 onClick={handleNavigate}
             >
-                <img
-                    src={room?.image_url}
-                    alt={room?.image_url}
-                    className='h-full w-[250px] col-span-3 object-cover'
-                />
+                {room?.image_type === 'video' ? (
+                    <video className='h-full w-[250px] col-span-3 object-cover'>
+                        <source src={room?.image_url} type='video/mp4' />
+                    </video>
+                ) : room?.image_type === 'image' ? (
+                    <img
+                        src={room?.image_url}
+                        alt={room?.image_url}
+                        className='h-full w-[250px] col-span-3 object-cover'
+                    />
+                ) : (
+                    <></>
+                )}
 
                 <div className='mt-3 col-span-9'>
                     <p className='font-medium mb-3 line-clamp-2'>

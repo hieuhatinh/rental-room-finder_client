@@ -145,14 +145,30 @@ const DetailApprovalResquest = () => {
                                         fontSize={30}
                                         // adaptiveHeight
                                     >
-                                        {roomInfo?.images?.map((url) => (
-                                            <img
-                                                key={url}
-                                                src={url}
-                                                alt={url}
-                                                className='h-[400px] w-full'
-                                            />
-                                        ))}
+                                        {roomInfo?.images?.map((item) => {
+                                            return item.image_type ===
+                                                'image' ? (
+                                                <img
+                                                    key={item.id_image}
+                                                    src={item.image_url}
+                                                    alt={item.image_name}
+                                                    className='h-[400px] w-full'
+                                                />
+                                            ) : item.image_type === 'video' ? (
+                                                <video
+                                                    key={item.id_image}
+                                                    className='h-[400px] w-full object-cover'
+                                                    controls
+                                                >
+                                                    <source
+                                                        src={item.image_url}
+                                                        type='video/mp4'
+                                                    />
+                                                </video>
+                                            ) : (
+                                                <></>
+                                            )
+                                        })}
                                     </Carousel>
                                     <div className='flex flex-col gap-3'>
                                         <p>
@@ -235,7 +251,25 @@ const DetailApprovalResquest = () => {
                 </Button> */}
                     </div>
                 </>
+            ) : adminRoomsState?.isError ? (
+                // Hiển thị lỗi
+                <Result
+                    status='error'
+                    title='Có lỗi xảy ra'
+                    subTitle={adminRoomsState?.message}
+                    extra={[
+                        <Button
+                            type='link'
+                            href={paths.admin.roomApprovalsRequest}
+                            className='bg-blue-500 text-white'
+                        >
+                            Về trang
+                            <span className='italic'>Yêu cầu phê duyệt</span>
+                        </Button>,
+                    ]}
+                />
             ) : (
+                // Thông báo nếu bài đã được chấp nhận
                 <Result
                     status='success'
                     title='Bài này đã được chấp nhận'
