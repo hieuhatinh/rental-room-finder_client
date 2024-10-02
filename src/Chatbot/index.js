@@ -34,6 +34,7 @@ const ChatbotUI = () => {
                     placement='topRight'
                     open
                     color='#fbbf24'
+                    zIndex={0}
                 >
                     <img
                         src={ChatbotAvatarConversation}

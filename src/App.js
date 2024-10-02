@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
@@ -12,7 +13,6 @@ import {
 import AccessDenied from './pages/Warning/AccessDenied'
 import ProtectAuthRoute from './pages/Protected/ProtectAuthRoute'
 import LoginRequired from './pages/Warning/LoginRequired'
-import { useSelector } from 'react-redux'
 import { selectAuth } from './store/selector/authSelector'
 import SocketProvider from './services/SocketProvider'
 import { getTokenFromCookies } from './utils/store/token'

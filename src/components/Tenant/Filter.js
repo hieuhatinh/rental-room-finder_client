@@ -1,46 +1,53 @@
 import { Checkbox, Col, InputNumber, Row, Slider } from 'antd'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import LessThanOrEqual from '../../assets/images/less-than-or-equal.png'
-import { setFilterPrameter } from '../../store/slice/tenant/filterSearchSlice'
+import {
+    setCapacity,
+    setElectricityPrice,
+    setRoomPrice,
+    setSelectedAmentities,
+    setWaterPrice,
+} from '../../store/slice/tenant/filterSearchSlice'
+import { selectFilterSearch } from '../../store/selector/tenantSelector'
 
-const Filter = ({ amentities }) => {
+const Filter = (props) => {
     const dispatch = useDispatch()
-    const [electricityPrice, setElectricityPrice] = useState()
-    const [roomPrice, setRoomPrice] = useState()
-    const [waterPrice, setWaterPrice] = useState()
-    const [amentitiesSelected, setAmentitiesSelected] = useState(amentities)
+    const { electricityPrice, roomPrice, waterPrice, amentities, capacity } =
+        useSelector(selectFilterSearch)
+
+    const onChangeCapacity = (newValue) => {
+        dispatch(setCapacity(newValue))
+    }
 
     const onChangeRoomPrice = (newValue) => {
-        setRoomPrice(newValue)
+        dispatch(setRoomPrice(newValue))
     }
 
     const onChangeWaterPrice = (newValue) => {
-        setWaterPrice(newValue)
+        dispatch(setWaterPrice(newValue))
     }
 
     const onChangeElectricityPrice = (newValue) => {
-        setElectricityPrice(newValue)
+        dispatch(setElectricityPrice(newValue))
     }
 
     const onChangeAmentities = (checkedValues) => {
-        setAmentitiesSelected(checkedValues)
+        dispatch(setSelectedAmentities(checkedValues))
     }
-
-    useEffect(() => {
-        dispatch(
-            setFilterPrameter({
-                electricityPrice,
-                roomPrice,
-                waterPrice,
-                amentities: amentitiesSelected,
-            }),
-        )
-    }, [electricityPrice, roomPrice, waterPrice, amentitiesSelected, dispatch])
 
     return (
         <div className='flex flex-col gap-3'>
+            <div>
+                <span className='font-semibold text-sm mb-2'>
+                    Số người trong phòng
+                </span>
+                <InputNumber
+                    className='mx-4'
+                    value={capacity}
+                    onChange={onChangeCapacity}
+                />
+            </div>
             <div>
                 <span className='font-semibold text-sm mb-2'>
                     Giá phòng (triệu/phòng)
@@ -111,13 +118,14 @@ const Filter = ({ amentities }) => {
                     onChange={onChangeWaterPrice}
                 />
             </div>
+
             <div className='flex flex-col'>
                 <span className='font-semibold text-sm mb-2'>
                     Các tiện ích trong phòng
                 </span>
                 <Checkbox.Group
-                    options={amentities}
-                    defaultValue={amentitiesSelected?.map((item) => item.value)}
+                    options={props.amentities}
+                    defaultValue={amentities}
                     onChange={onChangeAmentities}
                 />
             </div>

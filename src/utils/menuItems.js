@@ -140,7 +140,7 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
         ),
         getItem(
             <Link
-                to={paths.landlord.homeLandlord}
+                to={paths.admin.homeAdmin}
                 className='text-current hover:text-current'
             >
                 Thông báo
@@ -175,7 +175,7 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
             ),
             getItem(
                 <Link
-                    to={paths.landlord.homeLandlord}
+                    to={paths.admin.homeAdmin}
                     className='text-current hover:text-current'
                 >
                     Thông tin phòng
@@ -186,7 +186,7 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
         getItem('Thống kê', 'sub2', <LineChartOutlined />, [
             getItem(
                 <Link
-                    to={paths.landlord.homeLandlord}
+                    to={paths.admin.homeAdmin}
                     className='text-current hover:text-current'
                 >
                     Doanh thu
@@ -195,7 +195,7 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
             ),
             getItem(
                 <Link
-                    to={paths.landlord.homeLandlord}
+                    to={paths.admin.homeAdmin}
                     className='text-current hover:text-current'
                 >
                     Phòng trọ

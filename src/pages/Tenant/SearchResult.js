@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Modal, Pagination, Spin } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { FilterFilled, LoadingOutlined } from '@ant-design/icons'
 
 import CardSearchRoom from '../../components/Card/CardSearchRoom'
@@ -11,55 +11,52 @@ import {
     selectRoomsTenant,
 } from '../../store/selector/tenantSelector'
 import { fetchSearchRooms } from '../../store/actions/tenant/roomsAction'
-import { paths } from '../../utils/pathsRoutes'
 import Filter from '../../components/Tenant/Filter'
 import { fetchGetAmentities } from '../../store/actions/amentitiesAction'
 import { selectAmentities } from '../../store/selector/amentitiesSelector'
 
 const SearchResult = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const amentitiesState = useSelector(selectAmentities)
     const roomsTenantState = useSelector(selectRoomsTenant)
     const filterSearchState = useSelector(selectFilterSearch)
-    const [searchParams] = useSearchParams()
-    const [displayName, setDisplayName] = useState(
-        searchParams.get('address_name'),
-    )
-    const [lat, setLat] = useState(searchParams.get('lat'))
-    const [lon, setLon] = useState(searchParams.get('lon'))
-    const [page, setPage] = useState(searchParams.get('page'))
-    const [limit, setLimit] = useState(searchParams.get('limit'))
+    const { electricityPrice, roomPrice, waterPrice, amentities, capacity } =
+        useSelector(selectFilterSearch)
+    const [searchParams, setSearchParams] = useSearchParams()
     const [open, setOpen] = useState(false) // open model filter
-
-    // get query on url
-    useEffect(() => {
-        setDisplayName(searchParams.get('address_name'))
-        setLat(searchParams.get('lat'))
-        setLon(searchParams.get('lon'))
-        setPage(searchParams.get('page'))
-        setLimit(searchParams.get('limit'))
-    }, [searchParams])
 
     // search rooms
     useEffect(() => {
         dispatch(
             fetchSearchRooms({
-                display_name: displayName,
-                lat,
-                lon,
-                page,
-                limit,
+                display_name: searchParams.get('address_name'),
+                lat: searchParams.get('lat'),
+                lon: searchParams.get('lon'),
+                page: searchParams.get('page'),
+                limit: searchParams.get('limit'),
+                capacity: searchParams.get('capacity'),
+                radius: searchParams.get('radius'),
+                roomPrice: searchParams.get('roomPrice'),
+                amentities: searchParams.get('amentities'),
+                waterPrice: searchParams.get('waterPrice'),
+                electricityPrice: searchParams.get('electricityPrice'),
             }),
-        )
-    }, [displayName, lat, lon, page, limit, dispatch])
+        ).then(() => handleCancel())
+    }, [searchParams, dispatch])
 
+    // xử lý khi thay đổi page
     const handlePageChange = (newPage, newLimit) => {
-        navigate(
-            `${paths.tenant.searchResult}?address_name=${displayName}
-                    &lat=${lat}&lon=${lon}
-                    &page=${newPage}&limit=${newLimit}`,
-        )
+        // lưu lại params
+        const currentParams = {}
+        searchParams.forEach((value, key) => {
+            currentParams[key] = value
+        })
+
+        setSearchParams({
+            ...currentParams,
+            page: newPage,
+            limit: newLimit,
+        })
     }
 
     // handle filter
@@ -71,19 +68,32 @@ const SearchResult = () => {
     const handleCancel = () => setOpen(false)
 
     const handleFilter = () => {
-        dispatch(
-            fetchSearchRooms({
-                display_name: displayName,
-                lat,
-                lon,
-                page,
-                limit,
-                amentities: filterSearchState?.amentities,
-                roomPrice: filterSearchState?.roomPrice,
-                waterPrice: filterSearchState?.waterPrice,
-                electricityPrice: filterSearchState?.electricityPrice,
-            }),
-        ).then(() => handleCancel())
+        let params = {}
+        const currentParams = {}
+        searchParams.forEach((value, key) => {
+            currentParams[key] = value
+        })
+
+        if (filterSearchState?.amentities) {
+            params.amentities = filterSearchState?.amentities.join(',')
+        }
+        if (filterSearchState?.roomPrice) {
+            params.roomPrice = filterSearchState?.roomPrice
+        }
+        if (filterSearchState?.waterPrice) {
+            params.waterPrice = filterSearchState?.waterPrice
+        }
+        if (filterSearchState?.capacity) {
+            params.capacity = filterSearchState?.capacity
+        }
+        if (filterSearchState?.electricityPrice) {
+            params.electricityPrice = filterSearchState?.electricityPrice
+        }
+
+        setSearchParams({
+            ...currentParams,
+            ...params,
+        })
     }
 
     return (
@@ -98,7 +108,7 @@ const SearchResult = () => {
                         <div>
                             <h1 className='font-medium text-lg'>
                                 Kết quả tìm kiếm nhà trọ quanh khu vực{' '}
-                                {displayName}
+                                {searchParams.get('address_name')}
                             </h1>
                             <span className='text-sm italic text-gray-400'>
                                 (
@@ -164,7 +174,18 @@ const SearchResult = () => {
                     <Button key='cancel' onClick={handleCancel}>
                         Cancel
                     </Button>,
-                    <Button key='filter' type='primary' onClick={handleFilter}>
+                    <Button
+                        key='filter'
+                        type='primary'
+                        disabled={
+                            !electricityPrice &&
+                            !roomPrice &&
+                            !waterPrice &&
+                            !amentities &&
+                            !capacity
+                        }
+                        onClick={handleFilter}
+                    >
                         Lọc
                     </Button>,
                 ]}

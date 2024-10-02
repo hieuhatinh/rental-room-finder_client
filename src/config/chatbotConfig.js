@@ -1,11 +1,14 @@
 import { createChatBotMessage } from 'react-chatbot-kit'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { CloseOutlined } from '@ant-design/icons'
 
 import AvatarChatbot from '../assets/images/chatbot.png'
 import AvatarUser from '../assets/images/user.png'
 import AvatarHeaderChatbot from '../assets/images/chat-bot-header.png'
 import { toggleChatbot } from '../store/slice/chatbotSlice'
+import { LIMIT } from '../constants'
+import { paths } from '../utils/pathsRoutes'
 
 const HeaderChatbot = () => {
     const dispatch = useDispatch()
@@ -56,6 +59,47 @@ const AvatarChatbotComp = (props) => {
     )
 }
 
+const CustomLink = (props) => {
+    const {
+        address_name,
+        lon,
+        lat,
+        amentities,
+        numberPeopleInRoom,
+        radius,
+        roomPrice,
+    } = props.payload
+
+    let pathToResult = `${paths.tenant.searchResult}?address_name=${address_name}
+                    &lat=${lat}&lon=${lon}
+                    &capacity=${numberPeopleInRoom}
+                    &roomPrice=${roomPrice}
+                    &page=1&limit=${LIMIT}`
+    if (amentities) {
+        pathToResult += `&amentities=${amentities}`
+    }
+    if (radius) {
+        pathToResult += `&radius=${radius}`
+    }
+
+    return (
+        <div className='react-chatbot-kit-chat-bot-message-container'>
+            <div className='react-chatbot-kit-chat-bot-message'>
+                <span>Vui lòng click vào </span>
+                <Link
+                    to={pathToResult}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-red-600 hover:text-red-600'
+                >
+                    link này
+                </Link>
+                <span> để đến trang kết quả</span>
+            </div>
+        </div>
+    )
+}
+
 const chatbotConfig = {
     initialMessages: [
         createChatBotMessage(`Chào bạn, bạn muốn tìm phòng trọ ở đâu?`),
@@ -66,6 +110,12 @@ const chatbotConfig = {
         botAvatar: (props) => <AvatarChatbotComp {...props} />,
         userAvatar: (props) => <AvartarUserComp {...props} />,
     },
+    widgets: [
+        {
+            widgetName: 'customLink',
+            widgetFunc: (props) => <CustomLink {...props} />,
+        },
+    ],
 }
 
 export default chatbotConfig
