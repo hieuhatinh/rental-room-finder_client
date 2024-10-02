@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { apiGetAmentities } from '../../api/amentitiesApi'
+import { apiGetAmentities, apiGetAmentitiesId } from '../../api/amentitiesApi'
 
 const fetchGetAmentities = createAsyncThunk(
     'amentities/fetchGetAmentities',
@@ -14,4 +14,17 @@ const fetchGetAmentities = createAsyncThunk(
     },
 )
 
-export { fetchGetAmentities }
+const fetchGetAmentitiesId = createAsyncThunk(
+    'amentities/fetGetAmentitiesId',
+    async ({ names }, { rejectWithValue }) => {
+        try {
+            const result = await apiGetAmentitiesId({ names })
+
+            return result
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    },
+)
+
+export { fetchGetAmentities, fetchGetAmentitiesId }

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import authReducer from './slice/authSlice'
+import chatbotReducer from './slice/chatbotSlice'
 import fileReducer from './slice/fileSlice'
 import mapsReducer from './slice/mapsSlice'
 import manageLandlordsReducer from './slice/admin/manageLandlordsSlice'
@@ -21,5 +22,6 @@ export const store = configureStore({
         adminManageRooms: adminManageRoomsReducer,
         roomsTenant: roomsTenantReducer,
         filterSearch: filterSearchReducer,
+        chatbot: chatbotReducer,
     },
 })

@@ -16,10 +16,12 @@ const apiSearchRooms = async ({
     lon,
     page,
     limit,
-    amentities = [],
+    radius = null,
+    amentities = null,
     roomPrice = null,
     waterPrice = null,
     electricityPrice = null,
+    capacity = null,
 }) => {
     try {
         const response = await axiosClient.get('/tenant/search-rooms', {
@@ -29,10 +31,12 @@ const apiSearchRooms = async ({
                 lon,
                 page,
                 limit,
+                radius,
                 amentities,
                 roomPrice,
                 waterPrice,
                 electricityPrice,
+                capacity,
             },
         })
 

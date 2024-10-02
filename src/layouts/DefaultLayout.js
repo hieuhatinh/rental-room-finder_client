@@ -1,10 +1,10 @@
-import { Layout, Menu, theme } from 'antd'
+import { Layout, theme } from 'antd'
 
 import PrimaryHeader from '../components/Header/PrimaryHeader'
-import { menuItemsTenant } from '../utils/menuItems'
-import Logo from '../assets/images/logo.jpg'
+import ChatbotUI from '../Chatbot'
+import Sidebar from '../components/Sidebar'
 
-const { Footer, Sider, Content } = Layout
+const { Footer, Content } = Layout
 
 function DefaultLayout({ children }) {
     const {
@@ -13,22 +13,7 @@ function DefaultLayout({ children }) {
 
     return (
         <Layout hasSider>
-            <Sider style={siderStyle}>
-                <div className='flex items-center justify-center h-[150px]'>
-                    <img
-                        src={Logo}
-                        alt='logo-website'
-                        width={100}
-                        className='rounded-lg'
-                    />
-                </div>
-                <Menu
-                    theme='dark'
-                    defaultSelectedKeys={[window.location.pathname]}
-                    mode='inline'
-                    items={menuItemsTenant}
-                />
-            </Sider>
+            <Sidebar />
             <Layout className='ms-[200px]'>
                 <PrimaryHeader />
                 <Content
@@ -56,6 +41,7 @@ function DefaultLayout({ children }) {
                         {children}
                     </div>
                 </Content>
+
                 <Footer
                     style={{
                         textAlign: 'center',
@@ -64,19 +50,11 @@ function DefaultLayout({ children }) {
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED
                 </Footer>
             </Layout>
+
+            {/* Chatbot */}
+            <ChatbotUI />
         </Layout>
     )
-}
-
-const siderStyle = {
-    overflow: 'auto',
-    height: '100vh',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 0,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
 }
 
 export default DefaultLayout

@@ -1,14 +1,12 @@
-import { Layout, Menu, notification, theme } from 'antd'
+import { Layout, notification, theme } from 'antd'
 import React, { useCallback } from 'react'
 import { useContext, useEffect } from 'react'
 
 import PrimaryHeader from '../components/Header/PrimaryHeader'
-import { createMenuItemsAdmin } from '../utils/menuItems'
 import { SocketContext } from '../services/SocketProvider'
+import Sidebar from '../components/Sidebar'
 
-import Logo from '../assets/images/logo.jpg'
-
-const { Footer, Sider, Content } = Layout
+const { Footer, Content } = Layout
 
 function AdminLayout({ children }) {
     const {
@@ -32,6 +30,7 @@ function AdminLayout({ children }) {
 
     useEffect(() => {
         if (socketConnection) {
+            console.log('hello')
             socketConnection.on('new-room-created', (data) => {
                 openNotification({
                     placement: 'topRight',
@@ -49,24 +48,7 @@ function AdminLayout({ children }) {
 
     return (
         <Layout hasSider>
-            <Sider style={siderStyle} width={280} className='flex flex-col'>
-                <div className='flex items-center justify-center h-[150px]'>
-                    <img
-                        src={Logo}
-                        alt='logo-website'
-                        width={100}
-                        className='rounded-lg'
-                    />
-                </div>
-                <Menu
-                    theme='dark'
-                    defaultSelectedKeys={[window.location.pathname]}
-                    mode='inline'
-                    items={createMenuItemsAdmin({
-                        numberRequest: numberUnacceptedRooms,
-                    })}
-                />
-            </Sider>
+            <Sidebar numberUnacceptedRooms={numberUnacceptedRooms} />
             <Layout className='ms-[280px]'>
                 <PrimaryHeader />
                 <Content
@@ -97,17 +79,6 @@ function AdminLayout({ children }) {
             {contextHolder}
         </Layout>
     )
-}
-
-const siderStyle = {
-    overflow: 'auto',
-    height: '100vh',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 0,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
 }
 
 export default AdminLayout

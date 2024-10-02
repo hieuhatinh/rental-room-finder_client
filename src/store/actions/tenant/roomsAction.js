@@ -27,10 +27,12 @@ const fetchSearchRooms = createAsyncThunk(
             lon,
             page,
             limit,
+            radius,
             amentities,
             roomPrice,
             waterPrice,
             electricityPrice,
+            capacity,
         },
         { rejectWithValue },
     ) => {
@@ -41,10 +43,12 @@ const fetchSearchRooms = createAsyncThunk(
                 lon,
                 page,
                 limit,
+                radius,
                 amentities,
                 roomPrice,
                 waterPrice,
                 electricityPrice,
+                capacity,
             })
 
             return result

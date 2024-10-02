@@ -1,12 +1,11 @@
-import { Layout, Menu, notification, theme } from 'antd'
-
-import { menuItemsLandlord } from '../utils/menuItems'
-import PrimaryHeader from '../components/Header/PrimaryHeader'
-
-import Logo from '../assets/images/logo.jpg'
 import { useCallback, useContext, useEffect } from 'react'
+import { Layout, notification, theme } from 'antd'
+
+import PrimaryHeader from '../components/Header/PrimaryHeader'
 import { SocketContext } from '../services/SocketProvider'
-const { Footer, Sider, Content } = Layout
+import Sidebar from '../components/Sidebar'
+
+const { Footer, Content } = Layout
 
 function LandlordLayout({ children }) {
     const {
@@ -40,22 +39,7 @@ function LandlordLayout({ children }) {
 
     return (
         <Layout hasSider>
-            <Sider style={siderStyle} width={250} className='flex flex-col'>
-                <div className='flex items-center justify-center h-[150px]'>
-                    <img
-                        src={Logo}
-                        alt='logo-website'
-                        width={100}
-                        className='rounded-lg'
-                    />
-                </div>
-                <Menu
-                    theme='dark'
-                    defaultSelectedKeys={[window.location.pathname]}
-                    mode='inline'
-                    items={menuItemsLandlord}
-                />
-            </Sider>
+            <Sidebar />
             <Layout className='ms-[250px]'>
                 <PrimaryHeader />
                 <Content
@@ -87,17 +71,6 @@ function LandlordLayout({ children }) {
             {contextHolder}
         </Layout>
     )
-}
-
-const siderStyle = {
-    overflow: 'auto',
-    height: '100vh',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 0,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
 }
 
 export default LandlordLayout

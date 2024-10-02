@@ -16,4 +16,14 @@ const convertToKilometers = (meters) => {
     return (meters / 1000).toFixed(3)
 }
 
-export { formattedDate, formattedBirthDate, convertToVnd, convertToKilometers }
+const getNumber = (text) => {
+    return +text.match(/\d+/)
+}
+
+export {
+    formattedDate,
+    formattedBirthDate,
+    convertToVnd,
+    convertToKilometers,
+    getNumber,
+}

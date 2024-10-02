@@ -5,10 +5,11 @@ const initialState = {
     isSuccess: false,
     isError: false,
     message: null,
-    amentities: [],
+    amentities: null,
     roomPrice: null,
     waterPrice: null,
     electricityPrice: null,
+    capacity: null,
 }
 
 export const filterSearchSlice = createSlice({
@@ -27,11 +28,8 @@ export const filterSearchSlice = createSlice({
         setRoomPrice: (state, action) => {
             state.roomPrice = action.payload
         },
-        setFilterPrameter: (state, action) => {
-            state.amentities = action.payload.amentities
-            state.waterPrice = action.payload.waterPrice
-            state.electricityPrice = action.payload.electricityPrice
-            state.roomPrice = action.payload.roomPrice
+        setCapacity: (state, action) => {
+            state.capacity = action.payload
         },
     },
     extraReducers: (builder) => {},
@@ -42,7 +40,7 @@ export const {
     setRoomPrice,
     setSelectedAmentities,
     setWaterPrice,
-    setFilterPrameter,
+    setCapacity,
 } = filterSearchSlice.actions
 
 export default filterSearchSlice.reducer
