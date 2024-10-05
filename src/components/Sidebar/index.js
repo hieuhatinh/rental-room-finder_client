@@ -11,7 +11,7 @@ import Logo from '../../assets/images/logo.jpg'
 
 const { Sider } = Layout
 
-const Sidebar = ({ numberUnacceptedRooms }) => {
+const Sidebar = ({ numberUnacceptedRooms, numberNewAmentity }) => {
     const userInfo = getUserInfoFromLocalStorage()
 
     return userInfo?.role === roles.landlord ? (
@@ -48,6 +48,7 @@ const Sidebar = ({ numberUnacceptedRooms }) => {
                 mode='inline'
                 items={createMenuItemsAdmin({
                     numberRequest: numberUnacceptedRooms,
+                    numberNewAmentity: numberNewAmentity,
                 })}
             />
         </Sider>

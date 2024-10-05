@@ -31,5 +31,7 @@ export const paths = {
         roomApprovalsRequest: '/admin/room-approvals',
         detailApprovalRequest: '/admin/detail-approval-request',
         idRoom: '/:id_room',
+        newAmentities: '/admin/manage/new-amentities',
+        allAmentities: '/admin/manage/all-amentities',
     },
 }

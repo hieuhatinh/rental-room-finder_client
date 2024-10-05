@@ -58,35 +58,6 @@ function App() {
                         )
                     })}
 
-                    {/* Route tenant */}
-                    {tenantPublicRoutes.map((item) => {
-                        const Page = item.component
-                        return (
-                            <Route
-                                key={item.path}
-                                path={item.path}
-                                element={<Page />}
-                            />
-                        )
-                    })}
-
-                    {tenantPrivateRoute.map((item) => {
-                        const Page = item.component
-                        const isAuthorized =
-                            !!token &&
-                            authState?.userInfo?.role === roles.tenant
-
-                        return (
-                            <Route
-                                key={item.path}
-                                path={item.path}
-                                element={
-                                    isAuthorized ? <Page /> : <LoginRequired />
-                                }
-                            />
-                        )
-                    })}
-
                     {/* Route landlord + tenant */}
                     {sharedPrivateRoutes.map((item) => {
                         const Page = item.component
@@ -117,6 +88,36 @@ function App() {
                         )
                     })}
 
+                    {/* Route tenant */}
+                    {tenantPublicRoutes.map((item) => {
+                        const Page = item.component
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={<Page />}
+                            />
+                        )
+                    })}
+
+                    {tenantPrivateRoute.map((item) => {
+                        const Page = item.component
+                        const isAuthorized =
+                            !!token &&
+                            authState?.userInfo?.role === roles.tenant
+
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={
+                                    isAuthorized ? <Page /> : <LoginRequired />
+                                }
+                            />
+                        )
+                    })}
+
+                    {/* Route admin */}
                     {adminRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =

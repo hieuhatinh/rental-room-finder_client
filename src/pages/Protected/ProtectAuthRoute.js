@@ -29,11 +29,11 @@ const ProtectAuthRoute = () => {
                 case roles.tenant:
                     navigate(paths.tenant.homeTenant)
                     break
-                case roles.landlord:
-                    navigate(paths.landlord.homeLandlord)
-                    break
                 case roles.admin:
                     navigate(paths.admin.homeAdmin)
+                    break
+                case roles.landlord:
+                    navigate(paths.landlord.homeLandlord)
                     break
                 default:
                     navigate(paths.login)

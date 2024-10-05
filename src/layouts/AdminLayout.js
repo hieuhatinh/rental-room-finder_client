@@ -1,5 +1,5 @@
 import { Layout, notification, theme } from 'antd'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useContext, useEffect } from 'react'
 
 import PrimaryHeader from '../components/Header/PrimaryHeader'
@@ -15,24 +15,15 @@ function AdminLayout({ children }) {
 
     const socketConnection = useContext(SocketContext)
     const [numberUnacceptedRooms, setNumberUnacceptRooms] = React.useState()
+    const [numberNewAmentity, setNumberNewAmentity] = React.useState()
 
     const [api, contextHolder] = notification.useNotification()
-    const openNotification = useCallback(
-        ({ placement, message, description }) => {
-            api.info({
-                message,
-                description,
-                placement,
-            })
-        },
-        [api],
-    )
 
     useEffect(() => {
         if (socketConnection) {
-            console.log('hello')
+            // socket new room
             socketConnection.on('new-room-created', (data) => {
-                openNotification({
+                api.info({
                     placement: 'topRight',
                     message: 'Yêu cầu tạo phòng',
                     description: `Bạn có yêu cầu tạo phòng từ landlord ${data.userInfo.full_name}`,
@@ -43,12 +34,37 @@ function AdminLayout({ children }) {
             socketConnection.on('number-request', (numberUnacceptedRooms) => {
                 setNumberUnacceptRooms(numberUnacceptedRooms)
             })
+
+            // socket new amentity
+            socketConnection.on('new-amentity', (data) => {
+                api.info({
+                    placement: 'topRight',
+                    message: 'Yêu cầu thêm tiện ích',
+                    description: `Bạn có yêu cầu thêm tiện ích từ landlord ${data.userInfo.full_name}. Xem chi tiết tại mục Quản lý tiện ích -> tiện ích mới`,
+                })
+                setNumberNewAmentity(data.numberNewAmentity)
+            })
+
+            socketConnection.emit('get-number-new-amentity')
+            socketConnection.on('number-new-amentity', (numberNewAmentity) => {
+                setNumberNewAmentity(numberNewAmentity)
+            })
+
+            return () => {
+                socketConnection.off('new-amentity')
+                socketConnection.off('number-new-amentity')
+                socketConnection.off('new-room-created')
+                socketConnection.off('number-request')
+            }
         }
-    }, [socketConnection, openNotification])
+    }, [socketConnection, api])
 
     return (
         <Layout hasSider>
-            <Sidebar numberUnacceptedRooms={numberUnacceptedRooms} />
+            <Sidebar
+                numberUnacceptedRooms={numberUnacceptedRooms}
+                numberNewAmentity={numberNewAmentity}
+            />
             <Layout className='ms-[280px]'>
                 <PrimaryHeader />
                 <Content

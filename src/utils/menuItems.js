@@ -126,7 +126,7 @@ const menuItemsLandlord = [
     ]),
 ]
 
-const createMenuItemsAdmin = ({ numberRequest }) => {
+const createMenuItemsAdmin = ({ numberRequest, numberNewAmentity }) => {
     return [
         getItem(
             <Link
@@ -163,7 +163,23 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
             paths.admin.roomApprovalsRequest,
             <AuditOutlined />,
         ),
-        getItem('Quản trị thông tin', 'sub1', <ApartmentOutlined />, [
+        getItem('Quản lý tiện ích', 'sub1', <ApartmentOutlined />, [
+            getItem(
+                <Link
+                    to={paths.admin.allAmentities}
+                    className='text-current hover:text-current'
+                >
+                    Tất cả tiện ích
+                    <Badge
+                        count={numberNewAmentity}
+                        size='small'
+                        className='text-[#FFFFFFA6] relative -top-2 -right-2'
+                    />
+                </Link>,
+                paths.admin.allAmentities,
+            ),
+        ]),
+        getItem('Quản trị thông tin', 'sub2', <ApartmentOutlined />, [
             getItem(
                 <Link
                     to={paths.admin.manageLandlords}
@@ -183,7 +199,7 @@ const createMenuItemsAdmin = ({ numberRequest }) => {
                 '5',
             ),
         ]),
-        getItem('Thống kê', 'sub2', <LineChartOutlined />, [
+        getItem('Thống kê', 'sub3', <LineChartOutlined />, [
             getItem(
                 <Link
                     to={paths.admin.homeAdmin}

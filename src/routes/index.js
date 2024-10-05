@@ -18,6 +18,7 @@ import AddLandlord from '../pages/Admin/ManageLandlords/AddLandlord'
 import RoomManagement from '../pages/Landlord/ManageRooms/RoomManagement'
 import AddNewRoom from '../pages/Landlord/ManageRooms/AddNewRoom'
 import DetailRoomLandlord from '../pages/Landlord/ManageRooms/DetailRoomLandlord'
+import AllAmentities from '../pages/Admin/Amentities/AllAmentity'
 
 const authRoutes = [
     {
@@ -116,6 +117,10 @@ const adminRoutes = [
             paths.admin.idLandlord +
             paths.admin.idRoom
         }`,
+    },
+    {
+        component: AllAmentities,
+        path: paths.admin.allAmentities,
     },
 ]
 

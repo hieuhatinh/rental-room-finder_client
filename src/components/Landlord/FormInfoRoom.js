@@ -1,59 +1,21 @@
-import {
-    Button,
-    Form,
-    Image,
-    Input,
-    InputNumber,
-    message,
-    Select,
-    Tag,
-    Upload,
-} from 'antd'
+import { Button, Form, Image, Input, InputNumber, message, Upload } from 'antd'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getBase64 } from '../utils/readFile/image'
-import MapComponent from './Maps'
-import { selectMaps } from '../store/selector/mapsSelector'
-import { fetchLandlordAddRoom } from '../store/actions/landlord/manageRoomsAction'
-import { fetchGetAmentities } from '../store/actions/amentitiesAction'
-import { selectAmentities } from '../store/selector/amentitiesSelector'
-import { selectLandlordRoomState } from '../store/selector/landlordSelector'
-import { reStateMessage } from '../store/slice/landlord/manageRoomsSlice'
-import { SocketContext } from '../services/SocketProvider'
-import { selectAuth } from '../store/selector/authSelector'
-import { colorsOfTag } from '../constants'
-import roles from '../utils/roles'
-
-const tagRender = (props) => {
-    const { label, value, closable, onClose } = props
-    const onPreventMouseDown = (event) => {
-        event.preventDefault()
-        event.stopPropagation()
-    }
-
-    let indexColor = value % colorsOfTag.length
-
-    return (
-        <Tag
-            color={colorsOfTag[indexColor]}
-            onMouseDown={onPreventMouseDown}
-            closable={closable}
-            onClose={onClose}
-            style={{
-                marginInlineEnd: 4,
-            }}
-        >
-            {label}
-        </Tag>
-    )
-}
+import { getBase64 } from '../../utils/readFile/image'
+import MapComponent from '../Maps'
+import { selectMaps } from '../../store/selector/mapsSelector'
+import { fetchLandlordAddRoom } from '../../store/actions/landlord/manageRoomsAction'
+import { selectLandlordRoomState } from '../../store/selector/landlordSelector'
+import { reStateMessage } from '../../store/slice/landlord/manageRoomsSlice'
+import { SocketContext } from '../../services/SocketProvider'
+import { selectAuth } from '../../store/selector/authSelector'
+import SelectAmentities from './SelectAmentities'
 
 const FormInfoRoom = () => {
     const dispatch = useDispatch()
     const mapsState = useSelector(selectMaps)
-    const amentitiesState = useSelector(selectAmentities)
     const manageRoomState = useSelector(selectLandlordRoomState)
     const authState = useSelector(selectAuth)
     const [form] = Form.useForm()
@@ -65,11 +27,6 @@ const FormInfoRoom = () => {
     const [isShowMaps, setIsShowMaps] = useState(false)
 
     const socketConnection = useContext(SocketContext)
-
-    // get amentities
-    useEffect(() => {
-        dispatch(fetchGetAmentities())
-    }, [])
 
     // image upload
     const handlePreview = async (file) => {
@@ -121,34 +78,54 @@ const FormInfoRoom = () => {
                 addressInfo: mapsState?.selectionAddress,
             }),
         )
-            .then((result) => {
-                messageApi.open({
-                    type: 'success',
-                    content: result.payload.message,
-                })
-
-                socketConnection.emit('new-room-created', {
-                    userInfo: authState?.userInfo,
-                    idNewRoom: result.payload.idNewRoom,
-                })
-
-                form.resetFields()
-                dispatch(reStateMessage())
-
-                setTimeout(() => {
-                    dispatch(reStateMessage())
-                }, 1000)
-            })
-            .catch((error) => {
-                messageApi.open({
-                    type: 'error',
-                    content: error.payload.message,
-                })
-                setTimeout(() => {
-                    dispatch(reStateMessage())
-                }, 1000)
-            })
     }
+
+    // show message hiển thị thông báo
+    useEffect(() => {
+        let timoutId
+        if (
+            socketConnection &&
+            manageRoomState.isSuccess &&
+            manageRoomState.idNewRoom &&
+            authState?.userInfo.role === 'landlord'
+        ) {
+            messageApi.open({
+                type: 'success',
+                content: manageRoomState.message,
+            })
+
+            socketConnection.emit('new-room-created', {
+                userInfo: authState?.userInfo,
+                idNewRoom: manageRoomState.idNewRoom,
+            })
+
+            form.resetFields()
+
+            timoutId = setTimeout(() => {
+                dispatch(reStateMessage())
+            }, 1000)
+        } else if (manageRoomState.isError) {
+            messageApi.open({
+                type: 'error',
+                content: manageRoomState.message,
+            })
+            timoutId = setTimeout(() => {
+                dispatch(reStateMessage())
+            }, 1000)
+        }
+
+        return () => clearTimeout(timoutId)
+    }, [
+        manageRoomState.isSuccess,
+        manageRoomState.idNewRoom,
+        authState?.userInfo,
+        messageApi,
+        manageRoomState.isError,
+        manageRoomState.message,
+        dispatch,
+        form,
+        socketConnection,
+    ])
 
     return (
         <>
@@ -292,11 +269,7 @@ const FormInfoRoom = () => {
                             },
                         ]}
                     >
-                        <Select
-                            mode='multiple'
-                            tagRender={tagRender}
-                            options={amentitiesState?.amentities}
-                        />
+                        <SelectAmentities messageApi={messageApi} form={form} />
                     </Form.Item>
                     <Form.Item label='Mô tả phòng trọ' name='description'>
                         <Input.TextArea
