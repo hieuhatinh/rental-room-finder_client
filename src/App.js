@@ -17,6 +17,7 @@ import { selectAuth } from './store/selector/authSelector'
 import SocketProvider from './services/SocketProvider'
 import { getTokenFromCookies } from './utils/store/token'
 import roles from './utils/roles'
+import HomePage from './pages/HomePage'
 
 function App() {
     const authState = useSelector(selectAuth)
@@ -26,6 +27,8 @@ function App() {
         <SocketProvider>
             <div className='h-full'>
                 <Routes>
+                    <Route path='/' element={<HomePage />} />
+
                     {/* Route login + register */}
                     <Route element={<ProtectAuthRoute />}>
                         {authRoutes.map((item) => {
@@ -40,19 +43,31 @@ function App() {
                         })}
                     </Route>
 
-                    {/* Route landlord */}
-                    {landlordRoutes.map((item) => {
+                    {/* Route tenant */}
+                    {tenantPublicRoutes.map((item) => {
+                        const Page = item.component
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={<Page />}
+                            />
+                        )
+                    })}
+
+                    {/* Route tenant */}
+                    {tenantPrivateRoute.map((item) => {
                         const Page = item.component
                         const isAuthorized =
                             !!token &&
-                            authState?.userInfo?.role === roles.landlord
+                            authState?.userInfo?.role === roles.tenant
 
                         return (
                             <Route
                                 key={item.path}
                                 path={item.path}
                                 element={
-                                    isAuthorized ? <Page /> : <AccessDenied />
+                                    isAuthorized ? <Page /> : <LoginRequired />
                                 }
                             />
                         )
@@ -88,30 +103,19 @@ function App() {
                         )
                     })}
 
-                    {/* Route tenant */}
-                    {tenantPublicRoutes.map((item) => {
-                        const Page = item.component
-                        return (
-                            <Route
-                                key={item.path}
-                                path={item.path}
-                                element={<Page />}
-                            />
-                        )
-                    })}
-
-                    {tenantPrivateRoute.map((item) => {
+                    {/* Route landlord */}
+                    {landlordRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
                             !!token &&
-                            authState?.userInfo?.role === roles.tenant
+                            authState?.userInfo?.role === roles.landlord
 
                         return (
                             <Route
                                 key={item.path}
                                 path={item.path}
                                 element={
-                                    isAuthorized ? <Page /> : <LoginRequired />
+                                    isAuthorized ? <Page /> : <AccessDenied />
                                 }
                             />
                         )

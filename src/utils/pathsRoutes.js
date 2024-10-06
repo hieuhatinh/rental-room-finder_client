@@ -5,10 +5,10 @@ export const paths = {
     googleSuccess: '/auth/login/google/success',
     loadingAuthorize: '/loading-authorize',
     tenant: {
-        homeTenant: '/',
-        searchResult: '/tenant/search-result',
+        homeTenant: '/tenant/home',
+        searchResult: '/search-result',
         roomDetail: '/room-detail/:id',
-        tenantInfomation: '/tenant/infomation',
+        tenantInfomation: '/infomation',
     },
     landlord: {
         homeLandlord: '/landlord/home',
