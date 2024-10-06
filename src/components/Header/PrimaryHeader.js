@@ -20,20 +20,28 @@ const PrimaryHeader = () => {
         navigate(paths.tenant.homeTenant)
     }
 
-    const items = [
-        {
-            key: '1',
-            label: (
-                <Link to={paths.tenant.tenantInfomation}>
-                    Thông tin cá nhân
-                </Link>
-            ),
-        },
-        {
-            key: '2',
-            label: <button onClick={logout}>Đăng xuất</button>,
-        },
-    ]
+    const items =
+        authState?.userInfo?.role === roles.tenant
+            ? [
+                  {
+                      key: '1',
+                      label: (
+                          <Link to={paths.tenant.tenantInfomation}>
+                              Thông tin cá nhân
+                          </Link>
+                      ),
+                  },
+                  {
+                      key: '2',
+                      label: <button onClick={logout}>Đăng xuất</button>,
+                  },
+              ]
+            : [
+                  {
+                      key: '2',
+                      label: <button onClick={logout}>Đăng xuất</button>,
+                  },
+              ]
 
     return (
         <div className='bg-white shadow-md flex items-center justify-around h-[100px]'>

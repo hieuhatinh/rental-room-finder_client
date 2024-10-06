@@ -7,6 +7,7 @@ import Notification from '../../assets/images/notification.png'
 import RequestApproval from '../../assets/images/request-approval.png'
 import ManageLandlords from '../../assets/images/manage-landlords.png'
 import Statistical from '../../assets/images/statistical.png'
+import AmentitiesManagement from '../../assets/images/utilization.png'
 
 const HomeAdmin = () => {
     return (
@@ -39,12 +40,26 @@ const HomeAdmin = () => {
                 </Link>
 
                 <Link
-                    to={paths.admin.manageLandlords}
+                    to={paths.admin.allAmentities}
                     className='flex flex-col items-center justify-center gap-5 rounded-lg shadow-xl h-[200px] col-span-3'
                 >
                     <img
+                        src={AmentitiesManagement}
+                        alt='amentities management'
+                        className='h-[100px] w-[100px]'
+                    />
+                    <span className='font-medium text-base'>
+                        Quản lý tiện ích
+                    </span>
+                </Link>
+
+                <Link
+                    to={paths.admin.manageLandlords}
+                    className='flex flex-col items-center justify-center gap-5 rounded-lg shadow-xl h-[200px] col-start-3 col-span-3'
+                >
+                    <img
                         src={ManageLandlords}
-                        alt='request approval'
+                        alt='manage landlords'
                         className='h-[100px] w-[100px]'
                     />
                     <span className='font-medium text-base'>
@@ -54,11 +69,11 @@ const HomeAdmin = () => {
 
                 <Link
                     to={paths.admin.homeAdmin}
-                    className='flex flex-col items-center justify-center gap-5 rounded-lg shadow-xl h-[200px] col-start-5 col-span-3'
+                    className='flex flex-col items-center justify-center gap-5 rounded-lg shadow-xl h-[200px] col-start-6 col-span-3'
                 >
                     <img
                         src={Statistical}
-                        alt='request approval'
+                        alt='statistical'
                         className='h-[100px] w-[100px]'
                     />
                     <span className='font-medium text-base'>Thống kê</span>
