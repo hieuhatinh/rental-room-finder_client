@@ -17,6 +17,7 @@ import { selectAuth } from './store/selector/authSelector'
 import SocketProvider from './services/SocketProvider'
 import { getTokenFromCookies } from './utils/store/token'
 import roles from './utils/roles'
+import HomePage from './pages/HomePage'
 
 function App() {
     const authState = useSelector(selectAuth)
@@ -26,6 +27,8 @@ function App() {
         <SocketProvider>
             <div className='h-full'>
                 <Routes>
+                    <Route path='/' element={<HomePage />} />
+
                     {/* Route login + register */}
                     <Route element={<ProtectAuthRoute />}>
                         {authRoutes.map((item) => {
@@ -40,24 +43,6 @@ function App() {
                         })}
                     </Route>
 
-                    {/* Route landlord */}
-                    {landlordRoutes.map((item) => {
-                        const Page = item.component
-                        const isAuthorized =
-                            !!token &&
-                            authState?.userInfo?.role === roles.landlord
-
-                        return (
-                            <Route
-                                key={item.path}
-                                path={item.path}
-                                element={
-                                    isAuthorized ? <Page /> : <AccessDenied />
-                                }
-                            />
-                        )
-                    })}
-
                     {/* Route tenant */}
                     {tenantPublicRoutes.map((item) => {
                         const Page = item.component
@@ -70,6 +55,7 @@ function App() {
                         )
                     })}
 
+                    {/* Route tenant */}
                     {tenantPrivateRoute.map((item) => {
                         const Page = item.component
                         const isAuthorized =
@@ -87,7 +73,7 @@ function App() {
                         )
                     })}
 
-                    {/* Route landlord + tenant */}
+                    {/* <Route path='/shared'> */}
                     {sharedPrivateRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =
@@ -117,6 +103,25 @@ function App() {
                         )
                     })}
 
+                    {/* Route landlord */}
+                    {landlordRoutes.map((item) => {
+                        const Page = item.component
+                        const isAuthorized =
+                            !!token &&
+                            authState?.userInfo?.role === roles.landlord
+
+                        return (
+                            <Route
+                                key={item.path}
+                                path={item.path}
+                                element={
+                                    isAuthorized ? <Page /> : <AccessDenied />
+                                }
+                            />
+                        )
+                    })}
+
+                    {/* Route admin */}
                     {adminRoutes.map((item) => {
                         const Page = item.component
                         const isAuthorized =

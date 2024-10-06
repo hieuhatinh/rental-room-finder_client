@@ -112,7 +112,7 @@ const ManageLandlords = () => {
                 content: manageLandlordState.message,
             })
         }
-    }, [manageLandlordState.message])
+    }, [manageLandlordState, messageApi])
 
     return (
         <AdminLayout>
