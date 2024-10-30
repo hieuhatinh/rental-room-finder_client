@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Avatar, Dropdown, Layout, Menu, Tooltip } from 'antd'
+import { Avatar, Layout, Menu, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { menuItemsLandlord, menuItemsTenant } from '../utils/menuItems'
 import Logo from '../assets/images/logo.jpg'
@@ -13,15 +13,6 @@ import StatusIndicator from '../components/StatusIndicator'
 import roles from '../utils/roles'
 
 const { Sider, Content } = Layout
-
-const items = [
-    {
-        key: '1',
-        label: (
-            <Link to={paths.tenant.tenantInfomation}>Thông tin cá nhân</Link>
-        ),
-    },
-]
 
 function ChatAppLayout({ children }) {
     const dispatch = useDispatch()
@@ -67,14 +58,7 @@ function ChatAppLayout({ children }) {
                 />
                 <div className='fixed bottom-5 translate-x-[50%] flex flex-col justify-center items-center flex-1'>
                     <StatusIndicator isOnline={authState.isOnline}>
-                        <Dropdown
-                            menu={{
-                                items,
-                            }}
-                            placement='topRight'
-                            arrow
-                            trigger={['click']}
-                        >
+                        <Tooltip title={`${authState?.userInfo.full_name}`}>
                             <Avatar
                                 src={authState?.userInfo.avatar}
                                 icon={
@@ -85,7 +69,7 @@ function ChatAppLayout({ children }) {
                                 size={40}
                                 className='cursor-pointer'
                             />
-                        </Dropdown>
+                        </Tooltip>
                     </StatusIndicator>
                     <Tooltip
                         title='Đăng xuất'

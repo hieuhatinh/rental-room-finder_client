@@ -8,13 +8,15 @@ import {
     menuItemsTenant,
 } from '../../utils/menuItems'
 import Logo from '../../assets/images/logo.jpg'
+import { getTokenFromCookies } from '../../utils/store/token'
 
 const { Sider } = Layout
 
 const Sidebar = ({ numberUnacceptedRooms, numberNewAmentity }) => {
     const userInfo = getUserInfoFromLocalStorage()
+    const token = getTokenFromCookies()
 
-    return userInfo?.role === roles.landlord ? (
+    return token && userInfo?.role === roles.landlord ? (
         <Sider style={siderStyle} width={250} className='flex flex-col'>
             <div className='flex items-center justify-center h-[150px]'>
                 <img
@@ -32,7 +34,7 @@ const Sidebar = ({ numberUnacceptedRooms, numberNewAmentity }) => {
                 items={menuItemsLandlord}
             />
         </Sider>
-    ) : userInfo?.role === roles.admin ? (
+    ) : token && userInfo?.role === roles.admin ? (
         <Sider style={siderStyle} width={280} className='flex flex-col'>
             <div className='flex items-center justify-center h-[150px]'>
                 <img

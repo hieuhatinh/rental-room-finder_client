@@ -28,6 +28,8 @@ const HomePage = () => {
                     navigate(paths.login)
                     break
             }
+        } else {
+            navigate(paths.tenant.homeTenant)
         }
     }, [userInfo?.role, navigate, token])
 
