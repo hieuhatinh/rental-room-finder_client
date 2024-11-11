@@ -5,6 +5,7 @@ import LessThanOrEqual from '../../assets/images/less-than-or-equal.png'
 import {
     setCapacity,
     setElectricityPrice,
+    setRadius,
     setRoomPrice,
     setSelectedAmentities,
     setWaterPrice,
@@ -13,11 +14,21 @@ import { selectFilterSearch } from '../../store/selector/tenantSelector'
 
 const Filter = (props) => {
     const dispatch = useDispatch()
-    const { electricityPrice, roomPrice, waterPrice, amentities, capacity } =
-        useSelector(selectFilterSearch)
+    const {
+        electricityPrice,
+        roomPrice,
+        waterPrice,
+        amentities,
+        capacity,
+        radius,
+    } = useSelector(selectFilterSearch)
 
     const onChangeCapacity = (newValue) => {
         dispatch(setCapacity(newValue))
+    }
+
+    const onChangeRadius = (newValue) => {
+        dispatch(setRadius(newValue))
     }
 
     const onChangeRoomPrice = (newValue) => {
@@ -38,6 +49,24 @@ const Filter = (props) => {
 
     return (
         <div className='flex flex-col gap-3'>
+            <div>
+                <span className='font-semibold text-sm mb-2'>
+                    Bán kính kìm kiếm (km)
+                </span>
+                <InputNumber
+                    min={1}
+                    className='mx-4'
+                    value={radius}
+                    prefix={
+                        <img
+                            src={LessThanOrEqual}
+                            className='h-5 w-5'
+                            alt='less than or equal'
+                        />
+                    }
+                    onChange={onChangeRadius}
+                />
+            </div>
             <div>
                 <span className='font-semibold text-sm mb-2'>
                     Số người trong phòng
@@ -66,6 +95,7 @@ const Filter = (props) => {
                     onChange={onChangeRoomPrice}
                 />
             </div>
+
             <div>
                 <span className='font-semibold text-sm mb-2'>
                     Giá điện (nghìn/kwh)

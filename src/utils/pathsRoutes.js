@@ -9,6 +9,8 @@ export const paths = {
         searchResult: '/search-result',
         roomDetail: '/room-detail/:id',
         tenantInfomation: '/infomation',
+        findRoommateOtherPosts: '/find-roommate/others-posts',
+        findRoommateMyPosts: '/find-roommate/my-posts',
     },
     landlord: {
         homeLandlord: '/landlord/home',

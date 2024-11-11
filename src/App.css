@@ -32,4 +32,6 @@
     @apply rounded-full;
     @apply h-7;
     @apply w-7;
+    @apply -translate-y-full;
+    @apply top-1/2;
 }
