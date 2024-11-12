@@ -3,9 +3,7 @@ import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 
 import axiosClient from '../api/axiosClient'
-import { fetchGetAddressFromSearchText } from '../store/actions/mapsAction'
-import { getNumber } from '../utils/convertValue'
-import { fetchGetAmentitiesId } from '../store/actions/amentitiesAction'
+import getInfoSearchFromChatbot from '../utils/chatbot/getInfoSearchFromChatbot'
 
 const ActionProvider = ({ createChatBotMessage, setState, children }) => {
     const dispatch = useDispatch()
@@ -50,46 +48,17 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
 
     // tìm kiếm phòng sau khi đã hỏi xong người dùng
     const handleSearchRoom = async (responseData) => {
-        // gọi api lấy location
-        const resultLocation = await dispatch(
-            fetchGetAddressFromSearchText({
-                searchText:
-                    responseData.data[0].queryResult.outputContexts[0]
-                        .parameters.fields['location.original'].stringValue,
-            }),
-        )
-
-        // gọi api lấy id amentities mà người dùng nhập vào
-        let amentities =
-            responseData.data[0].queryResult.outputContexts[0].parameters.fields
-                ?.amentity
-
-        let idAmentities = null
-        if (amentities) {
-            idAmentities = await dispatch(
-                fetchGetAmentitiesId({
-                    names: amentities?.listValue.values?.map(
-                        (item) => item.stringValue,
-                    ),
-                }),
-            )
-        }
-
-        // lấy dữ liệu
-        let address_name = resultLocation.payload[0].display_name
-        let lon = resultLocation.payload[0].lon
-        let lat = resultLocation.payload[0].lat
-
-        let numberPeopleInRoom = getNumber(
-            responseData.data[0].queryResult.outputContexts[0].parameters.fields
-                ?.number_in_room.stringValue,
-        )
-        let radius =
-            responseData.data[0].queryResult.outputContexts[0].parameters
-                .fields?.['unit-length']?.structValue.fields.amount.numberValue
-        let roomPrice = getNumber(
-            responseData.data[0].queryResult.outputContexts[0].parameters.fields
-                ?.price?.listValue.values[0].stringValue,
+        const {
+            address_name,
+            lon,
+            lat,
+            amentities,
+            numberPeopleInRoom,
+            radius,
+            roomPrice,
+        } = await getInfoSearchFromChatbot(
+            dispatch,
+            responseData.data[0].queryResult,
         )
 
         const botMessage = createChatBotMessage(
@@ -100,9 +69,7 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
                     address_name,
                     lon,
                     lat,
-                    amentities: idAmentities?.payload?.amentities?.map(
-                        (item) => item.id_amentity,
-                    ),
+                    amentities,
                     numberPeopleInRoom,
                     radius,
                     roomPrice,

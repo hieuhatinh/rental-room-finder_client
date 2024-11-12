@@ -62,11 +62,11 @@ const Search = () => {
         <div>
             <Flex gap={10}>
                 <Form className='flex' form={form}>
-                    <Form.Item name='address'>
+                    <Form.Item name='address' className='mb-0'>
                         <Input.Search
                             placeholder='Tìm trọ theo khu vực bạn muốn'
                             enterButton='Tìm kiếm'
-                            className='w-[450px]'
+                            className='w-[400px]'
                             readOnly
                             onClick={showMaps}
                             onSearch={handleSearch}

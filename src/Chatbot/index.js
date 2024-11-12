@@ -32,7 +32,7 @@ const ChatbotUI = () => {
                 <Tooltip
                     title='Hãy chat với tôi ngay để tìm phòng trọ theo ý bạn'
                     placement='topRight'
-                    open
+                    defaultOpen
                     color='#fbbf24'
                     zIndex={0}
                 >

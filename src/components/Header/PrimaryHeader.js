@@ -9,6 +9,7 @@ import { selectAuth } from '../../store/selector/authSelector'
 import StatusIndicator from '../StatusIndicator'
 import roles from '../../utils/roles'
 import Search from '../Tenant/Search'
+import VoiceSearch from '../Tenant/VoiceSearch'
 
 const PrimaryHeader = () => {
     const dispatch = useDispatch()
@@ -50,7 +51,10 @@ const PrimaryHeader = () => {
                 authState?.userInfo?.role === roles.landlord) ? (
                 <div />
             ) : (
-                <Search />
+                <div className='flex items-center gap-5'>
+                    <Search />
+                    <VoiceSearch />
+                </div>
             )}
             <div className='items-center justify-center'>
                 <h1 className='uppercase font-semibold text-indigo-600 text-2xl italic font-serif'>
