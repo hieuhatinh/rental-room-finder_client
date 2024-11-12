@@ -1,6 +1,6 @@
-import { Button, Form, Input, message } from 'antd'
+import { Button, Form, Input, message, Radio } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     ArrowLeftOutlined,
     EyeInvisibleOutlined,
@@ -24,8 +24,10 @@ function Register() {
     const navigate = useNavigate()
 
     const [messageApi, contextHolder] = message.useMessage()
+    const [value, setValue] = useState('male')
 
     const onFinish = (values) => {
+        console.log(values)
         dispatch(fetchRegisterWithUsername({ ...values }))
     }
 
@@ -48,6 +50,10 @@ function Register() {
         }
     }, [authState, navigate, messageApi, dispatch])
 
+    const onChangeGender = (e) => {
+        setValue(e.target.value)
+    }
+
     return (
         <div className='flex overflow-hidden'>
             <Button
@@ -69,6 +75,7 @@ function Register() {
                         className='w-[400px]'
                     >
                         <Form.Item
+                            label='Username'
                             name='username'
                             hasFeedback
                             rules={[
@@ -84,6 +91,7 @@ function Register() {
                             />
                         </Form.Item>
                         <Form.Item
+                            label='Password'
                             name='password'
                             hasFeedback
                             rules={[
@@ -107,6 +115,7 @@ function Register() {
                         </Form.Item>
 
                         <Form.Item
+                            label='Confirm Password'
                             name='re-password'
                             dependencies={['password']}
                             hasFeedback
@@ -141,6 +150,43 @@ function Register() {
                                     )
                                 }
                             />
+                        </Form.Item>
+
+                        <Form.Item
+                            label='Họ và tên'
+                            name='full_name'
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Full Name!',
+                                },
+                            ]}
+                        >
+                            <Input
+                                prefix={<UserOutlined />}
+                                placeholder='Họ và tên'
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label='Giới tính'
+                            name='gender'
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Gender!',
+                                },
+                            ]}
+                        >
+                            <Radio.Group
+                                onChange={onChangeGender}
+                                value={value}
+                            >
+                                <Radio value='male'>Nam</Radio>
+                                <Radio value='female'>Nữ</Radio>
+                            </Radio.Group>
                         </Form.Item>
 
                         <Form.Item>

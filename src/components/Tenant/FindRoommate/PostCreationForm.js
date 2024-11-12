@@ -2,6 +2,7 @@ import { Button, Form, Image, Input, InputNumber, Select, Upload } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
+import { useSearchParams } from 'react-router-dom'
 
 import { getBase64 } from '../../../utils/readFile/image'
 import { selectMaps } from '../../../store/selector/mapsSelector'
@@ -13,7 +14,7 @@ import {
     fetchGetMyPostsRequest,
 } from '../../../store/actions/tenant/roommateRequestAction'
 import { selectRoommateRequest } from '../../../store/selector/roommateRequestSelector'
-import { useSearchParams } from 'react-router-dom'
+import { selectAuth } from '../../../store/selector/authSelector'
 
 const PostCreationForm = () => {
     const dispatch = useDispatch()
@@ -22,6 +23,7 @@ const PostCreationForm = () => {
     const roommateRequestState = useSelector(selectRoommateRequest)
     const [form] = Form.useForm()
     const [searchParams] = useSearchParams()
+    const authState = useSelector(selectAuth)
 
     const [fileList, setFileList] = useState([])
     const [previewOpen, setPreviewOpen] = useState(false)
@@ -126,6 +128,12 @@ const PostCreationForm = () => {
                 className='w-[80%] h-full'
                 onFinish={hanldeAddNewRequest}
                 form={form}
+                initialValues={{
+                    gender:
+                        authState?.userInfo?.gender.toLowerCase() === 'male'
+                            ? 0
+                            : 1,
+                }}
             >
                 {/* tiêu đề bài viết */}
                 <Form.Item
@@ -206,6 +214,7 @@ const PostCreationForm = () => {
                 >
                     <Select
                         style={{ width: 120 }}
+                        disabled
                         options={[
                             { value: 0, label: 'Nam' },
                             { value: 1, label: 'Nữ' },

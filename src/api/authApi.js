@@ -14,11 +14,18 @@ const authApiLoginWithUsername = async ({ username, password }) => {
     }
 }
 
-const authApiRegisterWithUsername = async ({ username, password }) => {
+const authApiRegisterWithUsername = async ({
+    username,
+    password,
+    gender,
+    full_name,
+}) => {
     try {
         const newUser = await axiosClient.post('/auth/register/tenant', {
             username,
             password,
+            gender,
+            full_name,
         })
 
         return newUser.data

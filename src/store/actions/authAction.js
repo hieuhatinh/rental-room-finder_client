@@ -47,11 +47,13 @@ const fetchLoginWithUsername = createAsyncThunk(
 
 const fetchRegisterWithUsername = createAsyncThunk(
     'auth/fetchRegisterWithUsername',
-    async ({ username, password }, { rejectWithValue }) => {
+    async ({ username, password, gender, full_name }, { rejectWithValue }) => {
         try {
             let result = await authApiRegisterWithUsername({
                 username,
                 password,
+                gender,
+                full_name,
             })
 
             return result
@@ -74,6 +76,7 @@ const fetchLoginSuccess = createAsyncThunk(
                 avatar: userInfo.user.avatar,
                 username: userInfo.user.username,
                 email: userInfo.user.email,
+                gender: userInfo.user.gender,
             }
             saveUserInfoToLocalStorage(saveInfoUser)
 

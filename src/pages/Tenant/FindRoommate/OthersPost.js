@@ -42,7 +42,9 @@ const PopoverContent = ({ item }) => {
                 <span className='text-lg font-semibold'>
                     {item.full_name || item.username}
                 </span>
-                <span>{item.gender === 0 ? 'Nam' : 'Nữ'}</span>
+                <span>
+                    {item.user_gender?.toLowerCase() === 'male' ? 'Nam' : 'Nữ'}
+                </span>
                 <Button
                     color='primary'
                     variant='solid'
