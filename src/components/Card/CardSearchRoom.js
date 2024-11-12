@@ -37,14 +37,14 @@ const CardSearchRoom = ({ room }) => {
                 onClick={handleNavigate}
             >
                 {room?.image_type === 'video' ? (
-                    <video className='h-full w-[250px] col-span-3 object-cover'>
+                    <video className='h-[250px] w-[250px] col-span-3 object-cover'>
                         <source src={room?.image_url} type='video/mp4' />
                     </video>
                 ) : room?.image_type === 'image' ? (
                     <img
                         src={room?.image_url}
                         alt={room?.image_url}
-                        className='h-full w-[250px] col-span-3 object-cover'
+                        className='h-[250px] w-[250px] col-span-3 object-cover'
                     />
                 ) : (
                     <></>

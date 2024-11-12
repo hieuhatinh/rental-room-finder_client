@@ -4,6 +4,7 @@ import {
     BellOutlined,
     HomeOutlined,
     LineChartOutlined,
+    UsergroupAddOutlined,
     WechatOutlined,
 } from '@ant-design/icons'
 import { Badge } from 'antd'
@@ -41,6 +42,26 @@ const menuItemsTenant = [
         paths.shared.chatApp,
         <WechatOutlined />,
     ),
+    getItem('Tìm bạn ở ghép', 'sub1', <UsergroupAddOutlined />, [
+        getItem(
+            <Link
+                to={paths.tenant.findRoommateOtherPosts}
+                className='text-current hover:text-current'
+            >
+                Các bài đăng
+            </Link>,
+            paths.tenant.findRoommateOtherPosts,
+        ),
+        getItem(
+            <Link
+                to={paths.tenant.findRoommateMyPosts}
+                className='text-current hover:text-current'
+            >
+                Bài đăng của tôi
+            </Link>,
+            paths.tenant.findRoommateMyPosts,
+        ),
+    ]),
     getItem(
         <Link
             to={paths.tenant.homeTenant}

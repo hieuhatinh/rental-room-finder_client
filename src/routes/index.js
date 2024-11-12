@@ -19,6 +19,8 @@ import RoomManagement from '../pages/Landlord/ManageRooms/RoomManagement'
 import AddNewRoom from '../pages/Landlord/ManageRooms/AddNewRoom'
 import DetailRoomLandlord from '../pages/Landlord/ManageRooms/DetailRoomLandlord'
 import AllAmentities from '../pages/Admin/Amentities/AllAmentity'
+import OthersPost from '../pages/Tenant/FindRoommate/OthersPost'
+import MyPosts from '../pages/Tenant/FindRoommate/MyPosts'
 
 const authRoutes = [
     {
@@ -54,6 +56,14 @@ const tenantPrivateRoute = [
     {
         component: Information,
         path: paths.tenant.tenantInfomation,
+    },
+    {
+        component: OthersPost,
+        path: paths.tenant.findRoommateOtherPosts,
+    },
+    {
+        component: MyPosts,
+        path: paths.tenant.findRoommateMyPosts,
     },
 ]
 

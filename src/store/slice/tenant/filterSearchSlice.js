@@ -10,6 +10,7 @@ const initialState = {
     waterPrice: null,
     electricityPrice: null,
     capacity: null,
+    radius: null,
 }
 
 export const filterSearchSlice = createSlice({
@@ -31,6 +32,9 @@ export const filterSearchSlice = createSlice({
         setCapacity: (state, action) => {
             state.capacity = action.payload
         },
+        setRadius: (state, action) => {
+            state.radius = action.payload
+        },
     },
     extraReducers: (builder) => {},
 })
@@ -41,6 +45,7 @@ export const {
     setSelectedAmentities,
     setWaterPrice,
     setCapacity,
+    setRadius,
 } = filterSearchSlice.actions
 
 export default filterSearchSlice.reducer

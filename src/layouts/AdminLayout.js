@@ -5,6 +5,7 @@ import { useContext, useEffect } from 'react'
 import PrimaryHeader from '../components/Header/PrimaryHeader'
 import { SocketContext } from '../services/SocketProvider'
 import Sidebar from '../components/Sidebar'
+import LogoHUCE from '../assets/images/logo-huce.jpg'
 
 const { Footer, Content } = Layout
 
@@ -84,8 +85,11 @@ function AdminLayout({ children }) {
                         {children}
                     </div>
                 </Content>
-                <Footer className='text-center font-semibold italic text-base'>
-                    Đồ án 2024 - Nguyễn Trung Hiếu - 0214366 - 66CS1 - HUCE
+                <Footer className='flex items-center justify-center gap-3 font-semibold italic text-base'>
+                    <img src={LogoHUCE} alt='logo huce' className='h-8 w-8' />
+                    <span>
+                        Đồ án 2024 - Nguyễn Trung Hiếu - 0214366 - 66CS1 - HUCE
+                    </span>
                 </Footer>
             </Layout>
             {contextHolder}
