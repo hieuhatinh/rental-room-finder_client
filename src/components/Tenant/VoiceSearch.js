@@ -232,7 +232,11 @@ const VoiceSearch = () => {
 
     return (
         <>
-            <Tooltip title='Tìm kiếm bằng giọng nói ở đây' defaultOpen>
+            <Tooltip
+                title='Tìm kiếm bằng giọng nói ở đây'
+                defaultOpen
+                zIndex={0}
+            >
                 <div
                     className='flex items-center justify-center h-8 w-8 rounded-full bg-red-400 cursor-pointer'
                     onClick={handleOpenVoiceSearch}

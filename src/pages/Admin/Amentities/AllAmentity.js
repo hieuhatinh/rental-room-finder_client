@@ -45,8 +45,6 @@ const AllAmentities = () => {
         })
     }
 
-    console.log(amentitiesState)
-
     return (
         <AdminLayout>
             <div className='flex justify-between items-center mb-7'>

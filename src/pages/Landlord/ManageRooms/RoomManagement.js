@@ -85,9 +85,6 @@ function RoomManagement() {
                     }),
                 )
             },
-            onCancel() {
-                console.log('Cancel')
-            },
         })
     }
 
