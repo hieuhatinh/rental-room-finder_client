@@ -299,14 +299,14 @@ const OthersPost = () => {
                                                 Thói quen sinh hoạt:{' '}
                                             </span>
 
-                                            {item.habits}
+                                            {item.habits.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>
                                                 Sở thích:{' '}
                                             </span>
 
-                                            {item.hobbies}
+                                            {item.hobbies.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>
