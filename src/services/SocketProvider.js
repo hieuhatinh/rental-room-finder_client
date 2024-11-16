@@ -15,7 +15,6 @@ const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (authState?.token) {
-            console.log('connect')
             const socketConnection = io(process.env.REACT_APP_BACKEND_URL, {
                 auth: {
                     token: getTokenFromCookies(),

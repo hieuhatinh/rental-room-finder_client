@@ -68,14 +68,21 @@ const authApiLogout = async () => {
     }
 }
 
-const authApiUpdateInfomation = async ({ avatar, full_name }) => {
+const authApiUpdateInfomation = async (values) => {
     try {
-        const url = await apiUploadSingleFile(avatar)
+        let newUser
+        if (!!values.avatar || !!values.full_name) {
+            const url = await apiUploadSingleFile(values.avatar)
 
-        const newUser = await axiosClient.put('/auth/update-info', {
-            avatar: url,
-            full_name,
-        })
+            newUser = await axiosClient.put('/auth/update-info', {
+                avatar: url,
+                full_name: values.full_name,
+            })
+        } else if (!!values.gender) {
+            newUser = await axiosClient.put('/auth/update-info', {
+                gender: values.gender,
+            })
+        }
 
         return newUser.data
     } catch (error) {

@@ -30,7 +30,6 @@ axiosClient.interceptors.request.use(
         return request
     },
     function (error) {
-        console.log(error)
         // Xử lý lỗi
         return Promise.reject(error)
     },

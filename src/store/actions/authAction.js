@@ -107,12 +107,9 @@ const fetchLogout = createAsyncThunk(
 
 const fetchUpdateInfomation = createAsyncThunk(
     'auth/updateInformation',
-    async ({ avatar, full_name }, { dispatch, rejectWithValue }) => {
+    async (values, { rejectWithValue }) => {
         try {
-            let result = await authApiUpdateInfomation({
-                avatar,
-                full_name,
-            })
+            let result = await authApiUpdateInfomation(values)
 
             const newInfoUser = {
                 id_user: result.newInfoUser.id_user,

@@ -1,9 +1,14 @@
-import { Layout, theme } from 'antd'
+import { Button, Form, Layout, message, Modal, Radio, theme } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
 
 import PrimaryHeader from '../components/Header/PrimaryHeader'
 import ChatbotUI from '../Chatbot'
 import Sidebar from '../components/Sidebar'
 import LogoHUCE from '../assets/images/logo-huce.jpg'
+import { selectAuth } from '../store/selector/authSelector'
+import roles from '../utils/roles'
+import { fetchUpdateInfomation } from '../store/actions/authAction'
 
 const { Footer, Content } = Layout
 
@@ -11,6 +16,31 @@ function DefaultLayout({ children }) {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
+
+    const dispatch = useDispatch()
+    const authState = useSelector(selectAuth)
+    const [gender, setGender] = useState('male')
+    const [messageApi, contextHolder] = message.useMessage()
+
+    const onFinish = (values) => {
+        dispatch(fetchUpdateInfomation({ ...values })).then((result) => {
+            if (result.payload?.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: result.payload?.message,
+                })
+            } else if (result.payload?.error) {
+                messageApi.open({
+                    type: 'error',
+                    content: result.payload?.message,
+                })
+            }
+        })
+    }
+
+    const onChangeGender = (e) => {
+        setGender(e.target.value)
+    }
 
     return (
         <Layout hasSider>
@@ -53,6 +83,59 @@ function DefaultLayout({ children }) {
 
             {/* Chatbot */}
             <ChatbotUI />
+
+            {authState?.userInfo?.role === roles.tenant &&
+                authState?.userInfo?.gender === 'unknown' && (
+                    <Modal
+                        zIndex={100}
+                        closable={false}
+                        closeIcon={null}
+                        title='Xác nhận giới tính'
+                        footer={null}
+                        open={
+                            authState?.userInfo?.role === roles.tenant &&
+                            authState?.userInfo?.gender === 'unknown'
+                        }
+                    >
+                        <Form
+                            name='Register'
+                            onFinish={onFinish}
+                            className='flex flex-col'
+                        >
+                            <Form.Item
+                                name='gender'
+                                hasFeedback
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your Gender!',
+                                    },
+                                ]}
+                            >
+                                <Radio.Group
+                                    onChange={onChangeGender}
+                                    value={gender}
+                                >
+                                    <Radio value='male'>Nam</Radio>
+                                    <Radio value='female'>Nữ</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button
+                                    block
+                                    loading={authState.isLoading}
+                                    type='primary'
+                                    htmlType='submit'
+                                    className='mb-2 font-semibold bg-indigo-600 hover:bg-indigo-500'
+                                >
+                                    Submit
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+                )}
+
+            {contextHolder}
         </Layout>
     )
 }

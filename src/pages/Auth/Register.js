@@ -27,7 +27,6 @@ function Register() {
     const [value, setValue] = useState('male')
 
     const onFinish = (values) => {
-        console.log(values)
         dispatch(fetchRegisterWithUsername({ ...values }))
     }
 
