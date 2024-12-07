@@ -1,0 +1,22 @@
+.react-chatbot-kit-chat-container {
+    width: 360px;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 7px;
+}
+
+.react-chatbot-kit-chat-bot-message-container {
+    width: 250px;
+}
+
+.react-chatbot-kit-chat-bot-avatar-container {
+    width: 40px;
+    margin-right: -5px;
+}
+
+.react-chatbot-kit-chat-input {
+    outline: None;
+}
+
+.react-chatbot-kit-chat-btn-send {
+    width: 70px;
+}
