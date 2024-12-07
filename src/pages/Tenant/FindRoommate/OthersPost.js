@@ -142,8 +142,8 @@ const OthersPost = () => {
                         lon,
                         radius,
                         sex,
-                        habits,
-                        hobbies,
+                        habits: habits.split(', '),
+                        hobbies: hobbies.split(', '),
                         amentities: amentities.split(', '),
                     }),
                 )
@@ -299,14 +299,14 @@ const OthersPost = () => {
                                                 Thói quen sinh hoạt:{' '}
                                             </span>
 
-                                            {item.habits}
+                                            {item.habits.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>
                                                 Sở thích:{' '}
                                             </span>
 
-                                            {item.hobbies}
+                                            {item.hobbies.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>

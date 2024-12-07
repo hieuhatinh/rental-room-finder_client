@@ -91,8 +91,8 @@ const SearchRoommateForm = () => {
         params.lon = values.lon
         params.radius = values.radius
         params.sex = values.sex
-        params.habits = values.habits
-        params.hobbies = values.hobbies
+        params.habits = values.habits?.join(', ')
+        params.hobbies = values.hobbies?.join(', ')
         params.amentities = values.amentities.join(', ')
 
         setSearchParams({
