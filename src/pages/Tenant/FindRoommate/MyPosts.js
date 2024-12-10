@@ -236,7 +236,6 @@ const MyPosts = () => {
                                                 Giá phòng:{' '}
                                             </span>
                                             {convertToVnd(item.price * 1000000)}
-                                            /người
                                         </span>
 
                                         <span>
