@@ -91,9 +91,10 @@ const SearchRoommateForm = () => {
         params.lon = values.lon
         params.radius = values.radius
         params.sex = values.sex
-        params.habits = values.habits
-        params.hobbies = values.hobbies
+        params.habits = values.habits.join(', ')
+        params.hobbies = values.hobbies.join(', ')
         params.amentities = values.amentities.join(', ')
+        params.price = values.price
 
         setSearchParams({
             ...currentParams,
@@ -168,6 +169,29 @@ const SearchRoommateForm = () => {
                             { value: 0, label: 'Nam' },
                             { value: 1, label: 'Nữ' },
                         ]}
+                    />
+                </Form.Item>
+
+                {/* Giá phòng */}
+                <Form.Item
+                    label='Giá phòng có thể chấp nhận'
+                    name='price'
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Trường này bắt buộc nhập!',
+                        },
+                    ]}
+                >
+                    <InputNumber
+                        min={1}
+                        prefix={
+                            <img
+                                src={LessThanOrEqual}
+                                className='h-5 w-5'
+                                alt='less than or equal'
+                            />
+                        }
                     />
                 </Form.Item>
 

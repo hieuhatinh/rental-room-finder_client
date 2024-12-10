@@ -119,6 +119,7 @@ const OthersPost = () => {
         const habits = searchParams.get('habits')
         const hobbies = searchParams.get('hobbies')
         const amentities = searchParams.get('amentities')
+        const price = searchParams.get('price')
 
         let isFilter =
             !!address ||
@@ -142,9 +143,10 @@ const OthersPost = () => {
                         lon,
                         radius,
                         sex,
-                        habits,
-                        hobbies,
+                        habits: habits.split(', '),
+                        hobbies: hobbies.split(', '),
                         amentities: amentities.split(', '),
+                        price,
                     }),
                 )
             } else {
@@ -291,7 +293,6 @@ const OthersPost = () => {
                                                 Giá phòng:{' '}
                                             </span>
                                             {convertToVnd(item.price * 1000000)}
-                                            /người
                                         </span>
 
                                         <span>
@@ -299,14 +300,14 @@ const OthersPost = () => {
                                                 Thói quen sinh hoạt:{' '}
                                             </span>
 
-                                            {item.habits}
+                                            {item.habits.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>
                                                 Sở thích:{' '}
                                             </span>
 
-                                            {item.hobbies}
+                                            {item.hobbies.join(', ')}
                                         </span>
                                         <span>
                                             <span className='font-semibold'>
