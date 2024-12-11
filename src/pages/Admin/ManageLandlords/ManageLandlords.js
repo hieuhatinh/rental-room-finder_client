@@ -25,6 +25,7 @@ import {
 import { selectManageLandlord } from '../../../store/selector/adminSelector'
 import { LIMIT } from '../../../constants'
 import DetailInfo from '../../../components/Admin/ManageLandlords/DetailInfo'
+import { reStateMessage } from '../../../store/slice/admin/manageLandlordsSlice'
 
 const { confirm } = Modal
 
@@ -50,12 +51,16 @@ const ManageLandlords = () => {
 
     // Lấy thông tin landlords
     useEffect(() => {
-        dispatch(
-            fetchGetLandlords({
-                page: searchParams.get('page') ?? 1,
-                limit: searchParams.get('limit') ?? LIMIT,
-            }),
-        )
+        const page = searchParams.get('page') ?? 1
+        const limit = searchParams.get('limit') ?? LIMIT
+        if (page && limit) {
+            dispatch(
+                fetchGetLandlords({
+                    page,
+                    limit,
+                }),
+            )
+        }
     }, [searchParams, dispatch])
 
     const handlePageChange = (newPage, newLimit) => {
@@ -106,12 +111,19 @@ const ManageLandlords = () => {
 
     // hiển thị thông báo
     useEffect(() => {
+        let timoutId
         if (manageLandlordState.isSuccess) {
             messageApi.open({
                 type: 'success',
                 content: manageLandlordState.message,
             })
+
+            timoutId = setTimeout(() => {
+                dispatch(reStateMessage())
+            }, 1000)
         }
+
+        return () => clearTimeout(timoutId)
     }, [manageLandlordState, messageApi])
 
     return (

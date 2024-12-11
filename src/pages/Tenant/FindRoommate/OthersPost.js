@@ -119,6 +119,7 @@ const OthersPost = () => {
         const habits = searchParams.get('habits')
         const hobbies = searchParams.get('hobbies')
         const amentities = searchParams.get('amentities')
+        const price = searchParams.get('price')
 
         let isFilter =
             !!address ||
@@ -145,6 +146,7 @@ const OthersPost = () => {
                         habits: habits.split(', '),
                         hobbies: hobbies.split(', '),
                         amentities: amentities.split(', '),
+                        price,
                     }),
                 )
             } else {
@@ -291,7 +293,6 @@ const OthersPost = () => {
                                                 Giá phòng:{' '}
                                             </span>
                                             {convertToVnd(item.price * 1000000)}
-                                            /người
                                         </span>
 
                                         <span>

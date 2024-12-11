@@ -4,6 +4,7 @@ import {
     fetchAcceptRequest,
     fetchGetDetailUnacceptRoom,
     fetchGetUnacceptRooms,
+    fetchRejectRequest,
 } from '../../actions/admin/manageRoomsAction'
 
 const initialState = {
@@ -87,6 +88,27 @@ export const manageRoomsSlice = createSlice({
                 state.infoAcceptRoom = action.payload.result
             })
             .addCase(fetchAcceptRequest.rejected, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+        builder
+            .addCase(fetchRejectRequest.pending, (state, action) => {
+                state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
+                state.message = null
+            })
+            .addCase(fetchRejectRequest.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.isSuccess = true
+                state.message = action.payload.message
+                state.infoAcceptRoom = action.payload.result
+            })
+            .addCase(fetchRejectRequest.rejected, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = false
                 state.isError = true

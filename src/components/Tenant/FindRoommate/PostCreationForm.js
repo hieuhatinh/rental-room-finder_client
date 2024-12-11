@@ -183,7 +183,7 @@ const PostCreationForm = () => {
 
                 {/* Giá phòng */}
                 <Form.Item
-                    label='Giá phòng (triệu VNĐ/người)'
+                    label='Giá phòng (triệu VNĐ/phòng)'
                     name='price'
                     rules={[
                         {

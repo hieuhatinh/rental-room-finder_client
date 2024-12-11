@@ -21,12 +21,25 @@ function LandlordLayout({ children }) {
 
     useEffect(() => {
         if (socketConnection) {
-            socketConnection.on('accept-request', () => {
-                api.success({
-                    placement: 'topRight',
-                    message: 'Yêu cầu tạo phòng đã được chấp nhận',
-                    description: `yêu cầu tạo phòng của bạn đã được chấp nhận`,
-                })
+            socketConnection.on('accept-request', ({ id_landlord }) => {
+                if (id_landlord === authState.userInfo.id_user) {
+                    api.success({
+                        placement: 'topRight',
+                        message: 'Yêu cầu tạo phòng đã được chấp nhận',
+                        description: `yêu cầu tạo phòng của bạn đã được chấp nhận`,
+                    })
+                }
+            })
+
+            socketConnection.on('reject-request', ({ id_landlord }) => {
+                if (id_landlord === authState.userInfo.id_user) {
+                    console.log('hi')
+                    api.error({
+                        placement: 'topRight',
+                        message: 'Yêu cầu tạo phòng bị từ chối',
+                        description: `Bạn có 1 yêu cầu sửa đổi thông tin phòng. Vào thông báo để xem chi tiết.`,
+                    })
+                }
             })
 
             socketConnection.on('accept-amentity', (data) => {
@@ -61,6 +74,7 @@ function LandlordLayout({ children }) {
                 socketConnection.off('accept-request')
                 socketConnection.off('accept-amentity')
                 socketConnection.off('refuse-amentity')
+                socketConnection.off('reject-request')
             }
         }
     }, [socketConnection, api, authState])

@@ -40,4 +40,26 @@ const apiAcceptRequest = async ({ id_landlord, id_room }) => {
     }
 }
 
-export { apiGetUnacceptRooms, apiGetDetailUnacceptRoom, apiAcceptRequest }
+const apiRejectRequest = async ({ id_landlord, id_room, reason }) => {
+    try {
+        const result = await axiosClient.patch(
+            `/admin/manage/rooms/reject-request`,
+            {
+                id_landlord,
+                id_room,
+                reason,
+            },
+        )
+
+        return result.data
+    } catch (error) {
+        throw new Error(error.response?.data.message || error)
+    }
+}
+
+export {
+    apiGetUnacceptRooms,
+    apiGetDetailUnacceptRoom,
+    apiAcceptRequest,
+    apiRejectRequest,
+}
