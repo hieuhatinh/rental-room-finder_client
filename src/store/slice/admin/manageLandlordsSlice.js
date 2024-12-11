@@ -20,7 +20,14 @@ const initialState = {
 export const manageLandlordsSlice = createSlice({
     name: 'adminManageLandlords',
     initialState,
-    reducers: {},
+    reducers: {
+        reStateMessage: (state, action) => {
+            state.isLoading = false
+            state.isSuccess = false
+            state.isError = false
+            state.message = null
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAddNewLandlord.pending, (state, action) => {
@@ -127,6 +134,6 @@ export const manageLandlordsSlice = createSlice({
     },
 })
 
-export const {} = manageLandlordsSlice.actions
+export const { reStateMessage } = manageLandlordsSlice.actions
 
 export default manageLandlordsSlice.reducer

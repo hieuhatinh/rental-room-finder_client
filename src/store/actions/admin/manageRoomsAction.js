@@ -3,6 +3,7 @@ import {
     apiAcceptRequest,
     apiGetDetailUnacceptRoom,
     apiGetUnacceptRooms,
+    apiRejectRequest,
 } from '../../../api/admin/manageRoomsApi'
 
 const fetchGetUnacceptRooms = createAsyncThunk(
@@ -53,4 +54,26 @@ const fetchAcceptRequest = createAsyncThunk(
     },
 )
 
-export { fetchGetUnacceptRooms, fetchGetDetailUnacceptRoom, fetchAcceptRequest }
+const fetchRejectRequest = createAsyncThunk(
+    'adminManageRooms/fetchRejectRequest',
+    async ({ id_landlord, id_room, reason }, { rejectWithValue }) => {
+        try {
+            const result = await apiRejectRequest({
+                id_landlord,
+                id_room,
+                reason,
+            })
+
+            return result
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    },
+)
+
+export {
+    fetchGetUnacceptRooms,
+    fetchGetDetailUnacceptRoom,
+    fetchAcceptRequest,
+    fetchRejectRequest,
+}

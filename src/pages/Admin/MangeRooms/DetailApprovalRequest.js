@@ -1,18 +1,92 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
-import { Avatar, Button, Carousel, message, Result, Spin, Tag } from 'antd'
+import {
+    Avatar,
+    Button,
+    Carousel,
+    Form,
+    Input,
+    message,
+    Modal,
+    Result,
+    Spin,
+    Tag,
+} from 'antd'
 
 import AdminLayout from '../../../layouts/AdminLayout'
 import {
     fetchAcceptRequest,
     fetchGetDetailUnacceptRoom,
+    fetchRejectRequest,
 } from '../../../store/actions/admin/manageRoomsAction'
 import { adminSelectRoomsManage } from '../../../store/selector/adminSelector'
 import { formattedDate, convertToVnd } from '../../../utils/convertValue'
 import { paths } from '../../../utils/pathsRoutes'
 import { reState } from '../../../store/slice/admin/manageRoomsSlice'
 import { SocketContext } from '../../../services/SocketProvider'
+
+const FormReason = ({ messageApi }) => {
+    const socketConnection = useContext(SocketContext)
+    const dispatch = useDispatch()
+    const adminRoomsState = useSelector(adminSelectRoomsManage)
+    const { id_landlord, id_room } = useParams()
+    const navigate = useNavigate()
+
+    const handleRejectRequest = ({ reason }) => {
+        dispatch(fetchRejectRequest({ id_landlord, id_room, reason }))
+            .unwrap()
+            .then((result) => {
+                messageApi.open({
+                    type: 'success',
+                    content: result.message,
+                })
+
+                socketConnection.emit('reject-request', { id_landlord })
+
+                setTimeout(() => {
+                    dispatch(reState())
+                    navigate(paths.admin.roomApprovalsRequest)
+                }, 1000)
+            })
+            .catch((error) => {
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                })
+                setTimeout(() => {
+                    dispatch(reState())
+                }, 1000)
+            })
+    }
+
+    return (
+        <Form variant='filled' layout='vertical' onFinish={handleRejectRequest}>
+            <Form.Item
+                name='reason'
+                rules={[
+                    {
+                        required: true,
+                        message: 'Trường này bắt buộc nhập!',
+                    },
+                ]}
+                label='Lý do gửi yêu cầu sửa đổi'
+            >
+                <Input.TextArea rows={5} />
+            </Form.Item>
+            <Form.Item>
+                <Button
+                    loading={adminRoomsState.isLoading}
+                    type='primary'
+                    htmlType='submit'
+                    className='w-full'
+                >
+                    Submit
+                </Button>
+            </Form.Item>
+        </Form>
+    )
+}
 
 const DetailApprovalResquest = () => {
     const dispatch = useDispatch()
@@ -23,6 +97,7 @@ const DetailApprovalResquest = () => {
 
     const [landlordInfo, setLandlordInfo] = useState()
     const [roomInfo, setRoomInfo] = useState()
+    const [isModalOpenCancel, setIsModalOpenCancel] = useState(false)
 
     const socketConnection = useContext(SocketContext)
 
@@ -40,13 +115,14 @@ const DetailApprovalResquest = () => {
     // chấp nhận yêu cầu
     const handleAcceptRequest = () => {
         dispatch(fetchAcceptRequest({ id_landlord, id_room }))
+            .unwrap()
             .then((result) => {
                 messageApi.open({
                     type: 'success',
-                    content: adminRoomsState.message,
+                    content: result.message,
                 })
 
-                socketConnection.emit('accept-request')
+                socketConnection.emit('accept-request', { id_landlord })
 
                 setTimeout(() => {
                     dispatch(reState())
@@ -56,12 +132,25 @@ const DetailApprovalResquest = () => {
             .catch((error) => {
                 messageApi.open({
                     type: 'error',
-                    content: adminRoomsState.message,
+                    content: error,
                 })
                 setTimeout(() => {
                     dispatch(reState())
                 }, 1000)
             })
+    }
+
+    // Không chấp nhận yêu cầu
+    const showModal = () => {
+        setIsModalOpenCancel(true)
+    }
+
+    const handleOk = () => {
+        setIsModalOpenCancel(false)
+    }
+
+    const handleCancel = () => {
+        setIsModalOpenCancel(false)
     }
 
     return (
@@ -246,9 +335,13 @@ const DetailApprovalResquest = () => {
                         >
                             Chấp nhận yêu cầu
                         </Button>
-                        {/* <Button type='primary' className='bg-yellow-500'>
-                    Gửi yêu cầu sửa đổi
-                </Button> */}
+                        <Button
+                            type='primary'
+                            className='bg-yellow-500'
+                            onClick={showModal}
+                        >
+                            Gửi yêu cầu sửa đổi
+                        </Button>
                     </div>
                 </>
             ) : adminRoomsState?.isError ? (
@@ -287,6 +380,17 @@ const DetailApprovalResquest = () => {
             )}
 
             {contextHolder}
+
+            {/* modal gửi yêu cầu sửa đổi */}
+            <Modal
+                title='Gửi yêu cầu sửa đổi'
+                open={isModalOpenCancel}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={false}
+            >
+                <FormReason messageApi={messageApi} />
+            </Modal>
         </AdminLayout>
     )
 }

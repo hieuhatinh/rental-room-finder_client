@@ -185,13 +185,17 @@ function RoomManagement() {
                                             {convertToVnd(item.price * 1000000)}
                                         </td>
                                         <td className='text-center py-3 col-span-1'>
-                                            {item.is_accept === 1 ? (
+                                            {item.status === 1 ? (
                                                 <Tag color='green'>
                                                     Đã chấp nhận
                                                 </Tag>
-                                            ) : (
+                                            ) : item.status === 0 ? (
                                                 <Tag color='yellow'>
                                                     Đang chờ phản hồi
+                                                </Tag>
+                                            ) : (
+                                                <Tag color='red'>
+                                                    Yêu cầu sửa đổi
                                                 </Tag>
                                             )}
                                         </td>
